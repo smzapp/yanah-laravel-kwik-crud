@@ -1,4 +1,4 @@
-# Yanah Laravel Kwik CRUD Package
+# Yanah Laravel "Kwik" CRUD Package
 
 ## Description
 

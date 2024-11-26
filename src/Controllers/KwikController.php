@@ -1,6 +1,8 @@
 <?php
 namespace Yanah\LaravelKwik\Controllers;
 
+use Yanah\LaravelKwik\Traits\MainTrait;
+
 /**
  * Add Components: UI Fields, ImageUpload, 
  * 
@@ -8,6 +10,10 @@ namespace Yanah\LaravelKwik\Controllers;
  */
 class KwikController extends BaseController 
 {
+    use MainTrait;
+
+    protected $viewLayout = 'AuthenticatedLayout';
+    
     protected $perPage = 15;
 
     protected $showPagination = true;
@@ -15,4 +21,5 @@ class KwikController extends BaseController
     protected $showPrint = true;
 
     protected $showPdfExport = true;
+
 }

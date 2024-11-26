@@ -20,7 +20,8 @@ abstract class BaseController extends Controller
     public function index()
     {
         return Inertia::render('BaseCrud/Index', [
-            'posts' => (new $this->model)->all(),
+            'crud' => (new $this->model)->all(),
+            'layout' => $this->getViewLayout()
         ]);
     }
 
