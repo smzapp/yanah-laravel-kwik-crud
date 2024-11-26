@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Models;
+
+use Yanah\LaravelKwik\Models\BaseModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+class {{ className }} extends BaseModel
+{
+    use HasFactory;
+    
+    // protected $table = '';
+    // protected $primaryKey = 'id';
+    // public $timestamps = false;
+    // protected $guarded = [];
+    // protected $hidden = [];
+
+    // protected $fillable = [];
+
+    
+    // Relations
+
+
+    // Mutators
+
+
+    // Accessors
+}

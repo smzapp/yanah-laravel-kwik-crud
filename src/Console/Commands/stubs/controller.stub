@@ -1,0 +1,18 @@
+<?php
+namespace App\Http\Controllers;
+
+use Yanah\LaravelKwik\Controllers\KwikController;
+use App\Models\{{modelName}};
+
+class {{className}} extends KwikController
+{
+    protected $model = {{modelName}}::class;
+
+    protected $perPage = 15;
+
+    // control create & edit validations
+
+    // ui controllers: button, 
+
+    // toggle show: fields, buttons
+}
