@@ -47,4 +47,5 @@ protected $middlewareGroups = [
 
 `$ php artisan serve`
 
+`$ npm install vue@latest`
 `$ npm run dev`

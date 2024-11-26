@@ -16,13 +16,23 @@ abstract class BaseController extends Controller
 
     // abstract protected function getValidationRules(): array;
 
+    private function getData()
+    {
+        $object = (new $this->model);
+        return $object->paginate($this->getPerPage());
+    }
 
     public function index()
-    {
+    {  
+        if (request()->wantsJson()) {
+            return response()->json($this->getData());
+        }
+
         return Inertia::render('BaseCrud/Index', [
-            'crud' => (new $this->model)->paginate(),
+            'crud' => $this->getData(),
             'layout' => $this->getViewLayout(),
-            'pageTitle' => $this->getPageTitle()
+            'pageTitle' => $this->getPageTitle(),
+            'fields' => ['title', 'body']
         ]);
     }
 
