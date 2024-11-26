@@ -8,11 +8,16 @@ use Yanah\LaravelKwik\Traits\MainTrait;
  * 
  * Override these attributes in child classes
  */
-class KwikController extends BaseController 
+abstract class KwikController extends BaseController 
 {
     use MainTrait;
 
+    /**
+     * Has Maintrait
+     */
     protected $viewLayout = 'AuthenticatedLayout';
+
+    protected $pageTitle = 'Home';
     
     protected $perPage = 15;
 

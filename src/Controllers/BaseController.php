@@ -20,8 +20,9 @@ abstract class BaseController extends Controller
     public function index()
     {
         return Inertia::render('BaseCrud/Index', [
-            'crud' => (new $this->model)->all(),
-            'layout' => $this->getViewLayout()
+            'crud' => (new $this->model)->paginate(),
+            'layout' => $this->getViewLayout(),
+            'pageTitle' => $this->getPageTitle()
         ]);
     }
 

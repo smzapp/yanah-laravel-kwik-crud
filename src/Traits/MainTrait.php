@@ -108,4 +108,9 @@ trait MainTrait
     {
         $this->viewLayout = $viewLayout;
     }
+
+    public function getPageTitle()
+    {
+        return class_basename($this->model);
+    }
 }
