@@ -1,53 +1,47 @@
-# Description
-- This package is built to ease the so much works developers do.
+# Yanah Laravel Kwik CRUD Package
 
-# Requirement
-- Laravel inertia
-[text](https://inertiajs.com/server-side-setup)
+## Description
 
-# Installation
+This package is built to ease the work developers do by streamlining the process of scaffolding CRUD operations. It integrates seamlessly with Laravel, Inertia, and Vue.js 3, reducing boilerplate and simplifying the creation of CRUD functionality.
 
-`composer require yanah/laravel-kwik-crud`
+## Requirements
 
-- Add `EaseServiceProvider` in `config/app.php` 
+- **Laravel Inertia**: This package is built on top of Inertia.js and Vue.js 3.
+  - [Inertia.js Server-Side Setup](https://inertiajs.com/server-side-setup)
 
-`'providers' => [
+## Installation
+
+To install the package, follow these steps:
+
+### 1. Install the Package
+
+Run the following Composer command to install the package:
+
+```bash
+composer require yanah/laravel-kwik-crud
+
+
+> Add EaseServiceProvider to the providers array in your `config/app.php`:
+
+'providers' => [
     // Other providers...
     Yanah\LaravelKwik\EaseServiceProvider::class,
 ]
-`
-- Add in composer.json 
 
-`"Yanah\\LaravelKwik\\": "packages/Yanah/LaravelKwik/src"`
+> Add the following to your `composer.json` under the autoload section:
 
-OR automate
+"Yanah\\LaravelKwik\\": "packages/Yanah/LaravelKwik/src"
 
-`$ php artisan vendor:publish --tag=config`
+Note: This will be automated. php artisan vendor:publish --tag=config
 
-//app/Http/Kernel.php
-`protected $middlewareGroups = [
+> In app/Http/Kernel.php, ensure that the HandleInertiaRequests middleware 
+
+protected $middlewareGroups = [
     'web' => [
         \App\Http\Middleware\HandleInertiaRequests::class,
         // other middlewares...
     ],
-];``
-
-
-- Add this in `js/app.ts`
-
-`resolve: (name) => {
-    const pages = import.meta.glob<DefineComponent>('./Pages/**/*.vue');
-    const otherDirectory = import.meta.glob<DefineComponent>('./Base/**/*.vue');
-
-    const components = { ...pages, ...otherDirectory };
-
-    if (components[`./${name}.vue`]) {
-        return components[`./${name}.vue`]();
-    }
-
-    throw new Error(`Component "${name}" not found.`);
-}`
-
+];
 
 # Run
 
