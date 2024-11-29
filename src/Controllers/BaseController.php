@@ -14,8 +14,6 @@ abstract class BaseController extends Controller
 {
     protected $model;
 
-    // abstract protected function getValidationRules(): array;
-
     private function getData()
     {
         $object = (new $this->model);
@@ -36,4 +34,17 @@ abstract class BaseController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        if(isset($this->crudSetup['create']))
+        {
+            $childCreateForm = app($this->crudSetup['create']);
+
+            $childCreateForm->prepareForm();
+
+            return $childCreateForm->getCompleteForm();
+        }
+
+        abort(500, 'You have not specified any form.');
+    }
 }

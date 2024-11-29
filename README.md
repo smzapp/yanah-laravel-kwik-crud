@@ -47,5 +47,8 @@ protected $middlewareGroups = [
 
 `$ php artisan serve`
 
-`$ npm install vue@latest`
+`$ npm install vue@latest vue-easytable @fortawesome/fontawesome-free`
+
 `$ npm run dev`
+
+- Check tailwind.config.js configuration
