@@ -22,7 +22,7 @@ abstract class KwikForm {
 
     abstract public function prepareForm(): void;
 
-    public function getCompleteForm()
+    public function getArrayForm() : array
     {
         return $this->form->getFormList();
     }

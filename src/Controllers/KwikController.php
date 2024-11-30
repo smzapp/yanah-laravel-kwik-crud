@@ -15,7 +15,7 @@ abstract class KwikController extends BaseController
     /**
      * Has Maintrait
      */
-    protected $viewLayout = 'AuthenticatedLayout';
+    protected $layout = 'AuthenticatedLayout';
 
     protected $pageTitle = 'Home';
     
@@ -27,4 +27,8 @@ abstract class KwikController extends BaseController
 
     protected $showPdfExport = true;
 
+    public function getModel()
+    {
+        return app($this->model);
+    }
 }

@@ -93,9 +93,9 @@ trait MainTrait
      *
      * @return string
      */
-    public function getViewLayout(): string
+    public function getLayout(): string
     {
-        return $this->viewLayout;
+        return $this->layout;
     }
 
     /**
@@ -104,9 +104,9 @@ trait MainTrait
      * @param string $viewLayout
      * @return void
      */
-    public function setViewLayout(string $viewLayout): void
+    public function setLayout(string $viewLayout): void
     {
-        $this->viewLayout = $viewLayout;
+        $this->layout = $viewLayout;
     }
 
     public function getPageTitle()

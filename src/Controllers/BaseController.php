@@ -16,8 +16,8 @@ abstract class BaseController extends Controller
 
     private function getData()
     {
-        $object = (new $this->model);
-        return $object->paginate($this->getPerPage());
+        return $this->getModel()
+                    ->paginate($this->getPerPage());
     }
 
     public function index()
@@ -27,8 +27,8 @@ abstract class BaseController extends Controller
         }
 
         return Inertia::render('BaseCrud/Index', [
-            'crud' => $this->getData(),
-            'layout' => $this->getViewLayout(),
+            'crud'      => $this->getData(),
+            'layout'    => $this->getLayout(),
             'pageTitle' => $this->getPageTitle(),
             'fields' => ['title', 'body'],
             'routes' => (object) $this->crudRoutes
@@ -39,11 +39,15 @@ abstract class BaseController extends Controller
     {
         if(isset($this->crudSetup['create']))
         {
-            $childCreateForm = app($this->crudSetup['create']);
+            $childCreateForm = app($this->crudSetup['create']); // KwikForm
 
             $childCreateForm->prepareForm();
 
-            return dd($childCreateForm->getCompleteForm());
+            return Inertia::render('BaseCrud/Create', [
+                'formList'  => $childCreateForm->getArrayForm(),
+                'layout'    => $this->getLayout(),
+                'pageTitle' => 'Create ' . $this->getPageTitle(),
+            ]);
         }
 
         abort(500, 'You have not specified any form.');
