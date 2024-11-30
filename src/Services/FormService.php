@@ -9,7 +9,7 @@ class FormService {
     /**
      * @param $type: string, $params: array
      */
-    public function appendField($fieldName, $attributes)
+    public function addField($fieldName, $attributes)
     {
         $this->formList[$fieldName] = $attributes;
     }

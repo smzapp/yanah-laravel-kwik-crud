@@ -30,7 +30,8 @@ abstract class BaseController extends Controller
             'crud' => $this->getData(),
             'layout' => $this->getViewLayout(),
             'pageTitle' => $this->getPageTitle(),
-            'fields' => ['title', 'body']
+            'fields' => ['title', 'body'],
+            'routes' => (object) $this->crudRoutes
         ]);
     }
 
@@ -42,7 +43,7 @@ abstract class BaseController extends Controller
 
             $childCreateForm->prepareForm();
 
-            return $childCreateForm->getCompleteForm();
+            return dd($childCreateForm->getCompleteForm());
         }
 
         abort(500, 'You have not specified any form.');
