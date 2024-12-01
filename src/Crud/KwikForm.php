@@ -5,9 +5,15 @@ use Yanah\LaravelKwik\Services\FormService;
 use Yanah\LaravelKwik\Services\FormFieldService;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Yanah\LaravelKwik\Traits\FieldTypeTrait;
+use Yanah\LaravelKwik\Traits\BaseTrait;
 
-abstract class KwikForm {
-    use \Yanah\LaravelKwik\Traits\FieldTypeTrait;
+/**
+ * This is the Gateway to the package form.
+ */
+abstract class KwikForm 
+{
+    use FieldTypeTrait, BaseTrait;
 
     protected $form;
 
@@ -16,11 +22,15 @@ abstract class KwikForm {
         $this->form = new FormService;
     }
 
-    abstract public function getModel();
-
     abstract public function validationRules(): array;
 
     abstract public function prepareForm(): void;
+
+    
+    public function getModel()
+    {
+        return app($this->model);
+    }
 
     public function getArrayForm() : array
     {
@@ -30,23 +40,18 @@ abstract class KwikForm {
     /**
      * We initialize the form 
      */
-    public function bootModelForm(): void
+    public function generateAutoForm(): void
     {
-        $model   = $this->getModel();
-        $table   = $model->getTable();
-        $columns = Schema::getColumnListing($table);
+        $columns = $this->getFilteredFields();
 
-        foreach ($columns as $column) {
-            $type = Schema::getColumnType('posts', $column);
+        foreach ($columns as $column) 
+        {
+            $type = Schema::getColumnType($this->getTableName(), $column);
 
-            $exluded = ['id', 'created_at', 'updated_at'];
-
-            if(!in_array($column, $exluded)) {
-                $this->form->addField($column, [
-                    'type'  =>  $this->convertType($type),
-                    'label' => Str::headline($column) 
-                ]);
-            }
+            $this->form->addField($column, [
+                'type'  =>  $this->convertType($type),
+                'label' => Str::headline($column) 
+            ]);
         }
     }
 }

@@ -19,7 +19,7 @@ abstract class KwikController extends BaseController
 
     protected $pageTitle = 'Home';
     
-    protected $perPage = 5;
+    protected $perPage = 15;
 
     protected $showPagination = true;
 

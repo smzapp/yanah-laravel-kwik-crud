@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Inertia\Inertia;
+use Yanah\LaravelKwik\Traits\BaseTrait;
 
 /**
  * This BaseController mediates the System Controller and Laravel Facade Controller
@@ -12,11 +13,17 @@ use Inertia\Inertia;
  */
 abstract class BaseController extends Controller
 {
+    use BaseTrait;
+
     protected $model;
 
     private function getData()
     {
+        // We want to select the response data from mysql query.
+        $fields = array_merge(['id'], $this->getTableHeaders());
+        
         return $this->getModel()
+                    ->select($fields)
                     ->paginate($this->getPerPage());
     }
 
@@ -30,26 +37,22 @@ abstract class BaseController extends Controller
             'crud'      => $this->getData(),
             'layout'    => $this->getLayout(),
             'pageTitle' => $this->getPageTitle(),
-            'fields' => ['title', 'body'],
-            'routes' => (object) $this->crudRoutes
+            'fields'    => $this->getTableHeaders(),
+            'routes'    => (object) $this->crudRoutes
         ]);
     }
 
     public function create()
     {
-        if(isset($this->crudSetup['create']))
-        {
-            $childCreateForm = app($this->crudSetup['create']); // KwikForm
+        $childCreateForm = $this->getCrudCreateSetup(); 
 
-            $childCreateForm->prepareForm();
+        $childCreateForm->prepareForm();
 
-            return Inertia::render('BaseCrud/Create', [
-                'formList'  => $childCreateForm->getArrayForm(),
-                'layout'    => $this->getLayout(),
-                'pageTitle' => 'Create ' . $this->getPageTitle(),
-            ]);
-        }
-
-        abort(500, 'You have not specified any form.');
+        return Inertia::render('BaseCrud/Create', [
+            'pageTitle' => 'Create ' . $this->getPageTitle(),
+            'formList'  => $childCreateForm->getArrayForm(),
+            'layout'    => $this->getLayout(),
+            'asterisks' => $this->getRequiredFields()
+        ]);
     }
 }

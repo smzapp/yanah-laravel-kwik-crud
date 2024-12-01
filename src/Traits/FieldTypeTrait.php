@@ -1,5 +1,4 @@
 <?php
-
 namespace Yanah\LaravelKwik\Traits;
 
 use Illuminate\Support\Str;
