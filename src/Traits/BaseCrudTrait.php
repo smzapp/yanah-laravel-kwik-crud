@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 /**
  * Common methods which may appear in CRUD
  */
-trait BaseTrait 
+trait BaseCrudTrait 
 {
     protected $exceptFields = [
         'id', 
@@ -19,14 +19,14 @@ trait BaseTrait
 
     public function getTableName(): string
     {
-        $model = $this->getModel();
+        $model = $this->getModelInstance();
 
         return $model->getTable();
     }
 
     public function query() : Builder
     {
-        $model = $this->getModel();
+        $model = $this->getModelInstance();
 
         return $model::query();
     }

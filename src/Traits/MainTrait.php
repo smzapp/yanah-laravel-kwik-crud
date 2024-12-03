@@ -3,49 +3,6 @@ namespace Yanah\LaravelKwik\Traits;
 
 trait MainTrait
 {
-
-    /**
-     * Get the value of perPage.
-     *
-     * @return int
-     */
-    public function getPerPage(): int
-    {
-        return $this->perPage;
-    }
-
-    /**
-     * Set the value of perPage.
-     *
-     * @param int $perPage
-     * @return void
-     */
-    public function setPerPage(int $perPage): void
-    {
-        $this->perPage = $perPage;
-    }
-
-    /**
-     * Get the value of showPagination.
-     *
-     * @return bool
-     */
-    public function getShowPagination(): bool
-    {
-        return $this->showPagination;
-    }
-
-    /**
-     * Set the value of showPagination.
-     *
-     * @param bool $showPagination
-     * @return void
-     */
-    public function setShowPagination(bool $showPagination): void
-    {
-        $this->showPagination = $showPagination;
-    }
-
     /**
      * Get the value of showPrint.
      *
@@ -109,6 +66,12 @@ trait MainTrait
         $this->layout = $viewLayout;
     }
 
+   
+    /**
+     * Get the value of viewLayout.
+     *
+     * @return string
+     */
     public function getPageTitle()
     {
         return class_basename($this->model);

@@ -7,24 +7,11 @@ use InvalidArgumentException;
 trait TableListTrait
 {
     /**
-     * PostList::class
-     */
-    public function crudListSetup()
-    {
-        if(!isset($this->crudSetup['list']))
-        {
-            throw new InvalidArgumentException('You have not specified any list.');
-        }
-
-        return app($this->crudSetup['list']);
-    }
-
-    /**
      * Specify the fields to be shown into the list
      */
     public function getActiveFields()
     {
-        return $this->crudListSetup()->activeFields ?? [];
+        return $this->setupList()->activeFields ?? [];
     }
 
 
@@ -58,7 +45,7 @@ trait TableListTrait
      */
     public function getResponseQueryData()
     {
-        $crudList = $this->crudListSetup();
+        $crudList = $this->setupList();
 
         $query = $this->query();
 

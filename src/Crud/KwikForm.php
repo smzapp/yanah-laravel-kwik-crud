@@ -6,15 +6,16 @@ use Yanah\LaravelKwik\Services\FormFieldService;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Yanah\LaravelKwik\Traits\FieldTypeTrait;
-use Yanah\LaravelKwik\Traits\BaseTrait;
+use Yanah\LaravelKwik\Traits\BaseCrudTrait;
 use Yanah\LaravelKwik\Traits\TableCreateTrait;
+use RuntimeException;
 
 /**
  * This is the Gateway to the package form.
  */
 abstract class KwikForm 
 {
-    use FieldTypeTrait, BaseTrait, TableCreateTrait;
+    use FieldTypeTrait, BaseCrudTrait, TableCreateTrait;
 
     protected $form;
 
@@ -28,8 +29,12 @@ abstract class KwikForm
     abstract public function prepareForm(): void;
 
     
-    public function getModel()
+    public function getModelInstance()
     {
+        if(! $this->model) {
+            throw new RuntimeException('Model is not initialized.');
+        }
+        
         return app($this->model);
     }
 
