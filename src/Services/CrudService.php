@@ -14,18 +14,19 @@ class CrudService {
     use TableCreateTrait, TableListTrait, BaseCrudTrait;
 
     private $setup;
-    private $model;
+    
+    private $modelInstance;
 
     public function initialize(array $config)
     {
         $this->setup = $config['setup'];
 
-        $this->model = $config['model'];
+        $this->modelInstance = $config['modelInstance'];
     }
 
     public function getModelInstance() : Model
     {
-        return app($this->model);
+        return $this->modelInstance;
     }
 
     /**

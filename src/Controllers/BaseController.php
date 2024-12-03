@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Illuminate\Database\Eloquent\Builder;
 use Yanah\LaravelKwik\Services\CrudService;
 use InvalidArgumentException;
+use Illuminate\Support\Facades\DB;
 
 /**
  * This BaseController mediates the System Controller and Laravel Facade Controller
@@ -32,7 +33,7 @@ abstract class BaseController extends Controller
 
             'setup' => $this->getCrudSetup(),
 
-            'model' => $this->getModel()
+            'modelInstance' => $this->getModelInstance()
         ]);
     }
 
@@ -51,13 +52,13 @@ abstract class BaseController extends Controller
     /**
      * Model must initialized in Child Controller
      */
-    public function getModel() : string
+    public function getModelInstance() : Model
     {
         if($this->model  === null) {
             throw new InvalidArgumentException("Model is not set. Controller should have a \$this->model.");
         }
             
-        return $this->model;
+        return app($this->model);
     }
 
     public function configureRoute($route)
@@ -81,9 +82,7 @@ abstract class BaseController extends Controller
             'layout'    => $this->getLayout(),
             'pageTitle' => $this->getPageTitle(),
             'fields'    => $this->crudService->getTableFields(),
-            'routes' => [
-                'create' => $this->activeRoute . '/create'
-            ]
+            'activeRoute' => $this->activeRoute
         ]);
     }
 
@@ -104,8 +103,22 @@ abstract class BaseController extends Controller
         ]);
     }
 
-    public function destroy($model)
+    public function destroy($id)
     {
-        dd('test');
+        try {
+            DB::beginTransaction();
+
+            $this->getModelInstance()->findOrFail($id)->delete();
+
+            DB::commit();
+
+            return response()->json(['message' => 'Record deleted successfully.'], 200);
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+    
+            return response()->json(['message' => 'Failed to delete record.'], 500);
+        }
     }
 }
