@@ -43,6 +43,9 @@ protected $middlewareGroups = [
     ],
 ];
 
+
+$ php artisan vendor:publish --tag=kwikconfig
+
 # Run
 
 `$ php artisan serve`

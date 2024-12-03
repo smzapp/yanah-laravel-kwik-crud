@@ -10,6 +10,8 @@ class EaseServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        $this->publishConfigurations();
+
         if ($this->app->runningInConsole()) {
             $this->commands([
                 // Display config ease dynamically 
@@ -21,5 +23,19 @@ class EaseServiceProvider extends ServiceProvider
                 GenerateResource::class,
             ]);
         }
+    }
+
+    private function publishConfigurations()
+    {
+        $this->publishes([
+            __DIR__ . '/Config/main-config.php' => config_path('kwik/main.php'),
+            __DIR__ . '/Config/crud-config.php' => config_path('kwik/crud.php'),
+        ], 'kwikconfig');
+    }
+
+    public function register()
+    {
+        $this->mergeConfigFrom(__DIR__ . '/Config/main-config.php', 'kwik.main');
+        $this->mergeConfigFrom(__DIR__ . '/Config/crud-config.php', 'kwik.crud');
     }
 }

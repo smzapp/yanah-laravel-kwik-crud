@@ -19,10 +19,14 @@ abstract class BaseController extends Controller
 
     private $crudService;
 
+    private $activeRoute;
+
 
     public function __construct(CrudService $service)
     {
         $this->crudService = $service;
+
+        $this->initializeRoute();
 
         $this->crudService->initialize([
 
@@ -56,6 +60,11 @@ abstract class BaseController extends Controller
         return $this->model;
     }
 
+    public function configureRoute($route)
+    {
+        $this->activeRoute = $route;
+    }
+
     /**
      * Override Resource index 
      */
@@ -72,7 +81,9 @@ abstract class BaseController extends Controller
             'layout'    => $this->getLayout(),
             'pageTitle' => $this->getPageTitle(),
             'fields'    => $this->crudService->getTableFields(),
-            'routes'    => (object) $this->crudRoutes
+            'routes' => [
+                'create' => $this->activeRoute . '/create'
+            ]
         ]);
     }
 
@@ -91,5 +102,10 @@ abstract class BaseController extends Controller
             'layout'    => $this->getLayout(),
             'asterisks' => $this->crudService->getRequiredFields()
         ]);
+    }
+
+    public function destroy($model)
+    {
+        dd('test');
     }
 }

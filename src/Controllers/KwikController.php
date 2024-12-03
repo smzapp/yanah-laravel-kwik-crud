@@ -22,4 +22,9 @@ abstract class KwikController extends BaseController
     protected $showPrint = true;
 
     protected $showPdfExport = true;
+
+    /**
+     * Require route initialization
+     */
+    abstract public function initializeRoute();
 }
