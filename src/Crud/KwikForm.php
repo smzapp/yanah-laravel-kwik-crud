@@ -7,13 +7,14 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Yanah\LaravelKwik\Traits\FieldTypeTrait;
 use Yanah\LaravelKwik\Traits\BaseTrait;
+use Yanah\LaravelKwik\Traits\TableCreateTrait;
 
 /**
  * This is the Gateway to the package form.
  */
 abstract class KwikForm 
 {
-    use FieldTypeTrait, BaseTrait;
+    use FieldTypeTrait, BaseTrait, TableCreateTrait;
 
     protected $form;
 

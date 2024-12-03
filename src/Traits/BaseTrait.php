@@ -40,4 +40,12 @@ trait BaseTrait
 
         return Schema::getColumnListing($table);
     }
+    
+    /**
+     * Retrieve fields and remove those with except
+     */
+    public function getFilteredFields(): array
+    {
+        return array_diff($this->getModelAllFields(), $this->exceptFields);   
+    }
 }

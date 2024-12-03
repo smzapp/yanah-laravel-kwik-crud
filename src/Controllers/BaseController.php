@@ -40,7 +40,7 @@ abstract class BaseController extends Controller
 
     public function create()
     {
-        $childCreateForm = $this->getCrudCreateSetup(); 
+        $childCreateForm = $this->crudCreateSetup(); 
 
         $childCreateForm->prepareForm();
 

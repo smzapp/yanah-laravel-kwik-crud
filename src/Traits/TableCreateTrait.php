@@ -1,16 +1,18 @@
 <?php
 namespace Yanah\LaravelKwik\Traits;
 
+use InvalidArgumentException;
+
 trait TableCreateTrait
 {
     /**
      * PostCreate::class
      */
-    public function getCrudCreateSetup()
+    public function crudCreateSetup()
     {
         if(!isset($this->crudSetup['create']))
         {
-            abort(500, 'You have not specified any form.');
+            throw new InvalidArgumentException('You have not specified any form.');
         }
 
         return app($this->crudSetup['create']);
@@ -21,8 +23,8 @@ trait TableCreateTrait
      */
     public function getRequiredFields() : array
     {
-        $rules = $this->getCrudCreateSetup()
-                ->validationRules();
+        $rules = $this->crudCreateSetup()
+                      ->validationRules();
 
         $requiredFields = array_filter($rules, function ($rule) {
             return str_contains($rule, 'required');

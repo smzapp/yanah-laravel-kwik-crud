@@ -9,7 +9,7 @@ trait TableListTrait
     /**
      * PostList::class
      */
-    public function getCrudListSetup()
+    public function crudListSetup()
     {
         if(!isset($this->crudSetup['list']))
         {
@@ -24,16 +24,9 @@ trait TableListTrait
      */
     public function getActiveFields()
     {
-        return $this->getCrudListSetup()->activeFields ?? [];
+        return $this->crudListSetup()->activeFields ?? [];
     }
 
-    /**
-     * Retrieve fields and remove those with except
-     */
-    public function getFilteredFields(): array
-    {
-        return array_diff($this->getModelAllFields(), $this->exceptFields);   
-    }
 
     /**
      * We decide to return filtered fields or those defined by developer
@@ -65,7 +58,7 @@ trait TableListTrait
      */
     public function getResponseQueryData()
     {
-        $crudList = $this->getCrudListSetup();
+        $crudList = $this->crudListSetup();
 
         $query = $this->query();
 
