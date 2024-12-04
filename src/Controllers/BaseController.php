@@ -95,7 +95,7 @@ abstract class BaseController extends Controller
 
         $childCreateForm->prepareForm();
 
-        return Inertia::render('BaseCrud/Create', [
+        return Inertia::render('BaseCrud/CreateUpdate', [
             'pageTitle' => 'Create ' . $this->getPageTitle(),
             'formList'  => $childCreateForm->getArrayForm(),
             'layout'    => $this->getLayout(),
