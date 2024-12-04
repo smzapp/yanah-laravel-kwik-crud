@@ -3,6 +3,7 @@ namespace Yanah\LaravelKwik\Traits;
 use Yanah\LaravelKwik\App\Contracts\BodyPaginatorInterface;
 use Yanah\LaravelKwik\App\Contracts\BodyCollectionInterface;
 use Yanah\LaravelKwik\App\Contracts\ControlCrudInterface;
+use Yanah\LaravelKwik\Enums\ListTemplateViewEnum;
 use InvalidArgumentException;
 
 trait TableListTrait
@@ -63,14 +64,14 @@ trait TableListTrait
             $query = $query->select($this->selectedFields());
         }
 
-        if($crudList instanceof BodyPaginatorInterface)
-        {
-            return $crudList->responseBodyPaginator($query);
-        }
-
         if($crudList instanceof BodyCollectionInterface)
         {
             return $crudList->responseBodyCollection($query);
+        }
+
+        if($crudList instanceof BodyPaginatorInterface)
+        {
+            return $crudList->responseBodyPaginator($query);
         }
 
         throw new InvalidArgumentException('
@@ -93,6 +94,14 @@ trait TableListTrait
 
     public function configureListView()
     {
-        return $this->setupList()->getListView();
+       $crudList = $this->setupList();
+       
+       if($crudList->getListView() === ListTemplateViewEnum::TABLELIST && 
+            !($crudList instanceof BodyPaginatorInterface))
+       {
+           throw new InvalidArgumentException('You cannot use ListTemplateViewEnum::TABLELIST on BodyCollectionInterface. Use BodyPaginatorInterface instead.');
+       }
+
+       return  $crudList->getListView();
     }
 }

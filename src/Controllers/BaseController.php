@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Yanah\LaravelKwik\Services\CrudService;
 use InvalidArgumentException;
 use Illuminate\Support\Facades\DB;
+use Yanah\LaravelKwik\Traits\ConfigurationsTrait;
 
 /**
  * This BaseController mediates the System Controller and Laravel Facade Controller
@@ -16,18 +17,16 @@ use Illuminate\Support\Facades\DB;
  */
 abstract class BaseController extends Controller
 {
+    use ConfigurationsTrait;
+
     protected $model;
-
     private $crudService;
-
-    private $activeRoute;
-
 
     public function __construct(CrudService $service)
     {
         $this->crudService = $service;
 
-        $this->initializeRoute();
+        $this->configurations();
 
         $this->crudService->initialize([
 
@@ -61,10 +60,6 @@ abstract class BaseController extends Controller
         return app($this->model);
     }
 
-    public function configureRoute($route)
-    {
-        $this->activeRoute = $route;
-    }
 
     /**
      * Override Resource index 
@@ -81,12 +76,13 @@ abstract class BaseController extends Controller
             'crud'      => $data,
             'controls'  => $this->crudService->getControls(),
             'listview'  => $this->crudService->configureListView(),
-            'layout'    => $this->getLayout(),
-            'pageTitle' => $this->getPageTitle(),
             'tableName' => $this->crudService->getTableName(),
             'fields'    => $this->crudService->getTableFields(),
             'showSearch'  => $this->crudService->getShowSearch(),
-            'activeRoute' => $this->activeRoute
+            'layout'      => $this->getLayout(),
+            'pageTitle'   => $this->getPageTitle(),
+            'activeRoute' => $this->getActiveRoute(),
+            'breadCrumb'  => $this->getBreadCrumb()
         ]);
     }
 

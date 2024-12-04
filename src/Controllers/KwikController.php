@@ -26,5 +26,5 @@ abstract class KwikController extends BaseController
     /**
      * Require route initialization
      */
-    abstract public function initializeRoute();
+    abstract public function configurations();
 }
