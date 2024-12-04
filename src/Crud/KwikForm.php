@@ -1,7 +1,7 @@
 <?php
 namespace Yanah\LaravelKwik\Crud;
 
-use Yanah\LaravelKwik\Services\FormService;
+use Yanah\LaravelKwik\Services\FormGroupService;
 use Yanah\LaravelKwik\Services\FormFieldService;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
@@ -17,11 +17,11 @@ abstract class KwikForm
 {
     use FieldTypeTrait, BaseCrudTrait, TableCreateTrait;
 
-    protected $form;
+    protected $formgroup;
 
     public function __construct()
     {
-        $this->form = new FormService;
+        $this->formgroup = new FormGroupService;
     }
 
     abstract public function validationRules(): array;
@@ -40,7 +40,7 @@ abstract class KwikForm
 
     public function getArrayForm() : array
     {
-        return $this->form->getFormList();
+        return $this->formgroup->getGroups();
     }
 
     /**
@@ -54,7 +54,7 @@ abstract class KwikForm
         {
             $type = Schema::getColumnType($this->getTableName(), $column);
 
-            $this->form->addField($column, [
+            $this->formgroup->addField($column, [
                 'type'  =>  $this->convertType($type),
                 'label' => Str::headline($column) 
             ]);

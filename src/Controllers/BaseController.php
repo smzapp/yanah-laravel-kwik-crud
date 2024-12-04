@@ -97,7 +97,7 @@ abstract class BaseController extends Controller
 
         return Inertia::render('BaseCrud/CreateUpdate', [
             'pageTitle' => 'Create ' . $this->getPageTitle(),
-            'formList'  => $childCreateForm->getArrayForm(),
+            'formgroup'  => $childCreateForm->getArrayForm(),
             'layout'    => $this->getLayout(),
             'asterisks' => $this->crudService->getRequiredFields()
         ]);
