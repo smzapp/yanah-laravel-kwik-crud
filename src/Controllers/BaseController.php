@@ -79,9 +79,13 @@ abstract class BaseController extends Controller
 
         return Inertia::render('BaseCrud/Index', [
             'crud'      => $data,
+            'controls'  => $this->crudService->getControls(),
+            'listview'  => $this->crudService->configureListView(),
             'layout'    => $this->getLayout(),
             'pageTitle' => $this->getPageTitle(),
+            'tableName' => $this->crudService->getTableName(),
             'fields'    => $this->crudService->getTableFields(),
+            'showSearch'  => $this->crudService->getShowSearch(),
             'activeRoute' => $this->activeRoute
         ]);
     }

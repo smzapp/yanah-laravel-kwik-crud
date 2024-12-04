@@ -28,14 +28,14 @@ class EaseServiceProvider extends ServiceProvider
     private function publishConfigurations()
     {
         $this->publishes([
-            __DIR__ . '/Config/main-config.php' => config_path('kwik/main.php'),
-            __DIR__ . '/Config/crud-config.php' => config_path('kwik/crud.php'),
+            __DIR__ . '/Config/main-config.php' => config_path('kwik/main-config.php'),
+            __DIR__ . '/Config/crud-config.php' => config_path('kwik/crud-config.php'),
         ], 'kwikconfig');
     }
 
-    public function register()
-    {
-        $this->mergeConfigFrom(__DIR__ . '/Config/main-config.php', 'kwik.main');
-        $this->mergeConfigFrom(__DIR__ . '/Config/crud-config.php', 'kwik.crud');
-    }
+    // public function register()
+    // {
+    //     $this->mergeConfigFrom(__DIR__ . '/Config/main-config.php', 'kwik.main');
+    //     $this->mergeConfigFrom(__DIR__ . '/Config/crud-config.php', 'kwik.crud');
+    // }
 }

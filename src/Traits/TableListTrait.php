@@ -2,14 +2,23 @@
 namespace Yanah\LaravelKwik\Traits;
 use Yanah\LaravelKwik\App\Contracts\BodyPaginatorInterface;
 use Yanah\LaravelKwik\App\Contracts\BodyCollectionInterface;
+use Yanah\LaravelKwik\App\Contracts\ControlCrudInterface;
 use InvalidArgumentException;
 
 trait TableListTrait
 {
     /**
+     * Toggle display of search input
+     */
+    public function getShowSearch() : bool
+    {
+        return $this->setupList()->showSearch ?? true;
+    }
+
+    /**
      * Specify the fields to be shown into the list
      */
-    public function getActiveFields()
+    public function getActiveFields() : array
     {
         return $this->setupList()->activeFields ?? [];
     }
@@ -67,5 +76,23 @@ trait TableListTrait
         throw new InvalidArgumentException('
             Table List should have either responseBodyPaginator or responseBodyCollection
         ');
+    }
+
+    public function getControls()
+    {
+        $crudList = $this->setupList();
+
+        if($crudList instanceof ControlCrudInterface) {
+            return $crudList->toggleVisibility(
+                app(\Yanah\LaravelKwik\Crud\CrudListControl::class)
+            );
+        }
+
+        throw new InvalidArgumentException('Unable to locate toggleVisibility method.');
+    }
+
+    public function configureListView()
+    {
+        return $this->setupList()->getListView();
     }
 }

@@ -2,9 +2,9 @@
 
 return [
 
-    'app_name' => config('app.name', 'Laravel Kwik App'),
+    'app_name' => env('APP_NAME', 'Laravel Kwik App'),
 
-    'base_url' => url('/'),
+    'base_url' => env('APP_URL', 'http://localhost'),
 
     'default_language' => 'en',
 

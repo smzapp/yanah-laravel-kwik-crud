@@ -52,6 +52,9 @@ $ php artisan vendor:publish --tag=kwikconfig
 
 `$ npm install vue@latest vue-easytable @fortawesome/fontawesome-free`
 
+`$ npm install primevue @primevue/themes primeicons` 
+![primevue] https://primevue.org/vite/ & configure app.ts ![Configure](https://i.imgur.com/A5kDDjM.png)
+
 `$ npm run dev`
 
 - Check tailwind.config.js configuration
