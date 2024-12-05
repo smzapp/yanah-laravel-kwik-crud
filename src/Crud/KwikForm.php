@@ -26,7 +26,7 @@ abstract class KwikForm
 
     abstract public function validationRules(): array;
 
-    abstract public function prepareForm(): void;
+    abstract public function prepareCreateForm(): void;
 
     
     public function getModelInstance()

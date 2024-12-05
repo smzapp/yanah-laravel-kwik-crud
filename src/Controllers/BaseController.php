@@ -93,13 +93,33 @@ abstract class BaseController extends Controller
     {
         $childCreateForm = $this->crudService->setupCreate(); 
 
-        $childCreateForm->prepareForm();
+        $childCreateForm->prepareCreateForm();
 
-        return Inertia::render('BaseCrud/CreateUpdate', [
+        return Inertia::render('BaseCrud/CreateEdit', [
             'pageTitle' => 'Create ' . $this->getPageTitle(),
             'formgroup'  => $childCreateForm->getArrayForm(),
             'layout'    => $this->getLayout(),
             'asterisks' => $this->crudService->getRequiredFields()
+        ]);
+    }
+
+    /**
+     * Override Edit method
+     */
+    public function edit($id)
+    {
+        $childEditForm = $this->crudService->setupEdit(); 
+
+        $childEditForm->prepareEditForm();
+
+        return Inertia::render('BaseCrud/CreateEdit', [
+            'pageTitle' => 'Edit ' . $this->getPageTitle(),
+            'formgroup'  => $childEditForm->getArrayForm(),
+            'layout'    => $this->getLayout(),
+            'asterisks' => $this->crudService->getRequiredFields(),
+            'button'    => [
+                'text' => 'Save Changes'
+            ]
         ]);
     }
 

@@ -43,6 +43,19 @@ class CrudService {
     }
 
     /**
+     * PostEdit::class
+     */
+    public function setupEdit()
+    {
+        if(!isset($this->setup['edit']))
+        {
+            throw new RuntimeException('You have not specified any Edit form.');
+        }
+
+        return app($this->setup['edit']);
+    }
+    
+    /**
      * PostList::class
      */
     public function setupList()
