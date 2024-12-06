@@ -4,18 +4,22 @@ namespace Yanah\LaravelKwik\Services;
 
 use Yanah\LaravelKwik\Traits\BaseCrudTrait;
 use Yanah\LaravelKwik\Traits\TableCreateTrait;
+use Yanah\LaravelKwik\Traits\TableEditTrait;
 use Yanah\LaravelKwik\Traits\TableListTrait;
+use Yanah\LaravelKwik\Traits\TableShowTrait;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 use RuntimeException;
 
 
 class CrudService {
-    use TableCreateTrait, TableListTrait, BaseCrudTrait;
+    use TableCreateTrait, TableListTrait, TableEditTrait, BaseCrudTrait, TableShowTrait;
 
     private $setup;
     
     private $modelInstance;
+
+    private $activeId;
 
     public function initialize(array $config)
     {
@@ -45,12 +49,14 @@ class CrudService {
     /**
      * PostEdit::class
      */
-    public function setupEdit()
+    public function setupEdit($id)
     {
         if(!isset($this->setup['edit']))
         {
             throw new RuntimeException('You have not specified any Edit form.');
         }
+        
+        $this->activeId = $id;
 
         return app($this->setup['edit']);
     }

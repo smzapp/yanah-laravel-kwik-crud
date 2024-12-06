@@ -104,13 +104,25 @@ abstract class BaseController extends Controller
     }
 
     /**
+     * Resource show
+     */
+    public function show(string $id)
+    {
+        dd($id);
+    }
+
+    /**
      * Override Edit method
      */
-    public function edit($id)
+    public function edit(string $id)
     {
-        $childEditForm = $this->crudService->setupEdit(); 
+        $childEditForm = $this->crudService->setupEdit($id); 
 
-        $childEditForm->prepareEditForm();
+        $model = $this->getModelInstance();
+
+        $childEditForm->prepareEditForm($model::findOrFail($id));
+
+        // dd( $childEditForm->getArrayForm());
 
         return Inertia::render('BaseCrud/CreateEdit', [
             'pageTitle' => 'Edit ' . $this->getPageTitle(),
