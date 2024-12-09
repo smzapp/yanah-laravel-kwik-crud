@@ -2,6 +2,7 @@
 namespace Yanah\LaravelKwik\Services;
 
 use InvalidArgumentException;
+use Illuminate\Support\Str;
 
 class FormGroupService {
 
@@ -14,6 +15,13 @@ class FormGroupService {
         'description' => '',
         'align' => 'left',
     ];
+
+    private $validations;
+
+    public function __construct($rules)
+    {
+        $this->validations = $rules;
+    }
 
     /**
      * Add a new group
@@ -96,6 +104,21 @@ class FormGroupService {
      */
     public function getGroups(): array
     {
-        return $this->groups;
+        $validations = $this->validations;
+
+        //inject required from validationRules()
+        $mapGroup = collect($this->groups)->map(function($item) use($validations) {
+            $item['fields'] = collect($item['fields'])->map(function($field, $fieldName) use($validations) {
+                if(isset($validations[$fieldName])) 
+                {
+                    $field['required'] = Str::contains($validations[$fieldName], 'required');
+                }
+                return $field;
+            })->toArray();
+
+            return $item;
+        });
+
+        return $mapGroup->toArray();
     }
 }

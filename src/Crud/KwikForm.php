@@ -21,7 +21,7 @@ abstract class KwikForm
 
     public function __construct()
     {
-        $this->formgroup = new FormGroupService;
+        $this->formgroup = new FormGroupService($this->validationRules());
     }
 
     abstract public function validationRules(): array;
