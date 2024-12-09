@@ -11,16 +11,24 @@ use InvalidArgumentException;
 use Illuminate\Support\Facades\DB;
 use Yanah\LaravelKwik\Traits\ConfigurationsTrait;
 
+interface BaseInterface {
+    
+    public function getShowItem(Builder $query, $fields = ['*'], $id);
+
+    public function configurations();
+}
+
 /**
- * This BaseController mediates the System Controller and Laravel Facade Controller
- * Author: Samuel
+ * This BaseController bridges the System Controller and Laravel Facade Controller
+ * Author: Samuel Amador
  */
-abstract class BaseController extends Controller
+abstract class BaseController extends Controller implements BaseInterface
 {
     use ConfigurationsTrait;
 
     protected $model;
     private $crudService;
+
 
     public function __construct(CrudService $service)
     {
@@ -76,9 +84,9 @@ abstract class BaseController extends Controller
             'crud'      => $data,
             'controls'  => $this->crudService->getControls(),
             'listview'  => $this->crudService->configureListView(),
-            'tableName' => $this->crudService->getTableName(),
             'fields'    => $this->crudService->getTableFields(),
             'showSearch'  => $this->crudService->getShowSearch(),
+            'pageText'    => $this->getPageText(),
             'layout'      => $this->getLayout(),
             'pageTitle'   => $this->getPageTitle(),
             'activeRoute' => $this->getActiveRoute(),
@@ -96,7 +104,7 @@ abstract class BaseController extends Controller
         $childCreateForm->prepareCreateForm();
 
         return Inertia::render('BaseCrud/CreateEdit', [
-            'pageTitle' => 'Create ' . $this->getPageTitle(),
+            'pageText'   => $this->getPageText(),
             'formgroup'  => $childCreateForm->getArrayForm(),
             'layout'    => $this->getLayout(),
             'asterisks' => $this->crudService->getRequiredFields()
@@ -108,7 +116,19 @@ abstract class BaseController extends Controller
      */
     public function show(string $id)
     {
-        dd($id);
+        $model = $this->getModelInstance();
+
+        try {
+            $response = $this->getShowItem($model::query(), ['*'], $id); 
+            return Inertia::render('BaseCrud/Show', [
+                'pageText'    => $this->getPageText(),
+                'layout'       => $this->getLayout(),
+                'activeRoute' => $this->getActiveRoute(),
+                'responseData' => $response
+            ]);
+        } catch(InvalidArgumentException $e) {
+            abort(400, 'Unable to retrieve the appropriate record.');
+        }
     }
 
     /**
@@ -122,10 +142,8 @@ abstract class BaseController extends Controller
 
         $childEditForm->prepareEditForm($model::findOrFail($id));
 
-        // dd( $childEditForm->getArrayForm());
-
         return Inertia::render('BaseCrud/CreateEdit', [
-            'pageTitle' => 'Edit ' . $this->getPageTitle(),
+            'pageText'   => $this->getPageText(),
             'formgroup'  => $childEditForm->getArrayForm(),
             'layout'    => $this->getLayout(),
             'asterisks' => $this->crudService->getRequiredFields(),

@@ -3,10 +3,10 @@
 namespace Yanah\LaravelKwik;
 
 use Illuminate\Support\ServiceProvider;
-use Yanah\LaravelKwik\Console\Commands\GenerateResource;
+use Yanah\LaravelKwik\Console\Commands\CrudResource;
 use Yanah\LaravelKwik\Console\Commands\InstallationCommand;
 
-class EaseServiceProvider extends ServiceProvider
+class KwikServiceProvider extends ServiceProvider
 {
     public function boot()
     {
@@ -20,7 +20,7 @@ class EaseServiceProvider extends ServiceProvider
 
                 InstallationCommand::class,
                 
-                GenerateResource::class,
+                CrudResource::class,
             ]);
         }
     }

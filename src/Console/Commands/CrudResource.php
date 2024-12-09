@@ -6,11 +6,11 @@ use Illuminate\Support\Facades\File;
 use Yanah\LaravelKwik\Traits\FlagGeneratorTrait;
 use Yanah\LaravelKwik\App\Exceptions\FileExistsException;
 
-class GenerateResource extends Command
+class CrudResource extends Command
 {
     use FlagGeneratorTrait;
 
-    protected $signature = 'kwik:crud {name} {--only=}';
+    protected $signature = 'kwik:crud {name} {--only=} {--crudexcept=}';
     protected $description = 'Generate a controller, model for a resource'; // add migration, request validation, resource
 
     public function handle()
