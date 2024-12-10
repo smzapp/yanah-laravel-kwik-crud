@@ -17,34 +17,37 @@ To install the package, follow these steps:
 
 Run the following Composer command to install the package:
 
-```bash
-composer require yanah/laravel-kwik-crud
+
+`$ composer require yanah/laravel-kwik-crud`
 
 
 > Add EaseServiceProvider to the providers array in your `config/app.php`:
 
+<code>
 'providers' => [
     // Other providers...
     Yanah\LaravelKwik\EaseServiceProvider::class,
 ]
+</code>
 
 > Add the following to your `composer.json` under the autoload section:
 
-"Yanah\\LaravelKwik\\": "packages/Yanah/LaravelKwik/src"
+`"Yanah\\LaravelKwik\\": "packages/Yanah/LaravelKwik/src"`
 
 Note: This will be automated. php artisan vendor:publish --tag=config
 
-> In app/Http/Kernel.php, ensure that the HandleInertiaRequests middleware 
+> In `app/Http/Kernel.php`, ensure that the HandleInertiaRequests middleware 
 
+<code>
 protected $middlewareGroups = [
     'web' => [
         \App\Http\Middleware\HandleInertiaRequests::class,
         // other middlewares...
     ],
 ];
+</code>
 
-
-$ php artisan vendor:publish --tag=kwikconfig
+`$ php artisan vendor:publish --tag=kwikconfig`
 
 # Run
 
@@ -61,8 +64,11 @@ $ php artisan vendor:publish --tag=kwikconfig
 
 # CRUD (Create)
 
-First, in prepareCreateForm(), Add group
+### First, in prepareCreateForm(), Add group
 
+Use the following syntax to add a group:
+
+```php
 `$this->formgroup->addGroup('GROUP_NAME_UNIQUE', [
     'tab' => boolean,
     'label' => string,
@@ -70,11 +76,13 @@ First, in prepareCreateForm(), Add group
     'description' => string,
     'align' => string,
 ]);`
+
 <br/>
 Second, Add field. Here is the syntax:
 <br/>
 
-`$this->formgroup->addField('FIELD_NAME', $attributes);`
+```php
+$this->formgroup->addField('FIELD_NAME', $attributes);
 
 <br/>
 **API** for addField $attributes
