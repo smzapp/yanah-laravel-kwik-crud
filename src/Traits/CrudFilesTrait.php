@@ -21,6 +21,11 @@ trait CrudFilesTrait
         return Str::singular($this->modelName);
     }
 
+    public function setModelName($model)
+    {
+        $this->modelName = $model;
+    }
+
     public function generateFiles($name, $dir)
     {
         $this->commandsDir = $dir;

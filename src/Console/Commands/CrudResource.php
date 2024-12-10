@@ -42,6 +42,8 @@ class CrudResource extends Command
             throw new FileExistsException("Controller already exists at {$path}!");
         }
 
+        $this->setModelName($name);
+
         $stub = File::get(__DIR__.'/stubs/controller.stub');
         $content = str_replace(
             ['{{className}}', '{{modelName}}', '{{modelPlural}}', '{{modelSlug}}'],

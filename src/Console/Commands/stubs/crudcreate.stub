@@ -45,8 +45,6 @@ class {{modelName}}Create extends KwikForm
     public function validationRules() : array
     {
         return [
-            'title' => 'required|min:3',
-            'body' => 'nullable',
         ];
     }
 
