@@ -12,46 +12,44 @@ This package is built to ease the work developers do by streamlining the process
 ## Installation
 
 To install the package, follow these steps:
+ 
+```bash
+$ composer require yanah/laravel-kwik-crud
+```
 
-### 1. Install the Package
+> Add KwikServiceProvider to the providers array in your `config/app.php`:
 
-Run the following Composer command to install the package:
-
-
-`$ composer require yanah/laravel-kwik-crud`
-
-
-> Add EaseServiceProvider to the providers array in your `config/app.php`:
-
-<code>
+```php
 'providers' => [
     // Other providers...
-    Yanah\LaravelKwik\EaseServiceProvider::class,
+    Yanah\LaravelKwik\KwikServiceProvider::class,
 ]
-</code>
+```
 
-> Add the following to your `composer.json` under the autoload section:
+> (optional) Add the following to your `composer.json` under the autoload section:
 
 `"Yanah\\LaravelKwik\\": "packages/Yanah/LaravelKwik/src"`
 
-Note: This will be automated. php artisan vendor:publish --tag=config
+Note: This is only for creating of package.
 
 > In `app/Http/Kernel.php`, ensure that the HandleInertiaRequests middleware 
 
-<code>
+```php
 protected $middlewareGroups = [
     'web' => [
         \App\Http\Middleware\HandleInertiaRequests::class,
         // other middlewares...
     ],
 ];
-</code>
+```
+
+> Publish kwik configurations
 
 `$ php artisan vendor:publish --tag=kwikconfig`
 
-# Run
+- After this, new files will be added in `config`
 
-`$ php artisan serve`
+# Run
 
 `$ npm install vue@latest vue-easytable @fortawesome/fontawesome-free`
 
@@ -60,7 +58,13 @@ protected $middlewareGroups = [
 
 `$ npm run dev`
 
+`$ php artisan serve`
+
 - Check tailwind.config.js configuration
+
+> Make sure to implement or use `primevue` in `app.ts`
+![Frontend Configurations](https://i.imgur.com/Y3togIO.png)
+
 
 # I. CRUD (Create)
 
