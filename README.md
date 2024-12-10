@@ -16,8 +16,9 @@ To install the package, follow these steps:
 ```bash
 $ composer require yanah/laravel-kwik-crud
 ```
+<br/>
 
-> Add KwikServiceProvider to the providers array in your `config/app.php`:
+Add KwikServiceProvider to the providers array in your `config/app.php`:
 
 ```php
 'providers' => [
@@ -25,14 +26,15 @@ $ composer require yanah/laravel-kwik-crud
     Yanah\LaravelKwik\KwikServiceProvider::class,
 ]
 ```
-
-> (optional) Add the following to your `composer.json` under the autoload section:
+<br/>
+**(optional)** Add the following to your `composer.json` under the autoload section:
 
 `"Yanah\\LaravelKwik\\": "packages/Yanah/LaravelKwik/src"`
 
 Note: This is only for creating of package.
+<br/>
 
-> In `app/Http/Kernel.php`, ensure that the HandleInertiaRequests middleware 
+In `app/Http/Kernel.php`, ensure that the HandleInertiaRequests middleware 
 
 ```php
 protected $middlewareGroups = [
@@ -43,13 +45,13 @@ protected $middlewareGroups = [
 ];
 ```
 
-> Publish kwik configurations
+Publish kwik configurations
 
 `$ php artisan vendor:publish --tag=kwikconfig`
 
-- After this, new files will be added in `config`
+After this, new files will be added in `config`
 
-# Run
+# Run application
 
 `$ npm install vue@latest vue-easytable @fortawesome/fontawesome-free`
 
