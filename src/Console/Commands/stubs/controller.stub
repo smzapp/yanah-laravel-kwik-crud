@@ -3,16 +3,53 @@ namespace App\Http\Controllers;
 
 use Yanah\LaravelKwik\Controllers\KwikController;
 use App\Models\{{modelName}};
+use Illuminate\Http\JsonResponse;
+use App\CrudKwik\{{modelPlural}}\{{modelName}}List;
+use App\CrudKwik\{{modelPlural}}\{{modelName}}Create;
+use App\CrudKwik\{{modelPlural}}\{{modelName}}Edit;
+use Illuminate\Database\Eloquent\Builder; 
 
 class {{className}} extends KwikController
 {
     protected $model = {{modelName}}::class;
 
-    protected $perPage = 15;
+    /**
+     * Automatically Initialize Crud Files.
+     */
+    protected $crudSetup = [
+        'list'   => {{modelName}}List::class,
+        'create' => {{modelName}}Create::class,
+        'edit'   => {{modelName}}Edit::class,
+    ];
 
-    // control create & edit validations
+    /**
+     * CRUD Configurations start here
+     */
+    public function configurations()
+    {
+        $this->configureRoute(config('kwik.main.base_url') . '/{{modelSlug}}');
 
-    // ui controllers: button, 
+        $this->configureBreadCrumb(['Home', '{{modelName}}']);
 
-    // toggle show: fields, buttons
+        $this->setLayout('BaseCrudLayout');
+    }
+
+    /**
+     * Customize the result of route: /{{modelSlug}}/{id} 
+     */
+    public function getShowItem(Builder $query, $fields = ['*'], $id)
+    {
+        return $query->select($fields)->findOrFail($id);
+    }
+
+
+    /**
+     * Configure this result query
+     */
+    public function search() : JsonResponse
+    {
+        $result = app($this->model)->paginated($this->perPage);
+
+        return response()->json(['data' => $result]);
+    }
 }

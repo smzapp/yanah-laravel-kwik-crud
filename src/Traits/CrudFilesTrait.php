@@ -4,11 +4,12 @@ namespace Yanah\LaravelKwik\Traits;
 
 use Illuminate\Support\Str;
 use Yanah\LaravelKwik\App\Exceptions\FileExistsException;
+use Illuminate\Support\Facades\File;
 
 trait CrudFilesTrait 
 {
     private $modelName;
-
+    private $commandsDir;
   
     public function getPluralModel()
     {
@@ -20,9 +21,10 @@ trait CrudFilesTrait
         return Str::singular($this->modelName);
     }
 
-    public function generateFiles($name)
+    public function generateFiles($name, $dir)
     {
-        $this->modelName = $name;
+        $this->commandsDir = $dir;
+        $this->modelName   = $name;
 
         $this->generateCreateCrud();
 
@@ -36,18 +38,24 @@ trait CrudFilesTrait
     {
         $fileName = "{$this->getSingularModel()}Create.php";
 
-        $path = app_path("Crud/{$this->getPluralModel()}/{$fileName}");
+        $directory = app_path("CrudKwik/{$this->getPluralModel()}");
+        $path = "{$directory}/{$fileName}";
+
+        if (!File::exists($directory)) {
+            File::makeDirectory($directory, 0755, true);
+        }
 
         if (File::exists($path)) {
             throw new FileExistsException("File already exists at {$path}!");
         }
 
-        $stub = File::get(__DIR__.'/stubs/crudcreate.stub');
+        $stub = File::get($this->commandsDir. '/stubs/crudcreate.stub');
         $content = str_replace(
             ['{{modelPlural}}', '{{modelName}}'],
             [$this->getPluralModel() , $this->getSingularModel()],
             $stub
         );
+
         File::put($path, $content);
         $this->info("{$fileName} created at {$path}");
     }
@@ -56,13 +64,13 @@ trait CrudFilesTrait
     {
         $fileName = "{$this->getSingularModel()}Edit.php";
 
-        $path = app_path("Crud/{$this->getPluralModel()}/{$fileName}");
+        $path = app_path("CrudKwik/{$this->getPluralModel()}/{$fileName}");
 
         if (File::exists($path)) {
             throw new FileExistsException("File already exists at {$path}!");
         }
 
-        $stub = File::get(__DIR__.'/stubs/crudedit.stub');
+        $stub = File::get($this->commandsDir.'/stubs/crudedit.stub');
         $content = str_replace(
             ['{{modelPlural}}', '{{modelName}}'],
             [$this->getPluralModel() , $this->getSingularModel()],
@@ -76,13 +84,13 @@ trait CrudFilesTrait
     {
         $fileName = "{$this->getSingularModel()}List.php";
 
-        $path = app_path("Crud/{$this->getPluralModel()}/{$fileName}");
+        $path = app_path("CrudKwik/{$this->getPluralModel()}/{$fileName}");
 
         if (File::exists($path)) {
             throw new FileExistsException("File already exists at {$path}!");
         }
 
-        $stub = File::get(__DIR__.'/stubs/crudlist.stub');
+        $stub = File::get($this->commandsDir.'/stubs/crudlist.stub');
         $content = str_replace(
             ['{{modelPlural}}', '{{modelName}}'],
             [$this->getPluralModel() , $this->getSingularModel()],

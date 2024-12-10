@@ -19,14 +19,14 @@ class CrudResource extends Command
         $name  = $this->argument('name');
         $only  = $this->option('only') ? explode(',', $this->option('only')) : [];
         try  {
-            // if (empty($only) || in_array('controller', $only)) {
-            //     $this->generateController($name);
-            // }
-            // if (empty($only) || in_array('model', $only)) {
-            //     $this->generateModel($name);
-            // }
+            if (empty($only) || in_array('controller', $only)) {
+                $this->generateController($name);
+            }
+            if (empty($only) || in_array('model', $only)) {
+                $this->generateModel($name);
+            }
             
-            $this->generateFiles($name);
+            $this->generateFiles($name, __DIR__);
 
             $this->info("Resources for {$name} generated successfully!");
             
@@ -44,8 +44,8 @@ class CrudResource extends Command
 
         $stub = File::get(__DIR__.'/stubs/controller.stub');
         $content = str_replace(
-            ['{{className}}', '{{modelName}}'],
-            ["{$name}Controller", $name],
+            ['{{className}}', '{{modelName}}', '{{modelPlural}}', '{{modelSlug}}'],
+            ["{$name}Controller", $name, $this->getPluralModel(), strtolower($this->getPluralModel())],
             $stub
         );
         File::put($path, $content);
