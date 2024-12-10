@@ -55,7 +55,6 @@ class CrudService {
         {
             throw new RuntimeException('You have not specified any Edit form.');
         }
-        
         $this->activeId = $id;
 
         return app($this->setup['edit']);

@@ -107,6 +107,7 @@ abstract class BaseController extends Controller implements BaseInterface
             'pageText'   => $this->getPageText(),
             'formgroup'  => $childCreateForm->getArrayForm(),
             'layout'    => $this->getLayout(),
+            'activeRoute' => $this->getActiveRoute(),
             'asterisks' => $this->crudService->getRequiredFields()
         ]);
     }
@@ -132,6 +133,31 @@ abstract class BaseController extends Controller implements BaseInterface
     }
 
     /**
+     * Handle store
+     */
+    public function store(Request $request)
+    {
+        $childCreateForm = $this->crudService->setupCreate(); 
+
+        $payload = $request->validate($childCreateForm->validationRules());
+
+        // Set something before storing
+        $childCreateForm->beforeStore($this->crudService);
+
+        $model = $this->getModelInstance();
+
+        $indexUpdateCreate = $this->crudService->getIndexOfUpdateCreate();
+
+        if(is_array($indexUpdateCreate) && count($indexUpdateCreate) > 0) {
+            $result = $model::updateOrCreate($indexUpdateCreate, $payload);
+        } else {
+            $result = $model::create($payload);
+        }
+
+        return $childCreateForm->afterStore($result);
+    }
+
+    /**
      * Override Edit method
      */
     public function edit(string $id)
@@ -146,6 +172,7 @@ abstract class BaseController extends Controller implements BaseInterface
             'pageText'   => $this->getPageText(),
             'formgroup'  => $childEditForm->getArrayForm(),
             'layout'    => $this->getLayout(),
+            'activeRoute' => $this->getActiveRoute(),
             'asterisks' => $this->crudService->getRequiredFields(),
             'button'    => [
                 'text' => 'Save Changes'

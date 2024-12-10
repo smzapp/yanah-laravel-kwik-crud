@@ -16,7 +16,7 @@ trait FieldTypeTrait
             'email'   => 'text',
             'varchar' => 'text',
             'text'    => 'textarea',
-            'tinyint' => 'checkbox',
+            'tinyint' => 'switch',
             'bool'    => 'checkbox',
             'boolean' => 'checkbox'
         ];

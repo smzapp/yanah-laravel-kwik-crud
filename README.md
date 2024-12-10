@@ -52,9 +52,68 @@ $ php artisan vendor:publish --tag=kwikconfig
 
 `$ npm install vue@latest vue-easytable @fortawesome/fontawesome-free`
 
-`$ npm install primevue @primevue/themes primeicons` 
+`$ npm install primevue @primevue/themes primeicons @primevue/forms` 
 ![primevue] https://primevue.org/vite/ & configure app.ts ![Configure](https://i.imgur.com/A5kDDjM.png)
 
 `$ npm run dev`
 
 - Check tailwind.config.js configuration
+
+# CRUD (Create)
+
+First, in prepareCreateForm(), Add group
+
+`$this->formgroup->addGroup('GROUP_NAME_UNIQUE', [
+    'tab' => boolean,
+    'label' => string,
+    'title' => string,
+    'description' => string,
+    'align' => string,
+]);`
+<br/>
+Second, Add field. Here is the syntax:
+<br/>
+
+`$this->formgroup->addField('FIELD_NAME', $attributes);`
+
+<br/>
+**API** for addField $attributes
+ 
+<h2> Types: text, textarea, switch, radio, checkbox</h2>
+
+**Text** $attributes example:
+[
+    'label' => 'Post Title',
+    'type' => 'text'
+]
+
+**Radio** $attributes example:
+[
+    'label' => 'Business Options',
+    'type' => 'radio',
+    'options' => [
+        ['label' => 'Option 1', 'value' => 'option1'],
+        ['label' => 'Option 2', 'value' => 'option2'],
+        ['label' => 'Option 3', 'value' => 'option3'],
+    ]
+]
+
+**Textarea** $attributes example:
+[
+    'label' => 'Post Body',
+    'type' => 'textarea',
+    'rows' => 4
+]
+
+**Select** $attributes example:
+[
+    'label' => 'Business category',
+    'type' => 'select',
+    'options' => ['Test1', 'Test2']
+]
+
+**Switch** $attributes example:
+[
+    'label' => 'Billing details',
+    'type' => 'switch'
+]

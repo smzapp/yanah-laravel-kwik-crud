@@ -5,6 +5,8 @@ use InvalidArgumentException;
 
 trait TableCreateTrait
 {
+    private $indexOfUpdateCreate = [];
+
     /**
      * Get required fields to add asterisks
      */
@@ -18,5 +20,18 @@ trait TableCreateTrait
         });
 
         return array_keys($requiredFields);
+    }
+
+    /**
+     * We may configure the updateCreate index
+     */
+    public function setIndexOfUpdateCreate(array $params)
+    {
+        $this->indexOfUpdateCreate = $params;
+    }
+
+    public function getIndexOfUpdateCreate()
+    {
+        return $this->indexOfUpdateCreate;
     }
 }
