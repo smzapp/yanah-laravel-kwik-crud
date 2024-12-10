@@ -1,0 +1,50 @@
+<?php
+namespace App\CrudKwik\{{modelPlural}};
+
+use Illuminate\Database\Eloquent\Builder; 
+use Yanah\LaravelKwik\App\Contracts\ControlCrudInterface;
+use Yanah\LaravelKwik\App\Contracts\BodyPaginatorInterface;
+use Yanah\LaravelKwik\App\Contracts\BodyCollectionInterface;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
+use Yanah\LaravelKwik\Crud\CrudListControl;
+use Yanah\LaravelKwik\Enums\ListTemplateViewEnum;
+
+
+class {{modelName}}List implements ControlCrudInterface, BodyPaginatorInterface
+{
+    private $perPage  = 15;
+
+    /**
+     * Specify the fields to be shown on the table.
+     */
+    public $activeFields = [];
+
+
+    /**
+     * Customize the body with Pagination
+     */
+    public function responseBodyPaginator(Builder $query) : LengthAwarePaginator
+    {
+        return $query->paginate($this->perPage);
+    }   
+
+    /**
+     * See CrudListControl to see more toggle visibility
+     */
+    public function toggleVisibility(CrudListControl $control) : array
+    {
+        $control->set('showSearch', true);
+
+        return $control->get()->toArray();
+    }
+
+    /**
+     * Return default Index Template view for this List
+     * @return TABLELIST | LISTITEM
+     */
+    public function getListView(): ListTemplateViewEnum
+    {
+        return ListTemplateViewEnum::TABLELIST; 
+    }
+}

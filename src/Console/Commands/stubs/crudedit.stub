@@ -1,0 +1,36 @@
+<?php
+namespace App\CrudKwik\{{modelPlural}};
+
+use App\Models\{{modelName}};
+
+class {{modelName}}Edit extends {{modelName}}Create 
+{
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    public function prepareEditForm({{modelName}} $record)
+    {
+        $this->prepareCreateForm();
+
+        // you may modify fields here
+    }
+
+    /**
+     * IMPORTANT: Add the fields you may want to be persisted. Add nullable for not required.
+     */
+    public function validationRules() : array
+    {
+        return [
+            // Add rules here
+        ];
+    }
+
+    public function afterUpdate($result)
+    {
+        // trigger event after update
+
+        return response()->json(['success' => true], 201);
+    }
+}

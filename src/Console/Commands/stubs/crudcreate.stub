@@ -1,0 +1,53 @@
+<?php
+namespace App\CrudKwik\{{modelPlural}};
+
+use Yanah\LaravelKwik\Crud\KwikForm;
+use Yanah\LaravelKwik\Services\CrudService;
+use App\Models\{{modelName}};
+
+class {{modelName}}Create extends KwikForm
+{
+    protected $model = {{modelName}}::class;
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Form customization {$this->formgroup}
+     */
+    public function prepareCreateForm() : void
+    {
+        // Add form here
+    }
+
+    public function beforeStore(CrudService $crudService) : void
+    {
+        $crudService->setIndexOfUpdateCreate([
+            // You may want to use updateCreate.
+            // Add here the index
+        ]); 
+    }
+
+    public function afterStore($response)
+    {
+        // Add stuffs
+
+        // response
+        return response()->json(['success' => true], 201);
+    }
+
+    
+    /**
+     * IMPORTANT: Add the fields you may want to be persisted. Add nullable for not required.
+     */
+    public function validationRules() : array
+    {
+        return [
+            'title' => 'required|min:3',
+            'body' => 'nullable',
+        ];
+    }
+
+}

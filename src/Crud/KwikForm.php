@@ -8,12 +8,24 @@ use Illuminate\Support\Str;
 use Yanah\LaravelKwik\Traits\FieldTypeTrait;
 use Yanah\LaravelKwik\Traits\BaseCrudTrait;
 use Yanah\LaravelKwik\Traits\TableCreateTrait;
+use Yanah\LaravelKwik\Services\CrudService;
 use RuntimeException;
+
+interface KwikFormInterface {
+
+    public function validationRules(): array;
+
+    public function prepareCreateForm(): void;
+
+    public function beforeStore(CrudService $crudService) : void;
+
+    public function afterStore($response);
+}
 
 /**
  * This is the Gateway to the package form.
  */
-abstract class KwikForm 
+abstract class KwikForm implements KwikFormInterface
 {
     use FieldTypeTrait, BaseCrudTrait, TableCreateTrait;
 
@@ -23,12 +35,7 @@ abstract class KwikForm
     {
         $this->formgroup = new FormGroupService($this->validationRules());
     }
-
-    abstract public function validationRules(): array;
-
-    abstract public function prepareCreateForm(): void;
-
-    
+ 
     public function getModelInstance()
     {
         if(! $this->model) {

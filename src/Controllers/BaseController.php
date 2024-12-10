@@ -174,11 +174,29 @@ abstract class BaseController extends Controller implements BaseInterface
             'layout'    => $this->getLayout(),
             'activeRoute' => $this->getActiveRoute(),
             'asterisks' => $this->crudService->getRequiredFields(),
+            'activeId'  => $id,
             'button'    => [
                 'text' => 'Save Changes'
             ]
         ]);
     }
+
+    /**
+     * Handle update
+     */
+    public function update(Request $request, string $id)
+    {
+        $childEditForm = $this->crudService->setupEdit($id); 
+
+        $payload = $request->validate($childEditForm->validationRules());
+
+        $model = $this->getModelInstance();
+
+        $response = $model::where('id', $id)->update($payload);
+
+        return $childEditForm->afterUpdate($response);
+    }
+
 
     public function destroy($id)
     {
