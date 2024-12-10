@@ -62,33 +62,40 @@ protected $middlewareGroups = [
 
 - Check tailwind.config.js configuration
 
-# CRUD (Create)
+# I. CRUD (Create)
+
+> CRUD List is configured in `Crud\{Model}Create.php`
 
 ### First, in prepareCreateForm(), Add group
 
 Use the following syntax to add a group:
 
 ```php
-`$this->formgroup->addGroup('GROUP_NAME_UNIQUE', [
+$this->formgroup->addGroup('GROUP_NAME_UNIQUE', [
     'tab' => boolean,
     'label' => string,
     'title' => string,
     'description' => string,
     'align' => string,
-]);`
+]);
+```
 
 <br/>
-Second, Add field. Here is the syntax:
+
+### Second, Add field. Here is the syntax:
 <br/>
 
 ```php
 $this->formgroup->addField('FIELD_NAME', $attributes);
+```
 
 <br/>
-**API** for addField $attributes
+
+### API for addField $attributes
  
 <h2> Types: text, textarea, switch, radio, checkbox</h2>
 
+```php
 **Text** $attributes example:
 [
     'label' => 'Post Title',
@@ -125,3 +132,64 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
     'label' => 'Billing details',
     'type' => 'switch'
 ]
+```
+
+# II. CRUD (LIST)
+
+> CRUD List is configured in `Crud\{Model}List.php`
+
+### Two options how we display the table
+
+**First**, Through Pagination.
+
+Use `BodyPaginatorInterface` as interface, then add the `responseBodyPaginator()`
+<br/>
+It should look like this:
+
+```php
+class {Model}List implements ControlCrudInterface, BodyPaginatorInterface
+{
+    public function responseBodyPaginator(Builder $query) : LengthAwarePaginator
+    {
+        // you may customize the query here.
+        return $query->paginate($this->perPage);
+    }  
+}
+```
+
+**Second**, We may want to display the entire response.
+
+Use `BodyPaginatorInterface` as interface, then add the `responseBodyPaginator()`
+<br/>
+It should look like this:
+
+```php
+class {Model}List implements ControlCrudInterface, BodyCollectionInterface
+{
+    public function responseBodyCollection(Builder $query) : Collection
+    {
+        return $query->get()->map(function($item) {
+            $item->primary = $item->title;  // customized main text
+            $item->secondary = $item->body; // description
+            return $item;
+        });
+    }   
+}
+```
+
+## Toggle Visibility
+
+> See `Yanah\LaravelKwik\Crud\CrudListControl` to *set* visibility methods.
+
+# III. CRUD (UPDATE)
+
+> We may update `$attributes` in `prepareCreateForm()`
+<br/>
+example:
+
+```php
+    $this->formgroup->editField('details', 'business_name', [
+        'label' => 'Edited Business name',
+        'value' => old('business_name', $post->body)
+    ]);
+```
