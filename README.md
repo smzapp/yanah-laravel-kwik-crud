@@ -68,7 +68,7 @@ Check `tailwind.config.js` configuration
 > Execute CRUD automatically
 
 ```bash
-$ php artisan kwik:crud {name} {--only=} {--crudexcept=}
+$ php artisan kwik:crud {name} {--only=}
 ```
 
 Check the flags below:
@@ -80,10 +80,14 @@ Check the flags below:
 - `controller` - Only the {Model}Controller will be generated
 - `model` - Only the Model will be generate
 
+Example:
+```bash
+$ php artisan kwik:crud Post --only=crudfiles
+```
 
 # I. CRUD (Create)
 
-CRUD List is configured in `Crud\{Model}Create.php`
+CRUD starts here. In creating of form, configure `Crud\{Model}Create.php`
 
 ### First, in prepareCreateForm(), Add group
 
@@ -100,15 +104,12 @@ $this->formgroup->addGroup('GROUP_NAME_UNIQUE', [
 ```
 
 ### Second, Add field. Here is the syntax:
-<br/>
 
 ```php
 $this->formgroup->addField('FIELD_NAME', $attributes);
 ```
 
-<br/>
-
-### $attributes API
+### API $attributes
  
 <h2> Types: text, textarea, switch, radio, checkbox</h2>
 
@@ -151,7 +152,7 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 ]
 ```
 
-Example:
+Example Form inside `prepareCreateForm()`:
 
 ```php
 $this->formgroup->addGroup('users', [
@@ -161,12 +162,13 @@ $this->formgroup->addGroup('users', [
     'description' => 'Display users',
     'align' => 'left',
 ]);
+
 $this->formgroup->addField('first_name', [
     'label' => 'Samuel',
     'type' => 'text'
 ]);
 ```
-**IMPORTANT**
+**IMPORTANT:**
 Make sure to add the fields in `validationRules()` you may want to be persisted. Add nullable for not required.
 
 # II. CRUD (LIST)
@@ -177,7 +179,7 @@ CRUD List is configured in `Crud\{Model}List.php`
 
 **First**, Through Pagination.
 
-Use `BodyPaginatorInterface` as interface, then add the `responseBodyPaginator()`
+Use `BodyPaginatorInterface` as interface, then add the `responseBodyPaginator()`.
 <br/>
 It should look like this:
 
@@ -192,9 +194,9 @@ class {Model}List implements ControlCrudInterface, BodyPaginatorInterface
 }
 ```
 
-**Second**, We may want to display the entire response.
+**Second**, We may want to display all response data.
 
-Use `BodyPaginatorInterface` as interface, then add the `responseBodyPaginator()`
+Use `BodyCollectionInterface` as interface, then add the `responseBodyCollection()`
 <br/>
 It should look like this:
 
@@ -214,12 +216,12 @@ class {Model}List implements ControlCrudInterface, BodyCollectionInterface
 
 ### B. Define View
 
-We have two options for view:
+We have two options of how our list should look like:
 
 `ListTemplateViewEnum::TABLELIST` or `ListTemplateViewEnum::LISTITEM`
 
-`TABLELIST` view contains pagination which requires `BodyPaginatorInterface` interface. <br />
-`LISTITEM` view displays all list it is attached to `BodyCollectionInterface`.
+- First, `TABLELIST` view contains pagination which requires `BodyPaginatorInterface` interface. <br />
+- Second, `LISTITEM` view displays all list it is attached to `BodyCollectionInterface`.
 
 
 ### C. Toggle Visibility
@@ -230,7 +232,7 @@ See `Yanah\LaravelKwik\Crud\CrudListControl` to *set* visibility methods.
 public function toggleVisibility(CrudListControl $control) : array
 {
     $control->set('showSearch', true); 
-    $control->set('showPdf', true); // you can add more
+    $control->set('showPdf', true); // you can add more below
 
     return $control->get()->toArray();
 }
@@ -262,18 +264,18 @@ We may update `$attributes` in `prepareCreateForm()`
 example:
 
 ```php
-    $this->formgroup->editField('details', 'business_name', [
-        'label' => 'Edited Business name',
-        'value' => old('business_name', $post->body)
-    ]);
+$this->formgroup->editField('details', 'business_name', [
+    'label' => 'Edited Business name',
+    'value' => old('business_name', $post->body)
+]);
 ```
 
-**IMPORTANT**
+**IMPORTANT:**
 Make sure to add the fields in `validationRules()` you may want to be persisted. Add nullable for not required.
 
 # IV. CRUD (SHOW)
 
-In your controller, you have two options how you should display this:
+In your controller, you have two options how you may display the `show` method:
 
 First, using `getShowItem()` which will return Model record.
 
@@ -288,7 +290,8 @@ public function renderShowVue(Builder $query, $id)
     // return Inertia
 }
 ```
-
+<br/>
+<hr />
 That's all. Please feel free to send PR when you found a bug. 
 
 Hope this package will help you "kwik"en your development. Appreciated!
