@@ -15,7 +15,7 @@ abstract class KwikController extends BaseController
     /**
      * Has Maintrait
      */
-    protected $layout = 'AuthenticatedLayout';
+    protected $layout = 'BaseCrudLayout';
 
     protected $pageTitle = 'Home';
     
