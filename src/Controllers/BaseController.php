@@ -69,6 +69,16 @@ abstract class BaseController extends Controller implements BaseInterface
     }
 
 
+    private function commonProps()
+    {
+        return [
+            'breadCrumbs' => $this->getBreadCrumb(),
+            'layout'      => $this->getLayout(),
+            'activeRoute' => $this->getActiveRoute(),
+            'pageText'    => $this->getPageText(),
+        ];
+    }
+
     /**
      * Override Resource index 
      */
@@ -80,18 +90,13 @@ abstract class BaseController extends Controller implements BaseInterface
             return response()->json($data);
         }
 
-        return Inertia::render('BaseCrud/Index', [
+        return Inertia::render('BaseCrud/Index', array_merge($this->commonProps(), [
             'crud'      => $data,
             'controls'  => $this->crudService->getControls(),
             'listview'  => $this->crudService->configureListView(),
             'fields'    => $this->crudService->getTableFields(),
-            'showSearch'  => $this->crudService->getShowSearch(),
-            'pageText'    => $this->getPageText(),
-            'layout'      => $this->getLayout(),
             'pageTitle'   => $this->getPageTitle(),
-            'activeRoute' => $this->getActiveRoute(),
-            'breadCrumb'  => $this->getBreadCrumb()
-        ]);
+        ]));
     }
 
     /**
@@ -103,13 +108,10 @@ abstract class BaseController extends Controller implements BaseInterface
 
         $childCreateForm->prepareCreateForm();
 
-        return Inertia::render('BaseCrud/CreateEdit', [
-            'pageText'   => $this->getPageText(),
+        return Inertia::render('BaseCrud/CreateEdit', array_merge($this->commonProps(), [
             'formgroup'  => $childCreateForm->getArrayForm(),
-            'layout'    => $this->getLayout(),
-            'activeRoute' => $this->getActiveRoute(),
             'asterisks' => $this->crudService->getRequiredFields()
-        ]);
+        ]));
     }
 
     /**
@@ -121,12 +123,9 @@ abstract class BaseController extends Controller implements BaseInterface
 
         try {
             $response = $this->getShowItem($model::query(), ['*'], $id); 
-            return Inertia::render('BaseCrud/Show', [
-                'pageText'    => $this->getPageText(),
-                'layout'       => $this->getLayout(),
-                'activeRoute' => $this->getActiveRoute(),
+            return Inertia::render('BaseCrud/Show', array_merge($this->commonProps(), [
                 'responseData' => $response
-            ]);
+            ]));
         } catch(InvalidArgumentException $e) {
             abort(400, 'Unable to retrieve the appropriate record.');
         }
@@ -168,17 +167,14 @@ abstract class BaseController extends Controller implements BaseInterface
 
         $childEditForm->prepareEditForm($model::findOrFail($id));
 
-        return Inertia::render('BaseCrud/CreateEdit', [
-            'pageText'   => $this->getPageText(),
+        return Inertia::render('BaseCrud/CreateEdit', array_merge($this->commonProps(), [
             'formgroup'  => $childEditForm->getArrayForm(),
-            'layout'    => $this->getLayout(),
-            'activeRoute' => $this->getActiveRoute(),
             'asterisks' => $this->crudService->getRequiredFields(),
             'activeId'  => $id,
             'button'    => [
                 'text' => 'Save Changes'
             ]
-        ]);
+        ]));
     }
 
     /**

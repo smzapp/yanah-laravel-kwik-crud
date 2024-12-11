@@ -59,12 +59,17 @@ trait TableListTrait
 
         $query = $this->query();
 
+        $inputQuery = request('q');
+        if($inputQuery) {
+            $query = $crudList->search($query, $inputQuery);
+        }
+
         if($this->hasActiveFields())
         {
             $query = $query->select($this->selectedFields());
         }
 
-        if($crudList instanceof BodyCollectionInterface)
+        if($crudList instanceof BodyCollectionInterface && $this->isListItemView())
         {
             return $crudList->responseBodyCollection($query);
         }
@@ -77,6 +82,16 @@ trait TableListTrait
         throw new InvalidArgumentException('
             Table List should have either responseBodyPaginator or responseBodyCollection
         ');
+    }
+
+    public function isTableList()
+    {
+        return $this->setupList()->getListView() === ListTemplateViewEnum::TABLELIST;
+    }
+
+    public function isListItemView()
+    {
+        return $this->setupList()->getListView() === ListTemplateViewEnum::LISTITEM;
     }
 
     public function getControls()
@@ -99,7 +114,8 @@ trait TableListTrait
        if($crudList->getListView() === ListTemplateViewEnum::TABLELIST && 
             !($crudList instanceof BodyPaginatorInterface))
        {
-           throw new InvalidArgumentException('You cannot use ListTemplateViewEnum::TABLELIST on BodyCollectionInterface. Use BodyPaginatorInterface instead.');
+           throw new InvalidArgumentException('You cannot use ListTemplateViewEnum::TABLELIST on BodyCollectionInterface. 
+                Use BodyPaginatorInterface instead.');
        }
 
        return  $crudList->getListView();

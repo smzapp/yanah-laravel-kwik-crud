@@ -11,7 +11,7 @@ use Yanah\LaravelKwik\Crud\CrudListControl;
 use Yanah\LaravelKwik\Enums\ListTemplateViewEnum;
 
 
-class {{modelName}}List implements ControlCrudInterface, BodyPaginatorInterface
+class {{modelName}}List implements ControlCrudInterface, BodyPaginatorInterface, BodyCollectionInterface
 {
     private $perPage  = 15;
 
@@ -22,7 +22,30 @@ class {{modelName}}List implements ControlCrudInterface, BodyPaginatorInterface
 
 
     /**
-     * Customize the body with Pagination
+     * Return default Index Template view for this List
+     * @return TABLELIST | LISTITEM
+     */
+    public function getListView(): ListTemplateViewEnum
+    {
+        return ListTemplateViewEnum::TABLELIST; 
+    }
+
+    
+    /**
+     * See CrudListControl to see more toggle visibility
+     */
+    public function toggleVisibility(CrudListControl $control) : array
+    {
+        $control->set('showSearch', true); // showSearch appears if getListView() is TABLELIST
+
+        return $control->get()->toArray();
+    }
+
+
+    /**
+     * Interface: BodyPaginatorInterface
+     * 
+     * Customize the body with Pagination 
      */
     public function responseBodyPaginator(Builder $query) : LengthAwarePaginator
     {
@@ -30,21 +53,28 @@ class {{modelName}}List implements ControlCrudInterface, BodyPaginatorInterface
     }   
 
     /**
-     * See CrudListControl to see more toggle visibility
+     * Interface: BodyCollectionInterface
+     * 
+     * Customize the body without a pagination. 
      */
-    public function toggleVisibility(CrudListControl $control) : array
+    public function responseBodyCollection(Builder $query) : Collection
     {
-        $control->set('showSearch', true);
-
-        return $control->get()->toArray();
-    }
+        return $query->get()->map(function($item) {
+            $item->primary   = $item->title ?? 'N/A';
+            $item->secondary = $item->body ?? 'N/A';
+            return $item;
+        });
+    }   
 
     /**
-     * Return default Index Template view for this List
-     * @return TABLELIST | LISTITEM
+     * Configure this result query
+     * 
+     * @param $q: This comes from query search input box
      */
-    public function getListView(): ListTemplateViewEnum
+    public function search(Builder $query, string $q) : Builder
     {
-        return ListTemplateViewEnum::TABLELIST; 
+        // Example: return $query->where('title', $q);
+
+        return $query;
     }
 }

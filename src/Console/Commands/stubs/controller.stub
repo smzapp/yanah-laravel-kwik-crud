@@ -29,7 +29,10 @@ class {{className}} extends KwikController
     {
         $this->configureRoute(config('kwik.main.base_url') . '/{{modelSlug}}');
 
-        $this->configureBreadCrumb(['Home', '{{modelName}}']);
+        $this->configureBreadCrumb([
+            ['label' => 'Dashboard', 'href' => '/dashboard'],
+            ['label' => '{{modelName}}', 'href' => '/{{modelSlug}}'],
+        ]);
 
         $this->setLayout('BaseCrudLayout');
     }
@@ -40,16 +43,5 @@ class {{className}} extends KwikController
     public function getShowItem(Builder $query, $fields = ['*'], $id)
     {
         return $query->select($fields)->findOrFail($id);
-    }
-
-
-    /**
-     * Configure this result query
-     */
-    public function search() : JsonResponse
-    {
-        $result = app($this->model)->paginated($this->perPage);
-
-        return response()->json(['data' => $result]);
     }
 }

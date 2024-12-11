@@ -13,10 +13,16 @@ class CrudListControl {
 
     public function __construct()
     {
-        $this->config = collect([
-            'showSearch'    => true,
-            'showPrintPdf'  => true,
+        $this->config = $this->items();
+    }
+
+    private function items(): Collection
+    {
+        return collect([
+            'showSearch'    => false, // Search is available only on Paginated or TableListView
+            'showPrintPdf'  => false,
             'showAddButton' => true,
+            'showListSummary' => true,
             'actions' => [
                 ListControlEnum::PREVIEW->value => true,
                 ListControlEnum::EDIT->value    => true,

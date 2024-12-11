@@ -19,10 +19,6 @@ abstract class KwikController extends BaseController
 
     protected $pageTitle = 'Home';
     
-    protected $showPrint = true;
-
-    protected $showPdfExport = true;
-
     /**
      * Require route initialization
      */
