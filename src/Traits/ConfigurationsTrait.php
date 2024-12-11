@@ -8,6 +8,17 @@ trait ConfigurationsTrait
     private $activeRoute;
     private $breadCrumb;
 
+    public function commonProps()
+    {
+        return [
+            'breadCrumbs' => $this->getBreadCrumb(),
+            'layout'      => $this->getLayout(),
+            'activeRoute' => $this->getActiveRoute(),
+            'pageText'    => $this->getPageText(),
+            'controls'    => $this->crudService->getControls(),
+        ];
+    }
+
     public function configureRoute($route)
     {
         $this->activeRoute = $route;

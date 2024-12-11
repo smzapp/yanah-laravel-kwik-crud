@@ -10,6 +10,8 @@ use Yanah\LaravelKwik\Services\CrudService;
 use InvalidArgumentException;
 use Illuminate\Support\Facades\DB;
 use Yanah\LaravelKwik\Traits\ConfigurationsTrait;
+use Yanah\LaravelKwik\App\Contracts\PageShowRenderInterface;
+use Yanah\LaravelKwik\Crud\CrudListControl;
 
 interface BaseInterface {
     
@@ -28,7 +30,6 @@ abstract class BaseController extends Controller implements BaseInterface
 
     protected $model;
     private $crudService;
-
 
     public function __construct(CrudService $service)
     {
@@ -68,17 +69,6 @@ abstract class BaseController extends Controller implements BaseInterface
         return app($this->model);
     }
 
-
-    private function commonProps()
-    {
-        return [
-            'breadCrumbs' => $this->getBreadCrumb(),
-            'layout'      => $this->getLayout(),
-            'activeRoute' => $this->getActiveRoute(),
-            'pageText'    => $this->getPageText(),
-        ];
-    }
-
     /**
      * Override Resource index 
      */
@@ -92,7 +82,6 @@ abstract class BaseController extends Controller implements BaseInterface
 
         return Inertia::render('BaseCrud/Index', array_merge($this->commonProps(), [
             'crud'      => $data,
-            'controls'  => $this->crudService->getControls(),
             'listview'  => $this->crudService->configureListView(),
             'fields'    => $this->crudService->getTableFields(),
             'pageTitle'   => $this->getPageTitle(),
@@ -122,6 +111,10 @@ abstract class BaseController extends Controller implements BaseInterface
         $model = $this->getModelInstance();
 
         try {
+            if ($this instanceof PageShowRenderInterface) {
+                return $this->renderShowVue($model::query(), $id);
+            }
+
             $response = $this->getShowItem($model::query(), ['*'], $id); 
             return Inertia::render('BaseCrud/Show', array_merge($this->commonProps(), [
                 'responseData' => $response

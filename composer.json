@@ -21,7 +21,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Yanah\\LaravelKwik\\EaseServiceProvider"
+                "Yanah\\LaravelKwik\\KwikServiceProvider"
             ]
         }
     }
