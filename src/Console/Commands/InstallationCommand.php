@@ -31,7 +31,7 @@ class InstallationCommand extends Command
                 $this->generateVueFiles();
             }
 
-            $this->info("Kwik installation successful!");
+            $this->info("Kwik installation completed!");
             
         } catch (\Exception $e) {
             $this->error($e->getMessage());
@@ -60,19 +60,25 @@ class InstallationCommand extends Command
 
     protected function generateClientFiles(string $fileName, string $targetPath, string $stubPath)
     {
+        $directory = dirname($targetPath);
+        if (!File::exists($directory)) {
+            File::makeDirectory($directory, 0755, true);
+            $this->info("Directory created: {$directory}");
+        }
+    
         if (File::exists($targetPath)) {
             $this->error("File already exists: {$targetPath}");
             return;
         }
-
+    
         if (!File::exists($stubPath)) {
             throw new \Exception("Stub file not found: {$stubPath}");
         }
-
+    
         $stubContent = File::get($stubPath);
-
+    
         File::put($targetPath, $stubContent);
-
-        $this->info("New file created: {$targetPath}");
+    
+        $this->info("Vue file created: {$targetPath}");
     }
 }
