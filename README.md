@@ -16,7 +16,12 @@ To install the package, follow these steps:
 ```bash
 $ composer require yanah/laravel-kwik-crud
 ```
-<br/>
+
+```bash
+$ php artisan kwik:install
+```
+- The default scafold is vuejs. We'll use reactjs soon.
+- `kwik:install --client=reactjs`, Install for reactjs (SOON)
 
 Add `KwikServiceProvider` to the providers array in your `config/app.php`:
 
