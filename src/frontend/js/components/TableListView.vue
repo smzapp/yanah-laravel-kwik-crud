@@ -9,7 +9,7 @@
           :lazy="true"
           :first="(localCrud.current_page - 1) * rowsPerPage"
           :page="localCrud.current_page - 1"
-          @page="$emit('onPageChange')"
+          @page="$emit('onPageChange', $event)"
           stripedRows 
         >
           <Column
@@ -47,6 +47,6 @@ const props = defineProps({
   activeRoute: String,
 });
 
-defineEmits(['deleteRecord']);
+defineEmits(['deleteRecord', 'onPageChange']);
 
 </script>

@@ -73,7 +73,6 @@
 </template>
 
 <script setup>
-import 'primeicons/primeicons.css';  
 import { Head, usePage } from "@inertiajs/vue3";
 import { computed, defineAsyncComponent, ref, watch } from "vue";
 import { Tab, TabList, TabPanel, TabPanels, Tabs, useToast, Button, Message } from "primevue";

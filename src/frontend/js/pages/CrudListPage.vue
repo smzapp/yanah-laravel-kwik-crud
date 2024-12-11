@@ -93,7 +93,6 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useconfirm";
 import { IconField, InputIcon, InputText } from 'primevue';
-import 'primeicons/primeicons.css';   
 import TableListView from '../components/TableListView.vue';
 import ListItemView from '../components/ListItemView.vue';
 import BreadCrumbsLocal from '../components/BreadCrumbsLocal.vue';

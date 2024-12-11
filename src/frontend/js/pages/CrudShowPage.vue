@@ -55,7 +55,6 @@
 <script setup>
   import { Head, usePage } from '@inertiajs/vue3';
   import { Button } from 'primevue';
-  import 'primeicons/primeicons.css';  
   import { Link } from '@inertiajs/vue3';
   import { computed, defineAsyncComponent } from 'vue';
   import BreadCrumbsLocal from '../components/BreadCrumbsLocal.vue';
@@ -63,7 +62,7 @@
 const { props: pageProps } = usePage();
   
 const currentLayout = computed(() =>
-defineAsyncComponent(() => import(`@/Layouts/${pageProps.layout}.vue`))
+  defineAsyncComponent(() => import(`@/Layouts/${pageProps.layout}.vue`))
 );
   
 </script>
