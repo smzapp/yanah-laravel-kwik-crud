@@ -9,7 +9,7 @@ This package is built to ease the work developers do by streamlining the process
 - **Laravel Inertia**: This package is built on top of Inertia.js and Vue.js 3.
   - [Inertia.js Server-Side Setup](https://inertiajs.com/server-side-setup)
 
-## Installation
+## Installation & Configurations
 
 To install the package, follow these steps:
  
@@ -18,7 +18,7 @@ $ composer require yanah/laravel-kwik-crud
 ```
 <br/>
 
-Add KwikServiceProvider to the providers array in your `config/app.php`:
+Add `KwikServiceProvider` to the providers array in your `config/app.php`:
 
 ```php
 'providers' => [
@@ -27,14 +27,8 @@ Add KwikServiceProvider to the providers array in your `config/app.php`:
 ]
 ```
 <br/>
-**(optional)** Add the following to your `composer.json` under the autoload section:
 
-`"Yanah\\LaravelKwik\\": "packages/Yanah/LaravelKwik/src"`
-
-Note: This is only for creating of package.
-<br/>
-
-In `app/Http/Kernel.php`, ensure that the HandleInertiaRequests middleware 
+In `app/Http/Kernel.php`, ensure that the `HandleInertiaRequests` middleware is added under web middleware groups.
 
 ```php
 protected $middlewareGroups = [
@@ -51,26 +45,45 @@ Publish kwik configurations
 
 After this, new files will be added in `config`
 
+Install Front-end dependencies:
+
+`$ npm install vue@latest @fortawesome/fontawesome-free primevue @primevue/themes primeicons @primevue/forms` 
+
+
 # Run application
-
-`$ npm install vue@latest vue-easytable @fortawesome/fontawesome-free`
-
-`$ npm install primevue @primevue/themes primeicons @primevue/forms` 
-![primevue] https://primevue.org/vite/ & configure app.ts ![Configure](https://i.imgur.com/A5kDDjM.png)
 
 `$ npm run dev`
 
 `$ php artisan serve`
 
-- Check tailwind.config.js configuration
+Check `tailwind.config.js` configuration
 
 > Make sure to implement or use `primevue` in `app.ts`
 ![Frontend Configurations](https://i.imgur.com/Y3togIO.png)
 
+# Package Commands
+
+> Autogenerate front-end CRUD files (To follow)
+
+> Execute CRUD automatically
+
+```bash
+$ php artisan kwik:crud {name} {--only=} {--crudexcept=}
+```
+
+Check the flags below:
+
+`name` - refers to your model name. It should be capitalized & in singular form.
+
+`--only=`:
+- `crudfiles` - Only the ModelList.php, ModelCreate.php, ModelEdit.php will be generated 
+- `controller` - Only the {Model}Controller will be generated
+- `model` - Only the Model will be generate
+
 
 # I. CRUD (Create)
 
-> CRUD List is configured in `Crud\{Model}Create.php`
+CRUD List is configured in `Crud\{Model}Create.php`
 
 ### First, in prepareCreateForm(), Add group
 
@@ -86,8 +99,6 @@ $this->formgroup->addGroup('GROUP_NAME_UNIQUE', [
 ]);
 ```
 
-<br/>
-
 ### Second, Add field. Here is the syntax:
 <br/>
 
@@ -97,7 +108,7 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 
 <br/>
 
-### API for addField $attributes
+### $attributes API
  
 <h2> Types: text, textarea, switch, radio, checkbox</h2>
 
@@ -140,11 +151,29 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 ]
 ```
 
+Example:
+
+```php
+$this->formgroup->addGroup('users', [
+    'tab' => true,
+    'label' => 'Users',
+    'title' => 'List of users',
+    'description' => 'Display users',
+    'align' => 'left',
+]);
+$this->formgroup->addField('first_name', [
+    'label' => 'Samuel',
+    'type' => 'text'
+]);
+```
+**IMPORTANT**
+Make sure to add the fields in `validationRules()` you may want to be persisted. Add nullable for not required.
+
 # II. CRUD (LIST)
 
-> CRUD List is configured in `Crud\{Model}List.php`
+CRUD List is configured in `Crud\{Model}List.php`
 
-### Two options how we display the table
+### A. Two options how we display the table
 
 **First**, Through Pagination.
 
@@ -183,13 +212,52 @@ class {Model}List implements ControlCrudInterface, BodyCollectionInterface
 }
 ```
 
-## Toggle Visibility
+### B. Define View
 
-> See `Yanah\LaravelKwik\Crud\CrudListControl` to *set* visibility methods.
+We have two options for view:
 
-# III. CRUD (UPDATE)
+`ListTemplateViewEnum::TABLELIST` or `ListTemplateViewEnum::LISTITEM`
 
-> We may update `$attributes` in `prepareCreateForm()`
+`TABLELIST` view contains pagination which requires `BodyPaginatorInterface` interface. <br />
+`LISTITEM` view displays all list it is attached to `BodyCollectionInterface`.
+
+
+### C. Toggle Visibility
+
+See `Yanah\LaravelKwik\Crud\CrudListControl` to *set* visibility methods.
+
+```php
+public function toggleVisibility(CrudListControl $control) : array
+{
+    $control->set('showSearch', true); 
+    $control->set('showPdf', true); // you can add more
+
+    return $control->get()->toArray();
+}
+```
+
+To toggle button actions:
+
+```php
+$control->updateAction('edit', true);
+$control->updateAction('delete', true);
+```
+
+### D. Handle Search functionality
+
+Search functionality is visible only on pagination list and `$control->set('showSearch', true);`
+
+```php
+public function search(Builder $query, string $q) : Builder
+{
+    return $query->where('FIELD', $q);
+}
+```
+
+# III. CRUD (EDIT/UPDATE)
+
+
+We may update `$attributes` in `prepareCreateForm()`
 <br/>
 example:
 
@@ -199,3 +267,28 @@ example:
         'value' => old('business_name', $post->body)
     ]);
 ```
+
+**IMPORTANT**
+Make sure to add the fields in `validationRules()` you may want to be persisted. Add nullable for not required.
+
+# IV. CRUD (SHOW)
+
+In your controller, you have two options how you should display this:
+
+First, using `getShowItem()` which will return Model record.
+
+Second, using custom vuejs file. You have to implement `PageShowRenderInterface`
+
+```php
+/**
+ * Custom vue for /{model}/{id} route
+ */
+public function renderShowVue(Builder $query, $id)
+{
+    // return Inertia
+}
+```
+
+That's all. Please feel free to send PR when you found a bug. 
+
+Hope this package will help you "kwik"en your development. Appreciated!

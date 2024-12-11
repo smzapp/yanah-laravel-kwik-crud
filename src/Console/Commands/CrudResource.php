@@ -11,7 +11,7 @@ class CrudResource extends Command
 {
     use FlagGeneratorTrait, CrudFilesTrait;
 
-    protected $signature = 'kwik:crud {name} {--only=} {--crudexcept=}';
+    protected $signature = 'kwik:crud {name} {--only=}';
     protected $description = 'Generate a controller, model for a resource'; // add migration, request validation, resource
 
     public function handle()
@@ -26,7 +26,9 @@ class CrudResource extends Command
                 $this->generateModel($name);
             }
             
-            $this->generateFiles($name, __DIR__);
+            if (empty($only) || in_array('crudfiles', $only)) {
+                $this->generateFiles($name, __DIR__);
+            }
 
             $this->info("Resources for {$name} generated successfully!");
             
