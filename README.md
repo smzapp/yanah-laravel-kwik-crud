@@ -65,6 +65,15 @@ resolve: {
 },
 ```
 
+In `tailwind.config.js` alias, add this line.
+
+```javascript
+content: [
+    // More contents here
+    'vendor/yanah/laravelkwik/src/client/vuejs/**/*.vue',
+],
+```
+
 ## Run application
 
 Check `tailwind.config.js` configuration

@@ -14,7 +14,7 @@
       
       <!-- Search Toolbar -->
       <div class="mb-3">
-        <div class="bg-white border rounded-lg py-3 px-3 flex justify-between align-items-center items-center">
+        <div class="bg-white  mb-4 border rounded-lg py-2 px-3 flex justify-between align-items-center items-center">
           <div v-if="localControls.showSearch && pageProps.listview == 'TableListView'">
             <IconField>
               <InputIcon>
@@ -118,7 +118,6 @@ const fetchPage = async (page = 1, q = '') => {
     const response = await axios.get(url);
     Object.assign(localCrud, response.data);
   } catch (error) {
-    console.error("Failed to fetch page:", error);
     toast.add({
       severity: "warn",
       summary: "Opps",
@@ -172,3 +171,4 @@ const deleteRecord = async (id) => {
 fetchPage(localCrud.current_page);
 
 </script>
+

@@ -50,3 +50,9 @@ const props = defineProps({
 defineEmits(['deleteRecord', 'onPageChange']);
 
 </script>
+
+<style>
+.p-datatable-mask{
+  background-color: rgb(255, 255, 255, 0.5) !important;
+}
+</style>
