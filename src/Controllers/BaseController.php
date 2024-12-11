@@ -80,11 +80,12 @@ abstract class BaseController extends Controller implements BaseInterface
             return response()->json($data);
         }
 
-        return Inertia::render('BaseCrud/Index', array_merge($this->commonProps(), [
+        return Inertia::render('BasePage', array_merge($this->commonProps(), [
             'crud'      => $data,
             'listview'  => $this->crudService->configureListView(),
             'fields'    => $this->crudService->getTableFields(),
-            'pageTitle'   => $this->getPageTitle(),
+            'pageTitle' => $this->getPageTitle(),
+            'file'      => 'CrudListPage'
         ]));
     }
 

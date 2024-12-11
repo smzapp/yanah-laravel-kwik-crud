@@ -50,6 +50,17 @@ Install Front-end dependencies:
 `$ npm install vue@latest @fortawesome/fontawesome-free primevue @primevue/themes primeicons @primevue/forms` 
 
 
+Configure `vite.config.js`
+
+```javascript
+resolve: {
+    alias: {
+        '@': path.resolve(__dirname, 'resources/js'),
+        '@kwik': path.resolve(__dirname, 'vendor/yanah/laravelkwik/src/frontend/js')
+    },
+},
+```
+
 ## Run application
 
 Check `tailwind.config.js` configuration
