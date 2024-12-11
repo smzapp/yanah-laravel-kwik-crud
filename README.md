@@ -50,18 +50,19 @@ Install Front-end dependencies:
 `$ npm install vue@latest @fortawesome/fontawesome-free primevue @primevue/themes primeicons @primevue/forms` 
 
 
-# Run application
-
-`$ npm run dev`
-
-`$ php artisan serve`
+## Run application
 
 Check `tailwind.config.js` configuration
 
 > Make sure to implement or use `primevue` in `app.ts`
 ![Frontend Configurations](https://i.imgur.com/Y3togIO.png)
 
-# Package Commands
+`$ npm run dev`
+
+`$ php artisan serve`
+
+
+## Package Commands
 
 > Autogenerate front-end CRUD files (To follow)
 
@@ -85,7 +86,7 @@ Example:
 $ php artisan kwik:crud Post --only=crudfiles
 ```
 
-# I. CRUD (Create)
+## I. CRUD (Create)
 
 CRUD starts here. In creating of form, configure `Crud\{Model}Create.php`
 
@@ -171,7 +172,7 @@ $this->formgroup->addField('first_name', [
 **IMPORTANT:**
 Make sure to add the fields in `validationRules()` you may want to be persisted. Add nullable for not required.
 
-# II. CRUD (LIST)
+## II. CRUD (LIST)
 
 CRUD List is configured in `Crud\{Model}List.php`
 
@@ -256,7 +257,7 @@ public function search(Builder $query, string $q) : Builder
 }
 ```
 
-# III. CRUD (EDIT/UPDATE)
+## III. CRUD (EDIT/UPDATE)
 
 
 We may update `$attributes` in `prepareCreateForm()`
@@ -273,7 +274,7 @@ $this->formgroup->editField('details', 'business_name', [
 **IMPORTANT:**
 Make sure to add the fields in `validationRules()` you may want to be persisted. Add nullable for not required.
 
-# IV. CRUD (SHOW)
+## IV. CRUD (SHOW)
 
 In your controller, you have two options how you may display the `show` method:
 
