@@ -117,7 +117,8 @@ abstract class BaseController extends Controller implements BaseInterface
 
             $response = $this->getShowItem($model::query(), ['*'], $id); 
             return Inertia::render('BaseCrud/Show', array_merge($this->commonProps(), [
-                'responseData' => $response
+                'responseData' => $response,
+                'activeId' => $id,
             ]));
         } catch(InvalidArgumentException $e) {
             abort(400, 'Unable to retrieve the appropriate record.');
