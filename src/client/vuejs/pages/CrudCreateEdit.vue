@@ -71,15 +71,16 @@
 
 <script setup>
 import { Head, usePage } from "@inertiajs/vue3";
-import { computed, defineAsyncComponent, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { Tab, TabList, TabPanel, TabPanels, Tabs, useToast, Button, Message } from "primevue";
 import FormFields from "../components/FormFields.vue";
 import { Form } from '@primevue/forms';
 import axios from 'axios';
 import BreadCrumbsLocal from '../components/BreadCrumbsLocal.vue';
+import { router } from '@inertiajs/vue3';
+
 
 const toast = useToast();
-
 const { props: pageProps } = usePage();
 
 const formData = ref({}); 
@@ -113,7 +114,6 @@ const initializeFormData = () => {
 
 watch(() => pageProps.formgroup, initializeFormData, { immediate: true });
 
-
 // Form submission
 const submitForm = async () => {
   const plainFormData = JSON.parse(JSON.stringify(formData.value));
@@ -135,7 +135,9 @@ const submitForm = async () => {
       life: 5000,
     });
 
-    
+    setTimeout(() => {
+      router.visit(pageProps.activeRoute);
+    }, 2000);
   } catch(e) {
     toast.add({
       severity: "error",

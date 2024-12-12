@@ -159,6 +159,7 @@ abstract class BaseController extends Controller implements BaseInterface
             DB::commit();
             
             return $childCreateForm->afterStore($result);
+
         }  catch (Exception $exception){
             DB::rollBack();
             $maxId = DB::table($model->getTableName())->max('id');
