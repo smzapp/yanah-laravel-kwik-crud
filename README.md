@@ -60,7 +60,7 @@ In `vite.config.js` alias, add `@kwik`
 ```javascript
 resolve: {
     alias: {
-        '@kwik': path.resolve(__dirname, 'packages/yanah/laravelkwik/src/client/vuejs') // use reactjs for react
+        '@kwik': path.resolve(__dirname, 'vendor/yanah/laravel-kwik-crud/src/client/vuejs'), // use reactjs for react
     },
 },
 ```
@@ -70,7 +70,7 @@ In `tailwind.config.js` alias, add this line.
 ```javascript
 content: [
     // More contents here
-    'vendor/yanah/laravelkwik/src/client/vuejs/**/*.vue',
+    'vendor/yanah/laravel-kwik-crud/src/client/vuejs/**/*.vue',
 ],
 ```
 
