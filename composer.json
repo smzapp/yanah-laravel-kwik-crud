@@ -1,6 +1,6 @@
 {
     "name": "yanah/laravel-kwik-crud",
-    "description": "A Laravel package designed to streamline and accelerate development. Let's make it 'kwik' (quicl=k)",
+    "description": "A Laravel package designed to streamline and accelerate development. Let's make it 'kwik' (quick)",
     "type": "library",
     "license": "MIT",
     "authors": [
