@@ -1,84 +1,82 @@
 <template>
   <Toast />
   <ConfirmDialog />
-  <component :is="currentLayout">
-    <Head :title="pageProps.pageTitle" />
+  <Head :title="pageProps.pageTitle" />
 
-    <div class="container mx-auto mt-3 pb-5">
-      <div class="flex justify-end">
-        <BreadCrumbsLocal 
-          :breadCrumbs="pageProps.breadCrumbs"
-          :currentLabel="'List'"
-        />
-      </div>
-      
-      <!-- Search Toolbar -->
-      <div class="mb-3">
-        <div class="bg-white  mb-4 border rounded-lg py-2 px-3 flex justify-between align-items-center items-center">
-          <div v-if="localControls.showSearch && pageProps.listview == 'TableListView'">
-            <IconField>
-              <InputIcon>
-                <i class="pi pi-search" />
-              </InputIcon>
-              <InputText placeholder="Search" size="small" @change="handleSearch"/>
-            </IconField>
-          </div>
-          <div v-if="pageProps.controls.showListSummary">
-            <template v-if="localCrud.data">
-              <div class="text-sm text-gray-600">
-                Showing <span class="font-medium">{{ localCrud.from }}</span> to
-                <span class="font-medium">{{ localCrud.to }}</span> of
-                <span class="font-medium">{{ localCrud.total }}</span>&nbsp; 
-                <span class="font-semibold">{{pageProps.pageText.plural}}.</span>&nbsp;
-                <a :href="localCrud.path" class="text-primary-default">Reset</a>
-              </div>
-            </template>
-            <template v-else>
-              <div class="text-sm text-gray-600">
-                Showing {{ Object.keys(localCrud).length }} total of&nbsp;
-                <span class="font-bold">{{pageProps.pageText.plural}}</span>
-              </div>
-            </template>
-          </div>
-          <div> 
-            <Link 
-              :href="`${pageProps.activeRoute}/create`" 
-              v-if="localControls.showAddButton"
-            >
-              <Button icon="pi pi-plus" :label="'Add ' + pageProps.pageText.singular" class="bg-primary-default capitalize" size="small" />
-            </Link>
-            <Button icon="pi pi-print" class="ml-3" title="Print" severity="secondary" text v-if="localControls.showPrintPdf"/>
-          </div>
+  <div class="container mx-auto mt-3 pb-5">
+    <div class="flex justify-end">
+      <BreadCrumbsLocal 
+        :breadCrumbs="pageProps.breadCrumbs"
+        :currentLabel="'List'"
+      />
+    </div>
+    
+    <!-- Search Toolbar -->
+    <div class="mb-3">
+      <div class="bg-white  mb-4 border rounded-lg py-2 px-3 flex justify-between align-items-center items-center">
+        <div v-if="localControls.showSearch && pageProps.listview == 'TableListView'">
+          <IconField>
+            <InputIcon>
+              <i class="pi pi-search" />
+            </InputIcon>
+            <InputText placeholder="Search" size="small" @change="handleSearch"/>
+          </IconField>
+        </div>
+        <div v-if="pageProps.controls.showListSummary">
+          <template v-if="localCrud.data">
+            <div class="text-sm text-gray-600">
+              Showing <span class="font-medium">{{ localCrud.from }}</span> to
+              <span class="font-medium">{{ localCrud.to }}</span> of
+              <span class="font-medium">{{ localCrud.total }}</span>&nbsp; 
+              <span class="font-semibold">{{pageProps.pageText.plural}}.</span>&nbsp;
+              <a :href="localCrud.path" class="text-primary-default">Reset</a>
+            </div>
+          </template>
+          <template v-else>
+            <div class="text-sm text-gray-600">
+              Showing {{ Object.keys(localCrud).length }} total of&nbsp;
+              <span class="font-bold">{{pageProps.pageText.plural}}</span>
+            </div>
+          </template>
+        </div>
+        <div> 
+          <Link 
+            :href="`${pageProps.activeRoute}/create`" 
+            v-if="localControls.showAddButton"
+          >
+            <Button icon="pi pi-plus" :label="'Add ' + pageProps.pageText.singular" class="bg-primary-default capitalize" size="small" />
+          </Link>
+          <Button icon="pi pi-print" class="ml-3" title="Print" severity="secondary" text v-if="localControls.showPrintPdf"/>
         </div>
       </div>
-
-      <template v-if="pageProps.listview == 'TableListView'">
-        <TableListView 
-          :localCrud="localCrud ?? null"
-          :localControls="localControls"
-          :isLoading="isLoading"
-          :rowsPerPage="rowsPerPage"
-          :fields="pageProps.fields"
-          :activeRoute="pageProps.activeRoute"
-          @deleteRecord="deleteRecord"
-          @onPageChange="onPageChange"
-        />
-      </template>
-
-      <template v-else>
-        <ListItemView
-          :localCrud="localCrud"
-          :localControls="localControls"
-          :isLoading="isLoading"
-          :rowsPerPage="rowsPerPage"
-          :fields="pageProps.fields"
-          :activeRoute="pageProps.activeRoute"
-          @deleteRecord="deleteRecord"
-          @onPageChange="onPageChange"
-        />
-      </template>
     </div>
-  </component>
+
+    <template v-if="pageProps.listview == 'TableListView'">
+      <TableListView 
+        :localCrud="localCrud ?? null"
+        :localControls="localControls"
+        :isLoading="isLoading"
+        :rowsPerPage="rowsPerPage"
+        :fields="pageProps.fields"
+        :activeRoute="pageProps.activeRoute"
+        @deleteRecord="deleteRecord"
+        @onPageChange="onPageChange"
+      />
+    </template>
+
+    <template v-else>
+      <ListItemView
+        :localCrud="localCrud"
+        :localControls="localControls"
+        :isLoading="isLoading"
+        :rowsPerPage="rowsPerPage"
+        :fields="pageProps.fields"
+        :activeRoute="pageProps.activeRoute"
+        @deleteRecord="deleteRecord"
+        @onPageChange="onPageChange"
+      />
+    </template>
+  </div>
 </template>
 
 

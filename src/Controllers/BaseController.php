@@ -156,6 +156,8 @@ abstract class BaseController extends Controller implements BaseInterface
                 $result = $model::create($payload);
             }
 
+            DB::commit();
+            
             return $childCreateForm->afterStore($result);
         }  catch (Exception $exception){
             DB::rollBack();
@@ -199,15 +201,13 @@ abstract class BaseController extends Controller implements BaseInterface
         DB::beginTransaction();
 
         try {
-
-            // $payloadFiltered = $model::filterByUploadFields($payload);
-
             $response = $model::findOrFail($id)->update($payload);
             
             DB::commit();
 
             return $childEditForm->afterUpdate($response);
         } catch (Exception $exception){
+
             DB::rollBack();
             $maxId = DB::table($model->getTableName())->max('id');
             DB::statement('ALTER TABLE '. $model->getTableName() .' AUTO_INCREMENT = ?', [$maxId + 1]);

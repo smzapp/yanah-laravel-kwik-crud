@@ -2,23 +2,16 @@
 namespace Yanah\LaravelKwik\Services;
 
 use Illuminate\Support\Facades\Storage;
+use Exception;
 
 /**
  * We handle Image or File upload by Samuel
  */
 class UploadService
 {
-    private $imageDirectory = 'uploads/';
-    
-    /**
-     * @return string
-     * Example: uploads/2024-10/
-     */
-    public function getImageDirectory()
-    {
-        return $this->imageDirectory . date('Y-m');
-    }
-
+    const IMAGES_DIRECTORY  = 'images/';
+    const UPLOADS_DIRECTORY = 'uploads/';
+     
     /**
      * Upload only. Does not insert into Image model
      * @return ['full_url', 'filename', 'image_extension']
@@ -46,7 +39,7 @@ class UploadService
         $image = base64_decode($base64String);
         $extension = '.png';
         $fileName = 'image_' . uniqid() . '_' . time() . $extension;
-        $filePath = $this->getImageDirectory() . '/' . $fileName;
+        $filePath = self::IMAGES_DIRECTORY . '/' . date('Y-m') . '/' . $fileName;
 
         // Make sure it is accessible via public
         Storage::disk('public')->put($filePath, $image);
@@ -64,18 +57,51 @@ class UploadService
     public function uploadImageFile( $requestFile )
     {
         if(! $requestFile) {
-            throw new \Exception('Upload file is not recognized.');
+            throw new Exception('Upload file is not recognized.');
         }
-        $filePath = $requestFile->store($this->getImageDirectory() , 'public');  // storage/app/public/uploads
-        $imageUrl  = Storage::url($filePath); 
-        $fileName = basename($filePath);
-        $extension = $requestFile->getClientOriginalExtension(); 
+
+        $fileType    = $this->getFileType($requestFile);
+        $fileData    = explode(',', $requestFile);
+
+        if (count($fileData) < 2) {
+            throw new Exception('Invalid Base64 file format.');
+        }
+
+        $decodedFile = base64_decode($fileData[1]);
+
+        if ($decodedFile === false) {
+            throw new Exception('Failed to decode file.');
+        }
+
+        $extension = explode('/', $fileType)[1];
+        $fileName  = uniqid('file_', true) . '.' . $extension;
+        $filePath  = self::UPLOADS_DIRECTORY . '/'. date('Y-m') . '/' . $fileName;
+        
+        Storage::disk('public')->put($filePath, $decodedFile);
+
+        $fileUrl = Storage::url($filePath);
 
         return [
-            'full_url' => $imageUrl,
+            'full_url' => $fileUrl,
             'filename' => $fileName,
             'image_extension' => $extension,
         ];
+    }
+
+    /**
+     * Example return: image/png
+     */
+    public function getFileType(string $base64File) : string
+    {
+        if(! $base64File ) throw new Exception('No file selected.');
+
+        preg_match('/^data:(.+);base64,/', $base64File, $matches);
+
+        if( count($matches) < 2) {
+            throw new Exception('Something went wrong while extracting a file.');
+        }
+
+        return $matches[1];
     }
 
     /**

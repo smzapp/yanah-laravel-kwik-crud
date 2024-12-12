@@ -36,7 +36,7 @@
         />
       </div>
     </template>
-    <template v-else-if="attributes.type === 'image_upload'">
+    <template v-else-if="attributes.type === 'upload'">
       <div class="card flex flex-col items-center gap-5">
         <FileUpload 
           mode="basic" 

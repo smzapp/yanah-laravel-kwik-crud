@@ -1,18 +1,26 @@
 <template>
-    <component :is="currentLayout" />
+  <component :is="pageLayout">
+    <component :is="currentPageFile" />
+  </component>
 </template>
   
-  <script setup>
-  import { usePage } from '@inertiajs/vue3';
-  import { computed, defineAsyncComponent } from 'vue';
-  import 'primeicons/primeicons.css';  
-  
-  const { props: pageProps } = usePage();
-  
-  const currentLayout = computed(() =>
-    defineAsyncComponent({
-      loader: () => import(`@kwik/pages/${pageProps.pageFile}.vue`),
-    })
-  );
-  </script>
+<script setup>
+import { usePage } from '@inertiajs/vue3';
+import { computed, defineAsyncComponent } from 'vue';
+import 'primeicons/primeicons.css';  
+
+const { props: pageProps } = usePage();
+
+const currentPageFile = computed(() =>
+  defineAsyncComponent({
+    loader: () => import(`@kwik/pages/${pageProps.pageFile}.vue`),
+  })
+);
+
+const pageLayout = computed(() =>
+  defineAsyncComponent({
+    loader: () => import(`@/Layouts/${pageProps.layout}.vue`),
+  })
+);
+</script>
   

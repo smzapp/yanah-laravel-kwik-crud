@@ -1,74 +1,72 @@
 <template>
-  <component :is="currentLayout">
-    <Head :title="pageProps.pageText.title" />
+  <Head :title="pageProps.pageText.title" />
 
-    <div class="container mx-auto mt-3 pb-5">
-      <div class="flex justify-between items-center">
-        <h2 class="text-3xl font-semibold text-[#555] capitalize">
-          <i class="pi pi-pen-to-square" style="font-size: 25px;"></i>&nbsp;
-          {{ pageProps.pageText.singular }}
-        </h2>
-        <BreadCrumbsLocal 
-          :breadCrumbs="pageProps.breadCrumbs"
-          :currentLabel="pageProps.activeId ? 'Edit' : 'Create'"
-        />
-      </div>
+  <div class="container mx-auto mt-3 pb-5">
+    <div class="flex justify-between items-center">
+      <h2 class="text-3xl font-semibold text-[#555] capitalize">
+        <i class="pi pi-pen-to-square" style="font-size: 25px;"></i>&nbsp;
+        {{ pageProps.pageText.singular }}
+      </h2>
+      <BreadCrumbsLocal 
+        :breadCrumbs="pageProps.breadCrumbs"
+        :currentLabel="pageProps.activeId ? 'Edit' : 'Create'"
+      />
+    </div>
 
-      <Form v-slot="$form" @submit="submitForm" enctype="multipart/form-data">
-        <Tabs :value="0" v-if="hasTabs" :class="'bg-primary-default'">
-          <TabList>
-            <template v-for="(group, index) in groupedForm" :key="index">
-              <Tab v-if="group.details.tab" :value="index">
-                {{ group.details.label }}
-              </Tab>
-            </template>
-          </TabList>
-          <TabPanels>
-            <TabPanel
-              v-for="(group, index) in groupedForm"
-              :key="index"
-              :header="group.details.label"
-              :value="index"
-            >
-              <div class="flex min-h-80 space-x-10 justify-between">
-                <div class="w-8/12">
-                  <FormFields 
-                    :fields="group.fields" 
-                    @updateFieldValue="updateFormData"
-                  />
-                </div>
-                <div class="w-4/12">
-                  <div class="flex items-start flex-col mt-5 h-full">
-                    <h2 class="text-2xl mb-5">{{ group.details.title }}</h2>
-                    <p>{{ group.details.description }}</p>
-                  </div>
+    <Form v-slot="$form" @submit="submitForm" enctype="multipart/form-data">
+      <Tabs :value="0" v-if="hasTabs" :class="'bg-primary-default'">
+        <TabList>
+          <template v-for="(group, index) in groupedForm" :key="index">
+            <Tab v-if="group.details.tab" :value="index">
+              {{ group.details.label }}
+            </Tab>
+          </template>
+        </TabList>
+        <TabPanels>
+          <TabPanel
+            v-for="(group, index) in groupedForm"
+            :key="index"
+            :header="group.details.label"
+            :value="index"
+          >
+            <div class="flex min-h-80 space-x-10 justify-between">
+              <div class="w-8/12">
+                <FormFields 
+                  :fields="group.fields" 
+                  @updateFieldValue="updateFormData"
+                />
+              </div>
+              <div class="w-4/12">
+                <div class="flex items-start flex-col mt-5 h-full">
+                  <h2 class="text-2xl mb-5">{{ group.details.title }}</h2>
+                  <p>{{ group.details.description }}</p>
                 </div>
               </div>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+            </div>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
 
-        <!-- Non-tab Groups -->
-        <div v-else>
-          <div v-for="(group, index) in groupedForm" :key="index">
-            <h3 class="text-lg font-bold">{{ group.details.label }}</h3>
-            <FormFields 
-              :fields="group.fields" 
-              @updateFieldValue="updateFormData"
-            />
-          </div>
+      <!-- Non-tab Groups -->
+      <div v-else>
+        <div v-for="(group, index) in groupedForm" :key="index">
+          <h3 class="text-lg font-bold">{{ group.details.label }}</h3>
+          <FormFields 
+            :fields="group.fields" 
+            @updateFieldValue="updateFormData"
+          />
         </div>
+      </div>
 
-        <Button 
-          type="submit" 
-          :label="pageProps.button?.text ?? 'Submit'" 
-          icon="pi pi-send"
-          class="mt-5"
-          :loading="loading"
-        />
-      </Form>
-    </div>
-  </component>
+      <Button 
+        type="submit" 
+        :label="pageProps.button?.text ?? 'Submit'" 
+        icon="pi pi-send"
+        class="mt-5"
+        :loading="loading"
+      />
+    </Form>
+  </div>
 </template>
 
 <script setup>
@@ -86,10 +84,6 @@ const { props: pageProps } = usePage();
 
 const formData = ref({}); 
 const loading = ref(false);
-
-const currentLayout = computed(() => {
-  return defineAsyncComponent(() => import(`@/Layouts/${pageProps.layout}.vue`));
-});
 
 const hasTabs = computed(() =>
   pageProps.formgroup.some((group) => group.details.tab)
@@ -141,6 +135,7 @@ const submitForm = async () => {
       life: 5000,
     });
 
+    
   } catch(e) {
     toast.add({
       severity: "error",
