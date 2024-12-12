@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Yanah\LaravelKwik\Traits\ConfigurationsTrait;
 use Yanah\LaravelKwik\App\Contracts\PageShowRenderInterface;
 use Yanah\LaravelKwik\Crud\CrudListControl;
+use Exception;
 
 interface BaseInterface {
     
@@ -138,23 +139,30 @@ abstract class BaseController extends Controller implements BaseInterface
     public function store(Request $request)
     {
         $childCreateForm = $this->crudService->setupCreate(); 
-
         $payload = $request->validate($childCreateForm->validationRules());
 
-        // Set something before storing
         $childCreateForm->beforeStore($this->crudService);
 
         $model = $this->getModelInstance();
+        
+        DB::beginTransaction();
 
-        $indexUpdateCreate = $this->crudService->getIndexOfUpdateCreate();
+        try {
+            $indexUpdateCreate = $this->crudService->getIndexOfUpdateCreate();
 
-        if(is_array($indexUpdateCreate) && count($indexUpdateCreate) > 0) {
-            $result = $model::updateOrCreate($indexUpdateCreate, $payload);
-        } else {
-            $result = $model::create($payload);
+            if(is_array($indexUpdateCreate) && count($indexUpdateCreate) > 0) {
+                $result = $model::updateOrCreate($indexUpdateCreate, $payload);
+            } else {
+                $result = $model::create($payload);
+            }
+
+            return $childCreateForm->afterStore($result);
+        }  catch (Exception $exception){
+            DB::rollBack();
+            $maxId = DB::table($model->getTableName())->max('id');
+            DB::statement('ALTER TABLE '. $model->getTableName() .' AUTO_INCREMENT = ?', [$maxId + 1]);
+            return response()->json(['message' => $exception->getMessage(), 500]);
         }
-
-        return $childCreateForm->afterStore($result);
     }
 
     /**
@@ -185,14 +193,26 @@ abstract class BaseController extends Controller implements BaseInterface
     public function update(Request $request, string $id)
     {
         $childEditForm = $this->crudService->setupEdit($id); 
-
         $payload = $request->validate($childEditForm->validationRules());
+        $model   = $this->getModelInstance();
 
-        $model = $this->getModelInstance();
+        DB::beginTransaction();
 
-        $response = $model::where('id', $id)->update($payload);
+        try {
 
-        return $childEditForm->afterUpdate($response);
+            // $payloadFiltered = $model::filterByUploadFields($payload);
+
+            $response = $model::findOrFail($id)->update($payload);
+            
+            DB::commit();
+
+            return $childEditForm->afterUpdate($response);
+        } catch (Exception $exception){
+            DB::rollBack();
+            $maxId = DB::table($model->getTableName())->max('id');
+            DB::statement('ALTER TABLE '. $model->getTableName() .' AUTO_INCREMENT = ?', [$maxId + 1]);
+            return response()->json(['message' => $exception->getMessage(), 500]);
+        }
     }
 
 

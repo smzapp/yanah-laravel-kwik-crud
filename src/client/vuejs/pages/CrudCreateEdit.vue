@@ -15,7 +15,7 @@
       </div>
 
       <Message severity="error" class="mb-5">Contrast Message</Message>
-      <Form v-slot="$form" @submit="submitForm">
+      <Form v-slot="$form" @submit="submitForm" enctype="multipart/form-data">
         <Tabs :value="0" v-if="hasTabs" :class="'bg-primary-default'">
           <TabList>
             <template v-for="(group, index) in groupedForm" :key="index">
