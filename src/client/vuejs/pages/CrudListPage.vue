@@ -13,7 +13,7 @@
     
     <!-- Search Toolbar -->
     <div class="mb-3">
-      <div class="bg-white  mb-4 border rounded-lg py-2 px-3 flex justify-between align-items-center items-center">
+      <div class="bg-white  mb-4 border rounded-lg py-3 px-3 flex justify-between align-items-center items-center">
         <div v-if="localControls.showSearch && pageProps.listview == 'TableListView'">
           <IconField>
             <InputIcon>

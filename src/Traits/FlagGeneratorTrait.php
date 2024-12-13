@@ -8,15 +8,17 @@ trait FlagGeneratorTrait
 {
     protected function createMigration($name)
     {
-        $name = Str::plural($name);
+        $tableName = Str::plural(Str::snake($name));
         
-        $migrationName = 'create_' . strtolower($name) . '_table';
-    
+        $lowerName = strtolower($tableName);
+        
+        $migrationName = 'create_' . $lowerName . '_table';
+
         $this->call('make:migration', [
             'name' => $migrationName,
-            '--create' => strtolower($name), 
+            '--create' => $lowerName,
         ]);
-    
+
         $this->info("Migration created for {$name} model");
     }
 }

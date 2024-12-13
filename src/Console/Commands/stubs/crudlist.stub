@@ -15,10 +15,14 @@ class {{modelName}}List implements ControlCrudInterface, BodyPaginatorInterface,
 {
     private $perPage  = 15;
 
-    /**
+   /**
      * Specify the fields to be shown on the table.
+     * 
+     * Format: {field_name: table_header_name}
      */
-    public $activeFields = [];
+    public $activeFields = [
+        //example: 'id' => 'ID', 
+    ];
 
 
     /**

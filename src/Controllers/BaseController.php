@@ -144,10 +144,11 @@ abstract class BaseController extends Controller implements BaseInterface
         $childCreateForm->beforeStore($this->crudService);
 
         $model = $this->getModelInstance();
-        
-        DB::beginTransaction();
 
+        
         try {
+            DB::beginTransaction();
+
             $indexUpdateCreate = $this->crudService->getIndexOfUpdateCreate();
 
             if(is_array($indexUpdateCreate) && count($indexUpdateCreate) > 0) {
@@ -162,9 +163,7 @@ abstract class BaseController extends Controller implements BaseInterface
 
         }  catch (Exception $exception){
             DB::rollBack();
-            $maxId = DB::table($model->getTableName())->max('id');
-            DB::statement('ALTER TABLE '. $model->getTableName() .' AUTO_INCREMENT = ?', [$maxId + 1]);
-            return response()->json(['message' => $exception->getMessage(), 500]);
+            return response()->json(['message' => $exception->getMessage()], 500);
         }
     }
 
@@ -199,20 +198,16 @@ abstract class BaseController extends Controller implements BaseInterface
         $payload = $request->validate($childEditForm->validationRules());
         $model   = $this->getModelInstance();
 
-        DB::beginTransaction();
-
         try {
+            DB::beginTransaction();
+          
             $response = $model::findOrFail($id)->update($payload);
-            
-            DB::commit();
 
+            DB::commit();
             return $childEditForm->afterUpdate($response);
         } catch (Exception $exception){
-
             DB::rollBack();
-            $maxId = DB::table($model->getTableName())->max('id');
-            DB::statement('ALTER TABLE '. $model->getTableName() .' AUTO_INCREMENT = ?', [$maxId + 1]);
-            return response()->json(['message' => $exception->getMessage(), 500]);
+            return response()->json(['message' => $exception->getMessage()], 500);
         }
     }
 

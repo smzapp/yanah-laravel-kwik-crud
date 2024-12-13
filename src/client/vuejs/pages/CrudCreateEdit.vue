@@ -2,7 +2,7 @@
   <Head :title="pageProps.pageText.title" />
 
   <div class="container mx-auto mt-3 pb-5">
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center mb-4">
       <h2 class="text-3xl font-semibold text-[#555] capitalize">
         <i class="pi pi-pen-to-square" style="font-size: 25px;"></i>&nbsp;
         {{ pageProps.pageText.singular }}

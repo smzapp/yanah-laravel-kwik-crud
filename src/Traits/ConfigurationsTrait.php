@@ -42,6 +42,7 @@ trait ConfigurationsTrait
     public function getPageText()
     {
         $table = $this->crudService->getTableName();
+        $table = str_replace("_", " ", $table);
         $singular = Str::of($table)->singular();
 
         return [

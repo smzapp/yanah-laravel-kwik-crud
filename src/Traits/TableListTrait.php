@@ -21,7 +21,9 @@ trait TableListTrait
      */
     public function getActiveFields() : array
     {
-        return $this->setupList()->activeFields ?? [];
+        $fields = array_keys($this->setupList()->activeFields);
+
+        return  $fields ?? [];
     }
 
 
