@@ -4,40 +4,45 @@ namespace Yanah\LaravelKwik\Crud;
 
 class KwikPageControl {
     
-    private $accessPage;
+    private $activeIndex;
 
-    const LIST_PAGE_INDEX   = 'list';
-    const SHOW_PAGE_INDEX   = 'show';
-    const CREATE_PAGE_INDEX = 'create';
-    const EDIT_PAGE_INDEX   = 'edit';
+    private $allowedPages;
+
+    const OPERATIONS = [
+        'list', 'show', 'create', 'edit',
+
+        'store', 'update', 'destroy'
+    ];
+
 
     /**
      * Give access to specific pages.
      */
     public function allowAccess($pages = [])
     {
-        $this->accessPage = $pages;
+        $this->allowedPages = $pages;
     }
 
-    public function isListAllowed() : boolean
+    public function validateOperation(string $index)
     {
-        return in_array(self::LIST_PAGE_INDEX, $this->accessPage);
+        $this->activeIndex = $index;
+
+        if(! $this->isOperationAllowed()) {
+            abort(422, 'Operation is invalid!');
+        }
+
+        if(! $this->isAccessAllowed()) {
+            abort(403, 'Access denied.');
+        }
     }
 
-    
-    public function isShowAllowed() : boolean
+    private function isAccessAllowed()
     {
-        return in_array(self::SHOW_PAGE_INDEX, $this->accessPage);
+        return in_array($this->activeIndex, $this->allowedPages);
     }
 
-    public function isCreateAllowed() : boolean
+    private function isOperationAllowed()
     {
-        return in_array(self::CREATE_PAGE_INDEX, $this->accessPage);
+        return in_array($this->activeIndex, static::OPERATIONS);
     }
-    
-    public function isEditAllowed() : boolean
-    {
-        return in_array(self::EDIT_PAGE_INDEX, $this->accessPage);
-    }
-
 }

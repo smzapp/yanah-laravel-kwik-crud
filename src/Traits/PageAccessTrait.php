@@ -13,12 +13,14 @@ trait PageAccessTrait
     /**
      * This serves as a gate control
      */
-    public function verifyPageAccess(): void
+    public function getPageControl(): KwikPageControl
     {
         if($this instanceof PageControlInterface) {
-            $this->definePageAccess(
+            return $this->definePageAccess(
                 app(KwikPageControl::class)
             );
         }
     }
+
+    
 }

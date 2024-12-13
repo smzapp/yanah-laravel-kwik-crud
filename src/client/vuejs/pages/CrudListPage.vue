@@ -156,7 +156,7 @@ const deleteRecord = async (id) => {
         toast.add({
           severity: "error",
           summary: "Error",
-          detail: "Failed to delete record.",
+          detail: error.response?.data?.message || 'Unable to delete!',
           life: 3000,
         });
       } finally {

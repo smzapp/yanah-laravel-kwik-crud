@@ -47,19 +47,16 @@ class {{className}} extends KwikController  implements PageControlInterface
         return $query->select($fields)->findOrFail($id);
     }
 
-    /**
-     * We add restrictions to pages. 
+      /**
+     * We allow access to these pages. 
      * Buttons are separately configured in CrudListControl
      */
-    public function definePageAccess(KwikPageControl $control): void
+    public function definePageAccess(KwikPageControl $control): KwikPageControl
     {
         // Add stuffs here
 
-        $control->allowAccess([
-            'list',
-            'show',
-            'create',
-            'edit'
-        ]);
+        $control->allowAccess(['show', 'create', 'edit', 'list', 'store', 'update', 'destroy']);
+        
+        return $control;
     }
 }

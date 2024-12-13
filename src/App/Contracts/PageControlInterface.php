@@ -8,5 +8,5 @@ use Yanah\LaravelKwik\Crud\KwikPageControl;
  */
 interface PageControlInterface
 {
-    public function definePageAccess(KwikPageControl $control) : void;
+    public function definePageAccess(KwikPageControl $control) : KwikPageControl;
 }

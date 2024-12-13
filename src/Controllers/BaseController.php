@@ -13,6 +13,7 @@ use Yanah\LaravelKwik\Traits\ConfigurationsTrait;
 use Yanah\LaravelKwik\App\Contracts\PageShowRenderInterface;
 use Yanah\LaravelKwik\Crud\CrudListControl;
 use Yanah\LaravelKwik\Traits\PageAccessTrait;
+use Yanah\LaravelKwik\Crud\KwikPageControl;
 use Exception;
 
 interface BaseInterface {
@@ -21,7 +22,7 @@ interface BaseInterface {
 
     public function configurations(): void;
 
-    public function verifyPageAccess(): void;
+    public function getPageControl(): KwikPageControl;
 }
 
 /**
@@ -36,13 +37,15 @@ abstract class BaseController extends Controller implements BaseInterface
 
     private $crudService;
 
+    private $pageControl;
+
     public function __construct(CrudService $service)
     {
         $this->crudService = $service;
 
-        $this->configurations();
+        $this->pageControl = $this->getPageControl();
 
-        $this->verifyPageAccess();
+        $this->configurations();
 
         $this->crudService->initialize([
 
@@ -81,6 +84,8 @@ abstract class BaseController extends Controller implements BaseInterface
      */
     public function index()
     {  
+        $this->pageControl->validateOperation('list');
+
         $data = $this->crudService->getResponseQueryData();
 
         if (request()->wantsJson()) {
@@ -101,6 +106,8 @@ abstract class BaseController extends Controller implements BaseInterface
      */
     public function create()
     {
+        $this->pageControl->validateOperation('create');
+
         $childCreateForm = $this->crudService->setupCreate(); 
 
         $childCreateForm->prepareCreateForm();
@@ -117,6 +124,8 @@ abstract class BaseController extends Controller implements BaseInterface
      */
     public function show(string $id)
     {
+        $this->pageControl->validateOperation('show');
+
         $model = $this->getModelInstance();
 
         try {
@@ -141,13 +150,14 @@ abstract class BaseController extends Controller implements BaseInterface
      */
     public function store(Request $request)
     {
+        $this->pageControl->validateOperation('store');
+
         $childCreateForm = $this->crudService->setupCreate(); 
         $payload = $request->validate($childCreateForm->validationRules());
 
         $childCreateForm->beforeStore($this->crudService);
 
         $model = $this->getModelInstance();
-
         
         try {
             DB::beginTransaction();
@@ -175,6 +185,8 @@ abstract class BaseController extends Controller implements BaseInterface
      */
     public function edit(string $id)
     {
+        $this->pageControl->validateOperation('edit');
+
         $childEditForm = $this->crudService->setupEdit($id); 
 
         $model = $this->getModelInstance();
@@ -197,6 +209,8 @@ abstract class BaseController extends Controller implements BaseInterface
      */
     public function update(Request $request, string $id)
     {
+        $this->pageControl->validateOperation('update');
+
         $childEditForm = $this->crudService->setupEdit($id); 
         $payload = $request->validate($childEditForm->validationRules());
         $model   = $this->getModelInstance();
@@ -217,6 +231,8 @@ abstract class BaseController extends Controller implements BaseInterface
 
     public function destroy($id)
     {
+        $this->pageControl->validateOperation('destroy');
+        
         try {
             DB::beginTransaction();
 
