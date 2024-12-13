@@ -18,9 +18,11 @@ abstract class KwikController extends BaseController
     protected $layout = 'BaseCrudLayout';
 
     protected $pageTitle = 'Home';
+
+    const MAIN_PAGE = 'BasePage';
     
     /**
      * Require route initialization
      */
-    abstract public function configurations();
+    abstract public function configurations() : void;
 }

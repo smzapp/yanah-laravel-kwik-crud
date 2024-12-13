@@ -26,7 +26,6 @@ trait TableListTrait
         return  $fields ?? [];
     }
 
-
     /**
      * We decide to return filtered fields or those defined by developer
      */

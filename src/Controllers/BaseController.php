@@ -12,13 +12,16 @@ use Illuminate\Support\Facades\DB;
 use Yanah\LaravelKwik\Traits\ConfigurationsTrait;
 use Yanah\LaravelKwik\App\Contracts\PageShowRenderInterface;
 use Yanah\LaravelKwik\Crud\CrudListControl;
+use Yanah\LaravelKwik\Traits\PageAccessTrait;
 use Exception;
 
 interface BaseInterface {
     
     public function getShowItem(Builder $query, $fields = ['*'], $id);
 
-    public function configurations();
+    public function configurations(): void;
+
+    public function verifyPageAccess(): void;
 }
 
 /**
@@ -27,19 +30,19 @@ interface BaseInterface {
  */
 abstract class BaseController extends Controller implements BaseInterface
 {
-    use ConfigurationsTrait;
+    use ConfigurationsTrait, PageAccessTrait;
 
     protected $model;
 
     private $crudService;
-
-    const MAIN_PAGE = 'BasePage';
 
     public function __construct(CrudService $service)
     {
         $this->crudService = $service;
 
         $this->configurations();
+
+        $this->verifyPageAccess();
 
         $this->crudService->initialize([
 
@@ -84,7 +87,7 @@ abstract class BaseController extends Controller implements BaseInterface
             return response()->json($data);
         }
 
-        return Inertia::render(self::MAIN_PAGE, array_merge($this->commonProps(), [
+        return Inertia::render(static::MAIN_PAGE, array_merge($this->commonProps(), [
             'crud'      => $data,
             'listview'  => $this->crudService->configureListView(),
             'fields'    => $this->crudService->getTableFields(),
@@ -102,7 +105,7 @@ abstract class BaseController extends Controller implements BaseInterface
 
         $childCreateForm->prepareCreateForm();
 
-        return Inertia::render(self::MAIN_PAGE, array_merge($this->commonProps(), [
+        return Inertia::render(static::MAIN_PAGE, array_merge($this->commonProps(), [
             'formgroup'  => $childCreateForm->getArrayForm(),
             'asterisks' => $this->crudService->getRequiredFields(),
             'pageFile'  => 'CrudCreateEdit'
@@ -123,7 +126,7 @@ abstract class BaseController extends Controller implements BaseInterface
 
             $response = $this->getShowItem($model::query(), ['*'], $id); 
             
-            return Inertia::render(self::MAIN_PAGE, array_merge($this->commonProps(), [
+            return Inertia::render(static::MAIN_PAGE, array_merge($this->commonProps(), [
                 'responseData' => $response,
                 'activeId' => $id,
                 'pageFile'  => 'CrudShowPage'
@@ -178,7 +181,7 @@ abstract class BaseController extends Controller implements BaseInterface
 
         $childEditForm->prepareEditForm($model::findOrFail($id));
 
-        return Inertia::render(self::MAIN_PAGE, array_merge($this->commonProps(), [
+        return Inertia::render(static::MAIN_PAGE, array_merge($this->commonProps(), [
             'formgroup'  => $childEditForm->getArrayForm(),
             'asterisks' => $this->crudService->getRequiredFields(),
             'activeId'  => $id,
