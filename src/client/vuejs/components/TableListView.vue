@@ -13,10 +13,10 @@
           stripedRows 
         >
           <Column
-            v-for="field in fields"
+            v-for="(header, field) in headers"
             :key="field"
             :field="field"
-            :header="field"
+            :header="header"
             :headerClass="'capitalize'"
             :bodyStyle="'padding:4px 15px;'"
           ></Column>
@@ -43,7 +43,7 @@ const props = defineProps({
   localControls: Object,
   isLoading: Boolean,
   rowsPerPage: Number,
-  fields: Array,
+  headers: Array,
   activeRoute: String,
 });
 

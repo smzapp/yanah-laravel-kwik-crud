@@ -57,7 +57,7 @@
         :localControls="localControls"
         :isLoading="isLoading"
         :rowsPerPage="rowsPerPage"
-        :fields="pageProps.fields"
+        :headers="pageProps.headers"
         :activeRoute="pageProps.activeRoute"
         @deleteRecord="deleteRecord"
         @onPageChange="onPageChange"

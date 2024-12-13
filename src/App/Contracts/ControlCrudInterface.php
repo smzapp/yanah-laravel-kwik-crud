@@ -9,4 +9,6 @@ use Yanah\LaravelKwik\Crud\CrudListControl;
 interface ControlCrudInterface
 {
     public function toggleVisibility(CrudListControl $control) : array;
+
+    public function assignTableHeaders(): array;
 }

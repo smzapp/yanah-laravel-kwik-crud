@@ -16,39 +16,9 @@ trait TableListTrait
         return $this->setupList()->showSearch ?? true;
     }
 
-    /**
-     * Specify the fields to be shown into the list
-     */
-    public function getActiveFields() : array
+    public function getTableHeaders() : array
     {
-        $fields = array_keys($this->setupList()->activeFields);
-
-        return  $fields ?? [];
-    }
-
-    /**
-     * We decide to return filtered fields or those defined by developer
-     */
-    public function getTableFields(): array
-    {
-        $fields = $this->getActiveFields();
-
-        $headers = (is_array($fields) && count($fields)) ? $fields : $this->getFilteredFields();
-    
-        return array_slice($headers, 0, count($fields) ?: 5);
-    }
-    
-    /**
-     * We want to optimize the query result by selecting the response data from mysql query.
-     */
-    public function selectedFields() : array
-    {
-        return array_merge(['id'], $this->getTableFields());
-    }
-
-    public function hasActiveFields()
-    {
-        return count($this->getActiveFields());
+        return $this->setupList()->assignTableHeaders();
     }
 
     /**
@@ -63,11 +33,6 @@ trait TableListTrait
         $inputQuery = request('q');
         if($inputQuery) {
             $query = $crudList->search($query, $inputQuery);
-        }
-
-        if($this->hasActiveFields())
-        {
-            $query = $query->select($this->selectedFields());
         }
 
         if($crudList instanceof BodyCollectionInterface && $this->isListItemView())

@@ -15,16 +15,6 @@ class {{modelName}}List implements ControlCrudInterface, BodyPaginatorInterface,
 {
     private $perPage  = 15;
 
-   /**
-     * Specify the fields to be shown on the table.
-     * 
-     * Format: {field_name: table_header_name}
-     */
-    public $activeFields = [
-        //example: 'id' => 'ID', 
-    ];
-
-
     /**
      * Return default Index Template view for this List
      * @return TABLELIST | LISTITEM
@@ -35,6 +25,18 @@ class {{modelName}}List implements ControlCrudInterface, BodyPaginatorInterface,
     }
 
     
+    /**
+     * This is the label of table list. Match this with responseBodyPaginator() or responseBodyCollection()
+     */
+    public function assignTableHeaders(): array
+    {
+        return [
+            'id'   => 'ID',
+            'created_at' => 'Created At',
+            // Add more
+        ];
+    }
+
     /**
      * See CrudListControl to see more toggle visibility
      */
@@ -53,7 +55,22 @@ class {{modelName}}List implements ControlCrudInterface, BodyPaginatorInterface,
      */
     public function responseBodyPaginator(Builder $query) : LengthAwarePaginator
     {
-        return $query->paginate($this->perPage);
+        $paginator = $query->paginate($this->perPage);
+
+        /**
+         * Uncomment below to customize.
+         * 
+         * $paginator->getCollection()->transform(function ($item) {
+         *   return [
+         *       'id' => $item->id,
+         *       'created_at' => $item->created_at->format('Y-m-d'),
+         *   ];
+         * });
+         */
+       
+    
+        return $paginator;
+
     }   
 
     /**

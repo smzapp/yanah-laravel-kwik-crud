@@ -95,7 +95,7 @@ abstract class BaseController extends Controller implements BaseInterface
         return Inertia::render(static::MAIN_PAGE, array_merge($this->commonProps(), [
             'crud'      => $data,
             'listview'  => $this->crudService->configureListView(),
-            'fields'    => $this->crudService->getTableFields(),
+            'headers'    => $this->crudService->getTableHeaders(),
             'pageTitle' => $this->getPageTitle(),
             'pageFile'  => 'CrudListPage'
         ]));
