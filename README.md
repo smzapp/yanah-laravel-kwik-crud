@@ -74,7 +74,7 @@ content: [
 ],
 ```
 
-## Run application
+## Run the application
 
 Check `tailwind.config.js` configuration
 
@@ -152,9 +152,18 @@ $this->formgroup->addGroup('GROUP_NAME_UNIQUE', [
 $this->formgroup->addField('FIELD_NAME', $attributes);
 ```
 
-### API $attributes
+## API $attributes
  
-<h2> Types: text, textarea, switch, radio, checkbox, calendar, select, vue file,</h2>
+<h2> Types: </h2>
+- text
+- textarea
+- switch
+- radio
+- checkbox
+- calendar
+- select
+- select group
+- vue file 
 
 ```php
 **Text** $attributes example:
@@ -191,6 +200,24 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
         ['label' => 'Option 3', 'optionValue' => 'option3'],
     ]
 ]
+
+**Select Group** $attributes example:
+[
+    'type' => 'select_group',
+    'label' => 'Service Group',
+    'placeholder' => 'List of Services',
+    'required' => true,
+    'options' => [
+        [
+            'label' => 'First group',
+            'items' => [
+                [ 'label' => 'First1', 'optionValue' => 'first1'],
+                [ 'label' => 'First2', 'optionValue' => 'first2'],
+                [ 'label' => 'First3', 'optionValue' => 'first3'],
+            ],
+        ],
+    ]
+];
 
 **Switch** $attributes example:
 [

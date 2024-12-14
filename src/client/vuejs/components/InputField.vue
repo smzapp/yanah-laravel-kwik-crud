@@ -37,6 +37,23 @@
         />
       </div>
     </template>
+    <template v-else-if="attributes.type === 'select_group'">
+      <Select 
+        @change="handleInput"
+        :options="attributes.options" 
+        optionLabel="label" 
+        optionGroupLabel="label" 
+        optionGroupChildren="items" 
+        :placeholder="attributes.placeholder" 
+        class="w-full"
+      >
+          <template #optiongroup="slotProps">
+              <div>
+                  <div>{{ slotProps.option.label }}</div>
+              </div>
+          </template>
+        </Select>
+    </template>
     <template v-else-if="attributes.type === 'upload'">
       <div class="card flex flex-col items-center gap-5">
         <FileUpload 
@@ -69,7 +86,7 @@ import ToggleSwitch from 'primevue/toggleswitch';
 import RadioButton from 'primevue/radiobutton';
 import FileUpload from 'primevue/fileupload';
 import DatePicker from 'primevue/datepicker';
-import { computed, defineAsyncComponent, ref } from 'vue';
+import { ref } from 'vue';
 
 const props = defineProps({
   attributes: {
