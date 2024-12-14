@@ -88,9 +88,7 @@ Check `tailwind.config.js` configuration
 
 ## Package Commands
 
-> Autogenerate front-end CRUD files (To follow)
-
-> Execute CRUD automatically
+Execute CRUD automatically
 
 ```bash
 $ php artisan kwik:crud {name} {--only=}
@@ -112,7 +110,27 @@ $ php artisan kwik:crud Post --only=crudfiles
 
 ## I. CRUD (Create)
 
-CRUD starts here. In creating of form, configure `Crud\{Model}Create.php`
+Populate form with fields inside `prepareCreateForm()`:
+
+Example:
+
+```php
+$this->formgroup->addGroup('users', [
+    'tab' => true,
+    'label' => 'Users',
+    'title' => 'List of users',
+    'description' => 'Display users',
+    'align' => 'left',
+]);
+
+$this->formgroup->addField('first_name', [
+    'label' => 'Samuel',
+    'type' => 'text'
+]);
+```
+
+<hr/>
+In creating of a form, configure `Crud\{Model}Create.php`
 
 ### First, in prepareCreateForm(), Add group
 
@@ -136,7 +154,7 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 
 ### API $attributes
  
-<h2> Types: text, textarea, switch, radio, checkbox, calendar, select</h2>
+<h2> Types: text, textarea, switch, radio, checkbox, calendar, select, vue file,</h2>
 
 ```php
 **Text** $attributes example:
@@ -187,7 +205,46 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 ]
 ```
 
-More Attributes:
+**Custom Vue File**
+
+Add custom vue file into the field.
+
+```php
+[
+    'type'  => 'custom_file', 
+    'source' => '@/Components/CustomVueFile.vue' // This is relative to resources/js/Components directory
+]
+```
+
+API:
+
+`attributes` - All of the array values above will serve as attributes.
+
+Emit
+
+`@updateFieldValue` - This will update the value and be passed as payload.
+
+Example:
+
+```javascript
+<template>
+    <label>Input Something</label>
+    <input
+        @input="updateInput"
+    />
+</template>
+<script setup>
+const props = defineProps({
+    attributes: Object
+})
+const emit = defineEmits(['updateFieldValue']);
+function updateInput(event) {
+    emit('updateFieldValue', 'custom_input', event.target.value);
+}
+</script>
+```
+
+**More Attributes:**
 ```php
 [
     'helper_text' => 'Sample text',
@@ -195,22 +252,6 @@ More Attributes:
 ]
 ```
 
-Example Form inside `prepareCreateForm()`:
-
-```php
-$this->formgroup->addGroup('users', [
-    'tab' => true,
-    'label' => 'Users',
-    'title' => 'List of users',
-    'description' => 'Display users',
-    'align' => 'left',
-]);
-
-$this->formgroup->addField('first_name', [
-    'label' => 'Samuel',
-    'type' => 'text'
-]);
-```
 **IMPORTANT:**
 Make sure to add the fields in `validationRules()` you may want to be persisted. Add nullable for not required.
 

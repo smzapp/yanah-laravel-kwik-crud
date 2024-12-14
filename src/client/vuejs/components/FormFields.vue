@@ -4,8 +4,12 @@
       :key="name"
       class="flex flex-col mb-4"
     >
-      <template v-if="field.type === 'custom_vue'">
-        <component :is="getVueComponent(field.vueSource)" />
+      <template v-if="field.type === 'custom_file'">
+        <component 
+          :is="getVueComponent(field.source)"
+          @updateFieldValue="updateFormValue"
+          :attributes="field"
+        />
       </template>
 
       <template v-else>
@@ -41,9 +45,9 @@ import InputField from "./InputField.vue";
     emit('updateFieldValue', name, value);
   }
 
-// Dynamically resolve a Vue component
 const getVueComponent = (source) => {
-  return defineAsyncComponent(() => import(`@/${source}`));
+  const resolvedSource = source.replace(/^@/, '/resources/js');
+  return defineAsyncComponent(() => import(`${resolvedSource}`));
 };
 
   </script>
