@@ -7,7 +7,12 @@ use App\Models\{{modelName}};
 
 class {{modelName}}Create extends KwikForm
 {
-    protected $model = {{modelName}}::class;
+    protected $model = {{modelName}}::class; 
+    
+    /**
+     * After a successful submission.
+     */
+    protected $redirectTo = '';
 
     /**
      * IMPORTANT: Add the fields you may want to be persisted. Add nullable for not required.

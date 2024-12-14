@@ -4,7 +4,12 @@ namespace App\CrudKwik\{{modelPlural}};
 use App\Models\{{modelName}};
 
 class {{modelName}}Edit extends {{modelName}}Create 
-{
+{ 
+    /**
+     * After a successful submission.
+     */
+    protected $redirectTo = '';
+    
     public function __construct()
     {
         parent::__construct();

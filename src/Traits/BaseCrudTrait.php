@@ -17,6 +17,11 @@ trait BaseCrudTrait
         'created_at'
     ];
 
+    public function getRedirectTo()
+    {
+        return $this->redirectTo ?? '';
+    }
+
     public function getTableName(): string
     {
         $model = $this->getModelInstance();

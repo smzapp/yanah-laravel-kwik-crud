@@ -115,7 +115,8 @@ abstract class BaseController extends Controller implements BaseInterface
         return Inertia::render(static::MAIN_PAGE, array_merge($this->commonProps(), [
             'formgroup'  => $childCreateForm->getArrayForm(),
             'asterisks' => $this->crudService->getRequiredFields(),
-            'pageFile'  => 'CrudCreateEdit'
+            'pageFile'  => 'CrudCreateEdit',
+            'redirectTo' => $childCreateForm->getRedirectTo()
         ]));
     }
 
@@ -197,6 +198,7 @@ abstract class BaseController extends Controller implements BaseInterface
             'formgroup'  => $childEditForm->getArrayForm(),
             'asterisks' => $this->crudService->getRequiredFields(),
             'activeId'  => $id,
+            'redirectTo' => $childEditForm->getRedirectTo(),
             'button'    => [
                 'text' => 'Save Changes'
             ],
