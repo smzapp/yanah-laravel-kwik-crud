@@ -239,7 +239,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['updateFieldValue']);
 function updateInput(event) {
-    emit('updateFieldValue', 'custom_input', event.target.value);
+    emit('updateFieldValue', 'field_name', event.target.value);
 }
 </script>
 ```
@@ -253,7 +253,7 @@ function updateInput(event) {
 ```
 
 **IMPORTANT:**
-Make sure to add the fields in `validationRules()` you may want to be persisted. Add nullable for not required.
+Make sure to add the fields in `$this->validationRules` those you may want to be persisted into the database. Add nullable for not required.
 
 ## II. CRUD (LIST)
 
