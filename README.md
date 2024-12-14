@@ -136,7 +136,7 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 
 ### API $attributes
  
-<h2> Types: text, textarea, switch, radio, checkbox</h2>
+<h2> Types: text, textarea, switch, radio, checkbox, calendar, select</h2>
 
 ```php
 **Text** $attributes example:
@@ -167,13 +167,31 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 [
     'label' => 'Business category',
     'type' => 'select',
-    'options' => ['Test1', 'Test2']
+    'options' => [
+        ['label' => 'Option 1', 'optionValue' => 'option1'],
+        ['label' => 'Option 2', 'optionValue' => 'option2'],
+        ['label' => 'Option 3', 'optionValue' => 'option3'],
+    ]
 ]
 
 **Switch** $attributes example:
 [
     'label' => 'Billing details',
     'type' => 'switch'
+]
+
+**Calendar** $attributes example:
+[
+    'label' => 'business Calendar',
+    'type' => 'calendar'
+]
+```
+
+More Attributes:
+```php
+[
+    'helper_text' => 'Sample text',
+    
 ]
 ```
 

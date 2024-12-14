@@ -1,5 +1,4 @@
 <template>
-  <div>
     <template v-if="attributes.type === 'textarea'">
       <textarea
         :id="fieldName"
@@ -47,6 +46,11 @@
         <img v-if="src" :src="src" alt="Image" class="shadow-md w-full sm:w-64" style="filter: grayscale(100%)" />
       </div>
     </template>
+    <template v-else-if="attributes.type === 'calendar'">
+      <div class="card flex justify-content-center">
+        <DatePicker v-model="calendarDate" @dateSelect="handleInput" />
+    </div>
+    </template>
     <template v-else>
       <input
         :type="attributes.type || 'text'"
@@ -57,7 +61,6 @@
         @input="handleInput"
       />
     </template>
-  </div>
 </template>
   
 <script setup>
@@ -65,7 +68,8 @@ import Select from 'primevue/select';
 import ToggleSwitch from 'primevue/toggleswitch';
 import RadioButton from 'primevue/radiobutton';
 import FileUpload from 'primevue/fileupload';
-import { ref } from 'vue';
+import DatePicker from 'primevue/datepicker';
+import { computed, defineAsyncComponent, ref } from 'vue';
 
 const props = defineProps({
   attributes: {
@@ -82,6 +86,7 @@ const selectedOption = ref(null);
 const emit = defineEmits(['updateFieldValue']);
 
 const src = ref(null);
+const calendarDate = ref();
 
 function onFileSelect(event) {
   const file = event.files[0];
@@ -96,6 +101,8 @@ function onFileSelect(event) {
   
 function handleInput(event) {
   
+  console.log(event);
+  
   let value = '';
 
   if(event.value?.optionValue !== undefined) {
@@ -109,8 +116,11 @@ function handleInput(event) {
   }
   else if (event?.target?.value !== undefined) {
     value = event.target.value;
+  } else {
+    value = event ?? '';
   }
 
   emit('updateFieldValue', props.fieldName, value);
 }
+
 </script>
