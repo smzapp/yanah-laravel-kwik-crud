@@ -155,6 +155,7 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 ## API $attributes
  
 <h2> Types: </h2>
+
 - text
 - textarea
 - switch
@@ -162,8 +163,8 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 - checkbox
 - calendar
 - select
-- select group
-- vue file 
+- select_group
+- vue_file 
 
 ```php
 **Text** $attributes example:
