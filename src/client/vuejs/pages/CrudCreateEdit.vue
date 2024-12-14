@@ -135,9 +135,9 @@ const submitForm = async () => {
       life: 5000,
     });
 
-    setTimeout(() => {
-      router.visit(pageProps.activeRoute);
-    }, 2000);
+    // setTimeout(() => {
+    //   router.visit(pageProps.activeRoute);
+    // }, 2000);
   } catch(e) {
     toast.add({
       severity: "error",

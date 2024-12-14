@@ -9,9 +9,23 @@ class {{modelName}}Create extends KwikForm
 {
     protected $model = {{modelName}}::class;
 
+    /**
+     * IMPORTANT: Add the fields you may want to be persisted. Add nullable for not required.
+     * This serves as payload to be accepted in store()
+     */
+    protected $validationRules = [
+        // Add validations here.
+    ];
+
+
     public function __construct()
     {
         parent::__construct();
+    }
+
+    public function getValidationRules() : array
+    {
+        return $this->validationRules;
     }
 
     /**
@@ -39,14 +53,5 @@ class {{modelName}}Create extends KwikForm
     }
 
     
-    /**
-     * IMPORTANT: Add the fields you may want to be persisted. Add nullable for not required.
-     */
-    public function validationRules() : array
-    {
-        return [
-            // Add validations
-        ];
-    }
 
 }

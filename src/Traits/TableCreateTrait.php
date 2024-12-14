@@ -13,7 +13,7 @@ trait TableCreateTrait
     public function getRequiredFields() : array
     {
         $rules = $this->setupCreate()
-                      ->validationRules();
+                      ->getValidationRules();
 
         $requiredFields = array_filter($rules, function ($rule) {
             return str_contains($rule, 'required');

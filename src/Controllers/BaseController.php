@@ -153,7 +153,7 @@ abstract class BaseController extends Controller implements BaseInterface
         $this->pageControl->validateOperation('store');
 
         $childCreateForm = $this->crudService->setupCreate(); 
-        $payload = $request->validate($childCreateForm->validationRules());
+        $payload = $request->validate($childCreateForm->getValidationRules());
 
         $childCreateForm->beforeStore($this->crudService);
 
@@ -212,7 +212,7 @@ abstract class BaseController extends Controller implements BaseInterface
         $this->pageControl->validateOperation('update');
 
         $childEditForm = $this->crudService->setupEdit($id); 
-        $payload = $request->validate($childEditForm->validationRules());
+        $payload = $request->validate($childEditForm->getValidationRules());
         $model   = $this->getModelInstance();
 
         try {

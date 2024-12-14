@@ -4,7 +4,7 @@
       <textarea
         :id="fieldName"
         :name="fieldName"
-          @change="handleInput"
+        @change="handleInput"
         :class="`border-gray-300 shadow-sm focus:ring-primary-default focus:border-primary-default p-2 w-full ${attributes.class}`"
         :rows="attributes?.rows"
       >{{ attributes.value}}</textarea>
@@ -32,7 +32,9 @@
           :id="fieldName"
           :name="fieldName"
           :placeholder="`- Select -`" 
-          :class="`w-full ${attributes.class}`" 
+          :class="`w-full ${attributes.class}`"
+          optionLabel="label"
+          v-model="selectedOption"
         />
       </div>
     </template>
@@ -76,6 +78,7 @@ const props = defineProps({
   },
 });
 const selectedValue = ref(null);
+const selectedOption = ref(null);
 const emit = defineEmits(['updateFieldValue']);
 
 const src = ref(null);
@@ -92,9 +95,13 @@ function onFileSelect(event) {
 }
   
 function handleInput(event) {
-  let value = '';
   
-  if (event?.value !== undefined) {
+  let value = '';
+
+  if(event.value?.optionValue !== undefined) {
+    value = event.value?.optionValue;
+  }
+  else if (event?.value !== undefined) {
     value = event.value;
   } 
   else if (event?.target?.checked !== undefined && event.target.type == 'checkbox') {

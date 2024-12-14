@@ -10,6 +10,20 @@ class {{modelName}}Edit extends {{modelName}}Create
         parent::__construct();
     }
 
+    /**
+     * IMPORTANT!!! Add the fields you may want to be persisted. Add nullable for not required.
+     */
+    public function getValidationRules() : array
+    {
+         // This comes from {{modelName}}Create
+        $rules = $this->validationRules; 
+
+        return array_merge($rules, [
+            
+            // Add more validations here
+        ]);
+    }
+
     public function prepareEditForm({{modelName}} $record)
     {
         $this->prepareCreateForm();
@@ -17,15 +31,6 @@ class {{modelName}}Edit extends {{modelName}}Create
         // you may modify fields here
     }
 
-    /**
-     * IMPORTANT: Add the fields you may want to be persisted. Add nullable for not required.
-     */
-    public function validationRules() : array
-    {
-        return [
-            // Add rules here
-        ];
-    }
 
     public function afterUpdate($result)
     {
