@@ -9,6 +9,7 @@
           :is="getVueComponent(field.source)"
           @updateFieldValue="updateFormValue"
           :attributes="field"
+          :fieldName="name"
         />
       </template>
 

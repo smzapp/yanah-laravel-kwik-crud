@@ -233,7 +233,7 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 ]
 ```
 
-**Custom Vue File**
+## Creating custom vue file
 
 Add custom vue file into the field.
 
@@ -259,15 +259,17 @@ Example:
     <label>Input Something</label>
     <input
         @input="updateInput"
+        :class="`border-gray-300 shadow-sm focus:ring-primary-default focus:border-primary-default p-2 w-full`"
     />
 </template>
 <script setup>
 const props = defineProps({
-    attributes: Object
+    attributes: Object,
+    fieldName: String
 })
 const emit = defineEmits(['updateFieldValue']);
 function updateInput(event) {
-    emit('updateFieldValue', 'field_name', event.target.value);
+    emit('updateFieldValue', props.fieldName, event.target.value);
 }
 </script>
 ```
