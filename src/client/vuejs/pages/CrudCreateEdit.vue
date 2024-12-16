@@ -70,8 +70,8 @@
 </template>
 
 <script setup>
-import { Head, usePage } from "@inertiajs/vue3";
-import { computed,  ref, watch } from "vue";
+import { Head, useForm, usePage } from "@inertiajs/vue3";
+import { computed,  reactive,  ref, watch } from "vue";
 import { Tab, TabList, TabPanel, TabPanels, Tabs, useToast, Button, Message } from "primevue";
 import FormFields from "../components/FormFields.vue";
 import { Form } from '@primevue/forms';
@@ -117,30 +117,38 @@ watch(() => pageProps.formgroup, initializeFormData, { immediate: true });
 // Form submission
 const submitForm = async () => {
   const plainFormData = JSON.parse(JSON.stringify(formData.value));
+  
+  const form = useForm(plainFormData);
+
   try {
     loading.value = true;
     let message = "New record added successfully!";
 
-    if(pageProps.activeId !== undefined) {
-      await axios.put(`${pageProps.activeRoute}/${pageProps.activeId}`, plainFormData);
-      message = 'Record updated successfully!';
-    } else {
-      await axios.post(pageProps.activeRoute, plainFormData);
-    }
+    const response = router.post(pageProps.activeRoute, form);
 
-    toast.add({
-      severity: "success",
-      summary: "Success",
-      detail: message,
-      life: 5000,
-    });
+    
+    // if(pageProps.activeId !== undefined) {
+    //   await axios.put(`${pageProps.activeRoute}/${pageProps.activeId}`, plainFormData);
+    //   message = 'Record updated successfully!';
+    // } else {
+    //   await axios.post(pageProps.activeRoute, plainFormData);
+    // }
 
-    if(pageProps.redirectTo) {
-      setTimeout(() => {
-        router.visit(pageProps.redirectTo);
-      }, 1500);
-    }
+    // toast.add({
+    //   severity: "success",
+    //   summary: "Success",
+    //   detail: message,
+    //   life: 5000,
+    // });
+
+    // if(pageProps.redirectTo) {
+    //   setTimeout(() => {
+    //     router.visit(pageProps.redirectTo);
+    //   }, 1500);
+    // }
   } catch(e) {
+    console.log(e);
+    
     toast.add({
       severity: "error",
       summary: "Error",

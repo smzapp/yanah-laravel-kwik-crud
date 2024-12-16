@@ -14,37 +14,52 @@
       </template>
 
       <template v-if="field.type === 'checkbox'">
-        <div :class="`flex items-center gap-2 ${field.class_item}`">
+        <div :class="`flex items-center gap-2`" v-bind="field?.others?.wrapper">
           <Checkbox 
             :inputId="`${name}`" 
             :name="name"
             :value="field.value"
+            v-bind="field?.others?.inputOthers"
             @change="updateCheckBox"
           />
-          <label :for="name"> {{  field.label }} </label>
+          <label :for="name"  v-bind="field?.others?.labelOthers"> {{  field.label }} </label>
         </div>
       </template>
       
       <template v-else-if="field.type === 'switch'">
-        <label class="text-lg font-medium text-gray-700 mb-1">
-          {{ field.label }}
-          <span class="text-danger" v-if="field.required">*</span>
-        </label>
-        <ToggleSwitch
-          @valueChange="updateSwitch(name, $event)"
+        <div :class="`flex items-center gap-2`" v-bind="field?.others?.wrapper">
+          <label v-bind="field?.others?.labelOthers" class="text-lg font-medium text-gray-700 mb-1" >
+            {{ field.label }}
+            <span class="text-danger" v-if="field.required">*</span>
+          </label>
+          <ToggleSwitch
+            v-bind="field?.others?.inputOthers"
+            @valueChange="updateSwitch(name, $event)"
+          />
+        </div>
+      </template>
+      
+      <template v-else-if="field.type === 'autocomplete'">
+        <CustomAutocomplete
+          :field="field"
+          :name="name"
+          @updateFieldValue="$emit('updateFieldValue')"
         />
       </template>
 
       <template v-else>
-        <label class="text-lg font-medium text-gray-700 mb-1">
-          {{ field.label }}
-          <span class="text-danger" v-if="field.required">*</span>
-        </label>
-        <InputField
-          :attributes="field"
-          :fieldName="name"
-          @updateFieldValue="updateFormValue"
-        />
+        <div :class="`flex gap-2 flex-col`" v-bind="field?.others?.wrapper">
+          <label  v-bind="field?.others?.labelOthers" class="text-lg font-medium text-gray-700 mb-1">
+            {{ field.label }}
+            <span class="text-danger" v-if="field.required">*</span>
+          </label>
+          <InputField
+            :attributes="field"
+            :fieldName="name"
+             v-bind="field?.others?.inputOthers"
+            @updateFieldValue="updateFormValue"
+          />
+        </div>
       </template>
       
       <p v-if="field.helper_text" class="text-slate-400 text-sm mt-1">{{ field.helper_text }}</p>
@@ -56,12 +71,13 @@ import Checkbox from 'primevue/checkbox';
 import { defineAsyncComponent } from "vue";
 import InputField from "./InputField.vue";
 import { ToggleSwitch } from 'primevue';
+import CustomAutocomplete from './inputs/CustomAutocomplete.vue';
   
 const props = defineProps({
   fields: {
     type: Object,
     required: true,
-  }
+  },
 });
 
 const emit = defineEmits(["updateFieldValue"]);

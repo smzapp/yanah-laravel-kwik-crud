@@ -4,10 +4,10 @@
 
 This package is built to ease the work developers do by streamlining the process of scaffolding CRUD operations. It integrates seamlessly with Laravel, Inertia, and Vue.js 3, reducing boilerplate and simplifying the creation of CRUD functionality.
 
-## Requirements
+## Stack
 
-- **Laravel Inertia**: This package is built on top of Inertia.js and Vue.js 3.
-  - [Inertia.js Server-Side Setup](https://inertiajs.com/server-side-setup)
+- Inertia 2.0
+- [Prime Vue 4](https://primevue.org/vite/)
 
 ## Installation & Configurations
 
@@ -289,6 +289,21 @@ function updateInput(event) {
 [
     'helper_text' => 'Sample text',
     
+    // Other APIs/props may be other using this notation
+    'others' => [
+        'wrapper' => [
+            // We may customize the wrapper of label & input
+            // example: 'class' => 'bg-danger w-full'
+        ],
+        'labelOthers' => [
+            // Cutomize or add styles on label
+            // example: 'class' => 'bg-danger w-full'
+        ],
+        'inputOthers' => [
+            // Cutomize or add styles on Input
+            // example: 'class' => 'bg-danger w-full'
+        ]
+    ]
 ]
 ```
 

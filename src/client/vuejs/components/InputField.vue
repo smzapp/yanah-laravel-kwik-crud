@@ -1,6 +1,7 @@
 <template>
     <template v-if="attributes.type === 'textarea'">
       <textarea
+        v-bind="attributes?.others?.inputOthers"
         :id="fieldName"
         :name="fieldName"
         @change="handleInput"
@@ -8,30 +9,33 @@
         :rows="attributes?.rows"
       >{{ attributes.value}}</textarea>
     </template>
+
     <template v-else-if="attributes.type === 'radio'">
       <div v-for="(option, index) in attributes.options" :key="index" class="flex gap-3 mt-1">
         <RadioButton 
           :value="option.value"
           v-model="selectedValue"
+          v-bind="attributes?.others?.inputOthers"
           @change="handleInput"
         />
         <label>{{ option.label }}</label>
       </div>
     </template>
+
     <template v-else-if="attributes.type === 'select'">
-      <div class="card flex justify-content-center">
-        <Select 
-          @change="handleInput"
-          :options="attributes.options" 
-          :id="fieldName"
-          :name="fieldName"
-          :placeholder="`- Select -`" 
-          :class="`w-full ${attributes.class}`"
-          optionLabel="label"
-          v-model="selectedOption"
-        />
-      </div>
+      <Select 
+        @change="handleInput"
+        :options="attributes.options" 
+        :id="fieldName"
+        :name="fieldName"
+        :placeholder="`- Select -`" 
+        :class="`w-full ${attributes.class}`"
+        optionLabel="label"
+        v-model="selectedOption"
+        v-bind="attributes?.others?.inputOthers"
+      />
     </template>
+
     <template v-else-if="attributes.type === 'select_group'">
       <Select 
         @change="handleInput"
@@ -40,7 +44,7 @@
         optionGroupLabel="label" 
         optionGroupChildren="items" 
         :placeholder="attributes.placeholder" 
-        class="w-full"
+        v-bind="attributes?.others?.inputOthers"
       >
           <template #optiongroup="slotProps">
               <div>
@@ -49,22 +53,26 @@
           </template>
         </Select>
     </template>
+
     <template v-else-if="attributes.type === 'upload'">
-      <div class="card flex flex-col items-center gap-5">
-        <FileUpload 
-          mode="basic" 
-          @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined" 
-        />
-        <img v-if="src" :src="src" alt="Image" class="shadow-md w-full sm:w-64" style="filter: grayscale(100%)" />
-      </div>
+      <FileUpload 
+        v-bind="attributes?.others?.inputOthers"
+        mode="basic" 
+        @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined" 
+      />
+      <img v-if="src" :src="src" alt="Image" class="shadow-md w-full sm:w-64" style="filter: grayscale(100%)" />
     </template>
+
     <template v-else-if="attributes.type === 'calendar'">
-      <div class="card flex justify-content-center">
-        <DatePicker v-model="calendarDate" @dateSelect="handleInput" />
-    </div>
+        <DatePicker 
+          v-bind="attributes?.others?.inputOthers"
+          v-model="calendarDate" 
+          @dateSelect="handleInput" 
+        />
     </template>
     <template v-else>
       <input
+        v-bind="attributes?.others?.inputOthers"
         :type="attributes.type || 'text'"
         :id="fieldName"
         :name="fieldName"
@@ -77,7 +85,6 @@
   
 <script setup>
 import Select from 'primevue/select';
-import ToggleSwitch from 'primevue/toggleswitch';
 import RadioButton from 'primevue/radiobutton';
 import FileUpload from 'primevue/fileupload';
 import DatePicker from 'primevue/datepicker';
