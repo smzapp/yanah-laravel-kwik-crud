@@ -99,6 +99,8 @@ const groupedForm = computed(() => {
 });
 
 const updateFormData = (name, value) => {
+  console.log(name, value);
+  
   formData.value[name] = value;
 };
  
@@ -118,34 +120,29 @@ watch(() => pageProps.formgroup, initializeFormData, { immediate: true });
 const submitForm = async () => {
   const plainFormData = JSON.parse(JSON.stringify(formData.value));
   
-  const form = useForm(plainFormData);
-
   try {
     loading.value = true;
     let message = "New record added successfully!";
 
-    const response = router.post(pageProps.activeRoute, form);
+    if(pageProps.activeId !== undefined) {
+      await axios.put(`${pageProps.activeRoute}/${pageProps.activeId}`, plainFormData);
+      message = 'Record updated successfully!';
+    } else {
+      await axios.post(pageProps.activeRoute, plainFormData);
+    }
 
-    
-    // if(pageProps.activeId !== undefined) {
-    //   await axios.put(`${pageProps.activeRoute}/${pageProps.activeId}`, plainFormData);
-    //   message = 'Record updated successfully!';
-    // } else {
-    //   await axios.post(pageProps.activeRoute, plainFormData);
-    // }
+    toast.add({
+      severity: "success",
+      summary: "Success",
+      detail: message,
+      life: 5000,
+    });
 
-    // toast.add({
-    //   severity: "success",
-    //   summary: "Success",
-    //   detail: message,
-    //   life: 5000,
-    // });
-
-    // if(pageProps.redirectTo) {
-    //   setTimeout(() => {
-    //     router.visit(pageProps.redirectTo);
-    //   }, 1500);
-    // }
+    if(pageProps.redirectTo) {
+      setTimeout(() => {
+        router.visit(pageProps.redirectTo);
+      }, 1500);
+    }
   } catch(e) {
     console.log(e);
     

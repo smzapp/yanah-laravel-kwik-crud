@@ -43,7 +43,7 @@
         <CustomAutocomplete
           :field="field"
           :name="name"
-          @updateFieldValue="$emit('updateFieldValue')"
+          @updateFieldValue="updateFormValue"
         />
       </template>
 
