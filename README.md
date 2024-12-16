@@ -152,6 +152,8 @@ $this->formgroup->addGroup('GROUP_NAME_UNIQUE', [
 $this->formgroup->addField('FIELD_NAME', $attributes);
 ```
 
+<b>Note:</b> The `type` attribute serves as the key to determine what input type we'll implement.
+
 ## API $attributes
  
 <h2> Types: </h2>
@@ -164,6 +166,7 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 - select
 - select_group
 - calendar
+- autocomplete
 - vue_file 
 
 ```php
@@ -234,14 +237,33 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
     ]
 ];
 
-
-
 **Calendar** $attributes example:
 [
     'label' => 'business Calendar',
     'type' => 'calendar'
 ]
 ```
+
+## Autocomplete input
+
+Example:
+
+```php
+[
+    'type'    => 'autocomplete',
+    'required' => true,
+    'label'   => 'Search me',
+    'default_query_results' => [
+        ['label' => 'test', 'value' => 'this'],
+        ['label' => 'test2', 'value' => 'this2'],
+    ],
+    'api_endpoint' => '/settings/business-categories/autocomplete'
+]
+```
+
+- `default_query_results`: array - we may not need to fetch via api, so we automatically populate values to be searched.
+- `api_endpoint`: string | nullable - after defining the endpoint, you need to create a response similar to the data structure of `default_query_results`.
+
 
 ## Creating custom vue file
 
