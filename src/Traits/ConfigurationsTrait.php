@@ -16,6 +16,7 @@ trait ConfigurationsTrait
             'activeRoute' => $this->getActiveRoute(),
             'pageText'    => $this->getPageText(),
             'controls'    => $this->crudService->getControls(),
+            'pageWrapper' => $this->wrapperControl() // assigned in PageWrapperTrait
         ];
     }
 

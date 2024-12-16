@@ -13,6 +13,7 @@ use Yanah\LaravelKwik\Traits\ConfigurationsTrait;
 use Yanah\LaravelKwik\App\Contracts\PageShowRenderInterface;
 use Yanah\LaravelKwik\Crud\CrudListControl;
 use Yanah\LaravelKwik\Traits\PageAccessTrait;
+use Yanah\LaravelKwik\Traits\PageWrapperTrait;
 use Yanah\LaravelKwik\Crud\KwikPageControl;
 use Exception;
 
@@ -31,7 +32,7 @@ interface BaseInterface {
  */
 abstract class BaseController extends Controller implements BaseInterface
 {
-    use ConfigurationsTrait, PageAccessTrait;
+    use ConfigurationsTrait, PageAccessTrait, PageWrapperTrait;
 
     protected $model;
 
@@ -92,6 +93,10 @@ abstract class BaseController extends Controller implements BaseInterface
             return response()->json($data);
         }
 
+        $setup = $this->crudService->setupList();
+
+        $this->assignPageSetup($setup);
+
         return Inertia::render(static::MAIN_PAGE, array_merge($this->commonProps(), [
             'crud'      => $data,
             'listview'  => $this->crudService->configureListView(),
@@ -109,6 +114,8 @@ abstract class BaseController extends Controller implements BaseInterface
         $this->pageControl->validateOperation('create');
 
         $childCreateForm = $this->crudService->setupCreate(); 
+
+        $this->assignPageSetup($childCreateForm);
 
         $childCreateForm->prepareCreateForm();
 
@@ -189,6 +196,8 @@ abstract class BaseController extends Controller implements BaseInterface
         $this->pageControl->validateOperation('edit');
 
         $childEditForm = $this->crudService->setupEdit($id); 
+
+        $this->assignPageSetup($childEditForm);
 
         $model = $this->getModelInstance();
 

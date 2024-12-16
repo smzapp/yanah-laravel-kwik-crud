@@ -12,6 +12,8 @@
         :currentLabel="pageProps.activeId ? 'Edit' : 'Create'"
       />
     </div>
+ 
+    <component :is="prependPageLocal" />
 
     <Form v-slot="$form" @submit="submitForm" enctype="multipart/form-data">
       <Tabs :value="0" v-if="hasTabs" :class="'bg-primary-default'">
@@ -49,7 +51,7 @@
 
       <!-- Non-tab Groups -->
       <div v-else>
-        <div v-for="(group, index) in groupedForm" :key="index">
+        <div class="bg-white p-4 rounded-lg" v-for="(group, index) in groupedForm" :key="index">
           <h3 class="text-lg font-bold">{{ group.details.label }}</h3>
           <FormFields 
             :fields="group.fields" 
@@ -66,12 +68,14 @@
         :loading="loading"
       />
     </Form>
+
+    <component :is="appendPageLocal" />
   </div>
 </template>
 
 <script setup>
 import { Head, useForm, usePage } from "@inertiajs/vue3";
-import { computed,  reactive,  ref, watch } from "vue";
+import { computed,  defineAsyncComponent,  reactive,  ref, watch } from "vue";
 import { Tab, TabList, TabPanel, TabPanels, Tabs, useToast, Button, Message } from "primevue";
 import FormFields from "../components/FormFields.vue";
 import { Form } from '@primevue/forms';
@@ -90,6 +94,13 @@ const hasTabs = computed(() =>
   pageProps.formgroup.some((group) => group.details.tab)
 );
 
+// Append or prepend file
+const createAsyncComponent = (path) => 
+  path ? computed(() => defineAsyncComponent({ loader: () => import(`${path}`) })) : null;
+
+const prependPageLocal = createAsyncComponent(pageProps.pageWrapper.prepend);
+const appendPageLocal = createAsyncComponent(pageProps.pageWrapper.append);
+
 const groupedForm = computed(() => {
   return pageProps.formgroup.map((group) => ({
     ...group,
@@ -99,8 +110,6 @@ const groupedForm = computed(() => {
 });
 
 const updateFormData = (name, value) => {
-  console.log(name, value);
-  
   formData.value[name] = value;
 };
  

@@ -1,7 +1,9 @@
 <?php
 namespace Yanah\LaravelKwik\Crud;
 
-
+/**
+ * This serves as a middleware which restricts a specific page or method
+ */
 class KwikPageControl {
     
     private $activeIndex;

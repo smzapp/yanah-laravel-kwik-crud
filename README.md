@@ -4,7 +4,19 @@
 
 This package is built to ease the work developers do by streamlining the process of scaffolding CRUD operations. It integrates seamlessly with Laravel, Inertia, and Vue.js 3, reducing boilerplate and simplifying the creation of CRUD functionality.
 
-## Stack
+## Overview
+- Stack Used
+- Installation & Configurations
+- Run the application
+- Package Command/s
+- CRUD Implementation
+> I. CRUD (Create)
+> II. CRUD (LIST)
+> III. CRUD (EDIT/UPDATE)
+> IV. CRUD (SHOW)
+- Insert Components before / after CRUD Pages (List, Edit, Create)
+
+## Stack Used
 
 - Inertia 2.0
 - [Prime Vue 4](https://primevue.org/vite/)
@@ -182,8 +194,10 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
     'type' => 'input_group',
     'label' => 'Address',
     'placeholder' => 'Type your address',
-    'group_icon' => 'pi pi-address-book'
+    'group_icon' => 'pi pi-address-book' 
 ]
+
+- group_icon is referred here: https://primevue.org/icons/
 
 **Textarea** $attributes example:
 [
@@ -484,6 +498,27 @@ public function renderShowVue(Builder $query, $id)
 }
 ```
 <br/>
+
+## Insert Components before / after CRUD Pages (List, Edit, Create)
+
+Implement `PageAffixInterface` in `Crud\{Model}Create.php`, `Crud\{Model}Edit.php`, `Crud\{Model}List.php`
+and define the components to be inserted (prepend / append).
+
+```php
+use Yanah\LaravelKwik\App\Contracts\PageAffixInterface;
+
+class {Model}Create extends KwikForm implements PageAffixInterface
+{
+    public function definePages(): array
+    {
+        return [
+            'prepend' => '/resources/js/Components/YOUR_FILE_HERE.vue',
+            'append'  => '/resources/js/Components/YOUR_FILE_HERE.vue'
+        ];
+    }
+}
+```
+
 <hr />
 <br/>
 That's all. Please feel free to send PR when you found a bug. 
