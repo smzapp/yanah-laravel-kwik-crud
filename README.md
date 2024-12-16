@@ -350,7 +350,7 @@ We have two options of how our list should look like:
 
 ### C. Toggle Visibility
 
-See `Yanah\LaravelKwik\Crud\CrudListControl` to *set* visibility methods.
+See toggle buttons & texts we want to see in our CrudList page.
 
 ```php
 public function toggleVisibility(CrudListControl $control) : array
@@ -367,6 +367,28 @@ To toggle button actions:
 ```php
 $control->updateAction('edit', true);
 $control->updateAction('delete', true);
+```
+
+APIs:
+
+- `showSearch`: boolean - toggle display search input
+- `showPrintPdf`: boolean - toggle pdf print button
+- `showAddButton`: boolean - toggle Add button
+- `showListSummary`: boolean - This shows the summary list of records in table list
+- `actions`: array - toggle action buttons (preview, edit, delet). 
+
+Available toggle controls:
+
+```php
+'showSearch'    => false,
+'showPrintPdf'  => false,
+'showAddButton' => true,
+'showListSummary' => true,
+'actions' => [
+    'preview' => true,
+    'edit' => true,
+    'delete' => true,
+]
 ```
 
 ### D. Handle Search functionality
@@ -416,6 +438,7 @@ public function renderShowVue(Builder $query, $id)
 ```
 <br/>
 <hr />
+<br/>
 That's all. Please feel free to send PR when you found a bug. 
 
 Hope this package will help you "kwik"en your development. Appreciated!
