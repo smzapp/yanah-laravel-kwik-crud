@@ -18,8 +18,10 @@ This package is built to ease the work developers do by streamlining the process
 
 ## Stack Used
 
-- Inertia 2.0
+- [Inertia 2.0](https://inertiajs.com/)
+- [Vue 3](https://vuejs.org/)
 - [Prime Vue 4](https://primevue.org/vite/)
+- Reactjs (Coming soon)
 
 ## Installation & Configurations
 
@@ -284,9 +286,10 @@ Example:
 ]
 ```
 
-- `default_query_results`: array - we may not need to fetch via api, so we automatically populate values to be searched.
-- `api_endpoint`: string | nullable - after defining the endpoint, you need to create a response similar to the data structure of `default_query_results`.
-
+| Property              | Type             | Description                                                                                   |
+|-----------------------|------------------|-----------------------------------------------------------------------------------------------|
+| `default_query_results` | `array`          | Automatically populates values to be searched if an API fetch is not required.               |
+| `api_endpoint`         | `string \| null` | Defines the API endpoint. The response must match the data structure of `default_query_results`. |
 
 ## Creating custom vue file
 
