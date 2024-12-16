@@ -70,6 +70,21 @@
           @dateSelect="handleInput" 
         />
     </template>
+    
+    <template v-else-if="attributes.type === 'input_group'">
+        <InputGroup>
+            <InputGroupAddon v-if="attributes.group_icon">
+                <i :class="attributes.group_icon"></i>
+            </InputGroupAddon>
+            <InputText 
+              :name="fieldName" 
+              :placeholder="attributes.placeholder" 
+              :value="attributes.value || ''"  
+              v-bind="attributes?.others?.inputProps" 
+            />
+        </InputGroup>
+      </template>
+
     <template v-else>
       <input
         v-bind="attributes?.others?.inputProps"
@@ -89,6 +104,7 @@ import RadioButton from 'primevue/radiobutton';
 import FileUpload from 'primevue/fileupload';
 import DatePicker from 'primevue/datepicker';
 import { ref } from 'vue';
+import { InputGroup, InputGroupAddon, InputText } from 'primevue';
 
 const props = defineProps({
   attributes: {

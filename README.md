@@ -159,6 +159,7 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 <h2> Types: </h2>
 
 - text
+- input Group
 - textarea
 - switch
 - checkbox
@@ -174,6 +175,14 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 [
     'label' => 'Post Title',
     'type' => 'text'
+]
+
+**Input Group** $attributes example:
+[
+    'type' => 'input_group',
+    'label' => 'Address',
+    'placeholder' => 'Type your address',
+    'group_icon' => 'pi pi-address-book'
 ]
 
 **Textarea** $attributes example:
