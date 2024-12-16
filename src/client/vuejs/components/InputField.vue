@@ -1,7 +1,7 @@
 <template>
     <template v-if="attributes.type === 'textarea'">
       <textarea
-        v-bind="attributes?.others?.inputOthers"
+        v-bind="attributes?.others?.inputProps"
         :id="fieldName"
         :name="fieldName"
         @change="handleInput"
@@ -15,7 +15,7 @@
         <RadioButton 
           :value="option.value"
           v-model="selectedValue"
-          v-bind="attributes?.others?.inputOthers"
+          v-bind="attributes?.others?.inputProps"
           @change="handleInput"
         />
         <label>{{ option.label }}</label>
@@ -32,7 +32,7 @@
         :class="`w-full ${attributes.class}`"
         optionLabel="label"
         v-model="selectedOption"
-        v-bind="attributes?.others?.inputOthers"
+        v-bind="attributes?.others?.inputProps"
       />
     </template>
 
@@ -44,7 +44,7 @@
         optionGroupLabel="label" 
         optionGroupChildren="items" 
         :placeholder="attributes.placeholder" 
-        v-bind="attributes?.others?.inputOthers"
+        v-bind="attributes?.others?.inputProps"
       >
           <template #optiongroup="slotProps">
               <div>
@@ -56,7 +56,7 @@
 
     <template v-else-if="attributes.type === 'upload'">
       <FileUpload 
-        v-bind="attributes?.others?.inputOthers"
+        v-bind="attributes?.others?.inputProps"
         mode="basic" 
         @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined" 
       />
@@ -65,14 +65,14 @@
 
     <template v-else-if="attributes.type === 'calendar'">
         <DatePicker 
-          v-bind="attributes?.others?.inputOthers"
+          v-bind="attributes?.others?.inputProps"
           v-model="calendarDate" 
           @dateSelect="handleInput" 
         />
     </template>
     <template v-else>
       <input
-        v-bind="attributes?.others?.inputOthers"
+        v-bind="attributes?.others?.inputProps"
         :type="attributes.type || 'text'"
         :id="fieldName"
         :name="fieldName"

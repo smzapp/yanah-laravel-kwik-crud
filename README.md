@@ -285,21 +285,22 @@ function updateInput(event) {
 ```
 
 **More Attributes:**
+
 ```php
 [
     'helper_text' => 'Sample text',
     
-    // Other APIs/props may be other using this notation
+    // Other APIs/props may be applied using this notation
     'others' => [
         'wrapper' => [
             // We may customize the wrapper of label & input
-            // example: 'class' => 'bg-danger w-full'
+            // example: 'class' => 'bg-danger flex-row'
         ],
-        'labelOthers' => [
+        'labelProps' => [
             // Cutomize or add styles on label
-            // example: 'class' => 'bg-danger w-full'
+            // example: 'class' => 'text-sm'
         ],
-        'inputOthers' => [
+        'inputProps' => [
             // Cutomize or add styles on Input
             // example: 'class' => 'bg-danger w-full'
         ]

@@ -1,12 +1,12 @@
 <template>
   <div v-bind="field?.others?.wrapper">
-    <label v-bind="field?.others?.labelOthers" class="text-lg font-medium text-gray-700 mb-1">
+    <label v-bind="field?.others?.labelProps" class="text-lg font-medium text-gray-700 mb-1">
       {{ field.label }}
       <span class="text-danger" v-if="field.required">*</span>
     </label>
     <div class="card">
       <AutoComplete 
-        v-bind="field?.others?.inputOthers"
+        v-bind="field?.others?.inputProps"
         v-model="selectedComplete" 
         forceSelection 
         optionLabel="label" 

@@ -19,21 +19,21 @@
             :inputId="`${name}`" 
             :name="name"
             :value="field.value"
-            v-bind="field?.others?.inputOthers"
+            v-bind="field?.others?.inputProps"
             @change="updateCheckBox"
           />
-          <label :for="name"  v-bind="field?.others?.labelOthers"> {{  field.label }} </label>
+          <label :for="name"  v-bind="field?.others?.labelProps"> {{  field.label }} </label>
         </div>
       </template>
       
       <template v-else-if="field.type === 'switch'">
         <div :class="`flex items-center gap-2`" v-bind="field?.others?.wrapper">
-          <label v-bind="field?.others?.labelOthers" class="text-lg font-medium text-gray-700 mb-1" >
+          <label v-bind="field?.others?.labelProps" class="text-lg font-medium text-gray-700 mb-1" >
             {{ field.label }}
             <span class="text-danger" v-if="field.required">*</span>
           </label>
           <ToggleSwitch
-            v-bind="field?.others?.inputOthers"
+            v-bind="field?.others?.inputProps"
             @valueChange="updateSwitch(name, $event)"
           />
         </div>
@@ -49,14 +49,14 @@
 
       <template v-else>
         <div :class="`flex gap-2 flex-col`" v-bind="field?.others?.wrapper">
-          <label  v-bind="field?.others?.labelOthers" class="text-lg font-medium text-gray-700 mb-1">
+          <label  v-bind="field?.others?.labelProps" class="text-lg font-medium text-gray-700 mb-1">
             {{ field.label }}
             <span class="text-danger" v-if="field.required">*</span>
           </label>
           <InputField
             :attributes="field"
             :fieldName="name"
-             v-bind="field?.others?.inputOthers"
+             v-bind="field?.others?.inputProps"
             @updateFieldValue="updateFormValue"
           />
         </div>
