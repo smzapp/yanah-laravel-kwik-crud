@@ -159,11 +159,11 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 - text
 - textarea
 - switch
-- radio
 - checkbox
-- calendar
+- radio
 - select
 - select_group
+- calendar
 - vue_file 
 
 ```php
@@ -171,6 +171,26 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 [
     'label' => 'Post Title',
     'type' => 'text'
+]
+
+**Textarea** $attributes example:
+[
+    'label' => 'Post Body',
+    'type' => 'textarea',
+    'rows' => 4
+]
+**Switch** $attributes example:
+[
+    'label' => 'Billing details',
+    'type' => 'switch'
+]
+
+**Checkbox**  $attributes example:
+[
+    'type' => 'checkbox',
+    'value' => true,
+    'label' => 'Your label',
+    'class_item' => 'mb-5'
 ]
 
 **Radio** $attributes example:
@@ -184,12 +204,6 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
     ]
 ]
 
-**Textarea** $attributes example:
-[
-    'label' => 'Post Body',
-    'type' => 'textarea',
-    'rows' => 4
-]
 
 **Select** $attributes example:
 [
@@ -220,11 +234,7 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
     ]
 ];
 
-**Switch** $attributes example:
-[
-    'label' => 'Billing details',
-    'type' => 'switch'
-]
+
 
 **Calendar** $attributes example:
 [

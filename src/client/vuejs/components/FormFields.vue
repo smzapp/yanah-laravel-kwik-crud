@@ -13,6 +13,28 @@
         />
       </template>
 
+      <template v-if="field.type === 'checkbox'">
+        <div :class="`flex items-center gap-2 ${field.class_item}`">
+          <Checkbox 
+            :inputId="`${name}`" 
+            :name="name"
+            :value="field.value"
+            @change="updateCheckBox"
+          />
+          <label :for="name"> {{  field.label }} </label>
+        </div>
+      </template>
+      
+      <template v-else-if="field.type === 'switch'">
+        <label class="text-lg font-medium text-gray-700 mb-1">
+          {{ field.label }}
+          <span class="text-danger" v-if="field.required">*</span>
+        </label>
+        <ToggleSwitch
+          @valueChange="updateSwitch(name, $event)"
+        />
+      </template>
+
       <template v-else>
         <label class="text-lg font-medium text-gray-700 mb-1">
           {{ field.label }}
@@ -29,27 +51,38 @@
     </div>
   </template>
   
-  <script setup>
-  import { defineAsyncComponent } from "vue";
+<script setup>
+import Checkbox from 'primevue/checkbox';
+import { defineAsyncComponent } from "vue";
 import InputField from "./InputField.vue";
+import { ToggleSwitch } from 'primevue';
   
-  const props = defineProps({
-    fields: {
-      type: Object,
-      required: true,
-    }
-  });
-  
-  const emit = defineEmits(["updateFieldValue"]);
-  
-  const updateFormValue = (name, value) => {
-    emit('updateFieldValue', name, value);
+const props = defineProps({
+  fields: {
+    type: Object,
+    required: true,
   }
+});
+
+const emit = defineEmits(["updateFieldValue"]);
+
+const updateFormValue = (name, value) => {
+  emit('updateFieldValue', name, value);
+}
+
+const updateCheckBox = (event) => {
+  const target = event.target;
+  emit('updateFieldValue', target.name, target.value);
+}
+
+const updateSwitch = (name, value) => {
+  emit('updateFieldValue', name, value);
+}
 
 const getVueComponent = (source) => {
-  const resolvedSource = source.replace(/^@/, '/resources/js');
-  return defineAsyncComponent(() => import(`${resolvedSource}`));
+const resolvedSource = source.replace(/^@/, '/resources/js');
+return defineAsyncComponent(() => import(`${resolvedSource}`));
 };
 
-  </script>
+</script>
   

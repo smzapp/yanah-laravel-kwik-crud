@@ -8,11 +8,6 @@
         :rows="attributes?.rows"
       >{{ attributes.value}}</textarea>
     </template>
-    <template v-else-if="attributes.type === 'switch'">
-      <ToggleSwitch 
-        @change="handleInput"
-      />
-    </template>
     <template v-else-if="attributes.type === 'radio'">
       <div v-for="(option, index) in attributes.options" :key="index" class="flex gap-3 mt-1">
         <RadioButton 
@@ -128,9 +123,6 @@ function handleInput(event) {
   else if (event?.value !== undefined) {
     value = event.value;
   } 
-  else if (event?.target?.checked !== undefined && event.target.type == 'checkbox') {
-    value = event.target.checked;
-  }
   else if (event?.target?.value !== undefined) {
     value = event.target.value;
   } else {
