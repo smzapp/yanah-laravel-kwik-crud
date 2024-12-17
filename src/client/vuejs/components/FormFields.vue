@@ -13,7 +13,7 @@
       <Checkbox 
         :inputId="`${fieldName}`" 
         :name="fieldName"
-        :defaultValue="attributes?.defaultValue"
+        :value="field?.value"
         v-bind="field?.others?.inputProps"
         @change="updateCheckBox"
       />
@@ -29,7 +29,7 @@
       </label>
       <ToggleSwitch
         v-bind="field?.others?.inputProps"
-        :defaultValue="field?.defaultValue"
+        :value="field?.value"
         @valueChange="updateSwitch(fieldName, $event)"
       />
     </div>
@@ -39,7 +39,7 @@
     <CustomAutocomplete
       :field="field"
       :name="fieldName"
-      :defaultValue="field?.defaultValue"
+      :value="field?.value"
       @updateFieldValue="updateFormValue"
     />
   </template>
@@ -90,8 +90,11 @@ const updateSwitch = (name, value) => {
 }
 
 const getVueComponent = (source) => {
-  const resolvedSource = source.replace(/^@/, '/resources/js');
-  return defineAsyncComponent(() => import(`${resolvedSource}`));
+  if(typeof source != 'undefined') {
+    const resolvedSource = source.replace(/^@/, '/resources/js');
+    return defineAsyncComponent(() => import(`${resolvedSource}`));
+  }
+  return null;
 };
 
 </script>

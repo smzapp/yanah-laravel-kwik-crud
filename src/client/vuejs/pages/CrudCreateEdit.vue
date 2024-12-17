@@ -83,9 +83,8 @@
 
 <script setup>
 import { Head, useForm, usePage } from "@inertiajs/vue3";
-import { computed,  defineAsyncComponent,  reactive,  ref, watch } from "vue";
-import { Tab, TabList, TabPanel, TabPanels, Tabs, useToast, Button, Message } from "primevue";
-import FormFields from "../components/FormFields.vue";
+import { computed,  defineAsyncComponent, ref, watch } from "vue";
+import { Tab, TabList, TabPanel, TabPanels, Tabs, useToast, Button } from "primevue";
 import { Form } from '@primevue/forms';
 import axios from 'axios';
 import BreadCrumbsLocal from '../components/BreadCrumbsLocal.vue';
@@ -107,8 +106,9 @@ const hasTabs = computed(() =>
 const createAsyncComponent = (path) => 
   path ? computed(() => defineAsyncComponent({ loader: () => import(`${path}`) })) : null;
 
-const prependPageLocal = createAsyncComponent(pageProps?.pageWrapper?.prepend);
-const appendPageLocal = createAsyncComponent(pageProps?.pageWrapper?.append);
+  
+const prependPageLocal = createAsyncComponent(pageProps?.pageWrapper?.prepend ?? null);
+const appendPageLocal = createAsyncComponent(pageProps?.pageWrapper?.append ?? null);
 
 const groupedForm = computed(() => {
   return pageProps.formgroup.map((group) => ({
@@ -129,7 +129,13 @@ const initializeFormData = () => {
   formData.value = {}; 
   pageProps.formgroup.forEach(group => {
     Object.entries(group.fields).forEach(([key, field]) => {
-      formData.value[key] = field.value || '';
+      if(typeof field.wrappedItems == 'object') {
+        Object.entries(field.wrappedItems).forEach(([wrapKey, wrapField]) => {
+          formData.value[wrapKey] = wrapField.value || '';
+        })
+      } else {
+        formData.value[key] = field.value || '';
+      }
     });
   });
 };
