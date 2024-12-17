@@ -218,7 +218,8 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 **Checkbox**  $attributes example:
 [
     'type' => 'checkbox',
-    'defaultValue' => true,
+    'is_boolean' => true, // if you need to return the checkbox as boolean, else string.
+    'value' => old('CHECKBOX_ITEM', false),
     'label' => 'Your label',
     'class_item' => 'mb-5'
 ]
@@ -340,7 +341,7 @@ function updateInput(event) {
 [
     'helper_text' => 'Sample text',
     
-    'defaultValue' => '', // we attached this for every field for edit page purposes.
+    'value' => '', // we attached this for every field for edit page purposes.
 
     // Other props may be applied using this notation
     'others' => [
@@ -490,7 +491,7 @@ Example:
 ```php
 $this->formgroup->editField('details', 'post_title', [
     'label' => 'Post Title (Edited)',
-    'defaultValue' => old('post_title', $post->title)
+    'value' => old('post_title', $post->title)
 ]);
 ```
 

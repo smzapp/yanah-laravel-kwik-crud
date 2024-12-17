@@ -13,8 +13,8 @@
       <Checkbox 
         :inputId="`${fieldName}`" 
         :name="fieldName"
-        :value="field?.value"
         v-bind="field?.others?.inputProps"
+        :value="field?.value"
         @change="updateCheckBox"
       />
       <label :for="fieldName"  v-bind="field?.others?.labelProps"> {{  field.label }} </label>
@@ -64,7 +64,7 @@
   
 <script setup>
 import Checkbox from 'primevue/checkbox';
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, ref } from "vue";
 import InputField from "./InputField.vue";
 import { ToggleSwitch } from 'primevue';
 import CustomAutocomplete from './inputs/CustomAutocomplete.vue';
@@ -74,15 +74,15 @@ const props = defineProps({
   field: Object,
 });
 
+const checkItem = ref(false);
 const emit = defineEmits(["updateFieldValue"]);
 
 const updateFormValue = (name, value) => {
   emit('updateFieldValue', name, value);
 }
 
-const updateCheckBox = (event) => {
-  const target = event.target;
-  emit('updateFieldValue', target.name, target.value);
+const updateCheckBox = (event) => { 
+  emit('updateFieldValue', props.fieldName, event.target.checked);
 }
 
 const updateSwitch = (name, value) => {

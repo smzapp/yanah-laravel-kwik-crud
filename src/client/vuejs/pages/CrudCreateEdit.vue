@@ -131,10 +131,18 @@ const initializeFormData = () => {
     Object.entries(group.fields).forEach(([key, field]) => {
       if(typeof field.wrappedItems == 'object') {
         Object.entries(field.wrappedItems).forEach(([wrapKey, wrapField]) => {
-          formData.value[wrapKey] = wrapField.value || '';
+          if(field.is_boolean) {
+            formData.value[wrapKey] = wrapField.value ?? false;
+          } else {
+            formData.value[wrapKey] = wrapField.value || '';
+          }
         })
       } else {
-        formData.value[key] = field.value || '';
+        if(field.is_boolean) {
+          formData.value[key] = field.value ?? false;
+        } else {
+          formData.value[key] = field.value || '';
+        }
       }
     });
   });
