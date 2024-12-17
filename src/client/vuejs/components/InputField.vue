@@ -31,6 +31,8 @@
         :placeholder="`- Select -`" 
         :class="`w-full ${attributes.class}`"
         optionLabel="label"
+        optionValue="optionValue"
+        :defaultValue="attributes?.defaultValue"
         v-model="selectedOption"
         v-bind="attributes?.others?.inputProps"
       />
@@ -45,6 +47,8 @@
         optionGroupChildren="items" 
         :placeholder="attributes.placeholder" 
         v-bind="attributes?.others?.inputProps"
+        optionValue="optionValue"
+        :defaultValue="attributes?.defaultValue"
       >
           <template #optiongroup="slotProps">
               <div>
@@ -118,6 +122,7 @@ const props = defineProps({
 });
 const selectedValue = ref(null);
 const selectedOption = ref(null);
+
 const emit = defineEmits(['updateFieldValue']);
 
 const src = ref(null);

@@ -10,11 +10,13 @@ This package is built to ease the work developers do by streamlining the process
 - Run the application
 - Package Command/s
 - CRUD Implementation
-> I. CRUD (Create)
-> II. CRUD (LIST)
-> III. CRUD (EDIT/UPDATE)
+> I. CRUD (Create) <br/>
+> II. CRUD (LIST) <br/>
+> III. CRUD (EDIT/UPDATE) <br/>
 > IV. CRUD (SHOW)
-- Insert Components before / after CRUD Pages (List, Edit, Create)
+- Customize Pages (CRUD)
+> Insert Components before / after CRUD Pages (List, Edit, Create) <br/>
+> Customize Form fields (Create/Edit)
 
 ## Stack Used
 
@@ -302,7 +304,7 @@ Add custom vue file into the field.
 ]
 ```
 
-API:
+Props:
 
 `attributes` - All of the array values above will serve as attributes.
 
@@ -355,9 +357,10 @@ function updateInput(event) {
     ]
 ]
 ```
+<small>(To customize fields proceed to the bottom.)</small>
 
 **IMPORTANT:**
-Make sure to add the fields in `$this->validationRules` those you may want to be persisted into the database. Add nullable for not required.
+Make sure to add the fields in `$this->validationRules` those you may want to be persisted into the database. 
 
 ## II. CRUD (LIST)
 
@@ -480,8 +483,10 @@ $this->formgroup->editField('details', 'business_name', [
 ]);
 ```
 
+<small>(To customize fields proceed to the bottom.)</small>
+
 **IMPORTANT:**
-Make sure to add the fields in `validationRules()` you may want to be persisted. Add nullable for not required.
+Customize fields in `getValidationRules()` those you may want to be updated into the database. 
 
 ## IV. CRUD (SHOW)
 
@@ -502,7 +507,9 @@ public function renderShowVue(Builder $query, $id)
 ```
 <br/>
 
-## Insert Components before / after CRUD Pages (List, Edit, Create)
+## Customize Pages (CRUD)
+
+### Insert Components before / after CRUD Pages (List, Edit, Create)
 
 Implement `PageAffixInterface` in `Crud\{Model}Create.php`, `Crud\{Model}Edit.php`, `Crud\{Model}List.php`
 and define the components to be inserted (prepend / append).
@@ -520,6 +527,20 @@ class {Model}Create extends KwikForm implements PageAffixInterface
         ];
     }
 }
+```
+
+### Customize Form fields (Create/Edit)
+
+You may want to wrap fields.
+
+Example:
+
+```php
+$this->formgroup->beginWrap(['class' => 'flex flex-row']);
+
+// Add Fields here
+
+$this->formgroup->endWrap();
 ```
 
 <hr />
