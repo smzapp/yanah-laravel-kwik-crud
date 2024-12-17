@@ -34,7 +34,9 @@ trait BaseModelUploadTrait
 
                 $response = app(UploadService::class)->uploadOnly($imagePayload);
 
-                $model->$field = $response['full_url'];
+                if ($response !== null) {
+                    $model->$field = $response['full_url'];
+                }
 
                 // For updated(), We don't save again to avoid infinite updated() triggered.
                 // $model->withoutEvents(function () use ($model, $field, $response) {

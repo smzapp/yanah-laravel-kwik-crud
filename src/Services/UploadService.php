@@ -39,7 +39,7 @@ class UploadService
         $image = base64_decode($base64String);
         $extension = '.png';
         $fileName = 'image_' . uniqid() . '_' . time() . $extension;
-        $filePath = self::IMAGES_DIRECTORY . '/' . date('Y-m') . '/' . $fileName;
+        $filePath = self::IMAGES_DIRECTORY . date('Y-m') . '/' . $fileName;
 
         // Make sure it is accessible via public
         Storage::disk('public')->put($filePath, $image);
@@ -54,54 +54,60 @@ class UploadService
     /**
      * Upload image file
      */
-    public function uploadImageFile( $requestFile )
+    public function uploadImageFile( $requestFile ): ?array
     {
         if(! $requestFile) {
             throw new Exception('Upload file is not recognized.');
         }
 
         $fileType    = $this->getFileType($requestFile);
-        $fileData    = explode(',', $requestFile);
 
-        if (count($fileData) < 2) {
-            throw new Exception('Invalid Base64 file format.');
+        if ($fileType !== null) {
+
+            $fileData    = explode(',', $requestFile);
+
+            if (count($fileData) < 2) {
+                throw new Exception('Invalid Base64 file format.');
+            }
+    
+            $decodedFile = base64_decode($fileData[1]);
+    
+            if ($decodedFile === false) {
+                throw new Exception('Failed to decode file.');
+            }
+    
+            $extension = explode('/', $fileType)[1];
+            $fileName  = uniqid('file_', true) . '.' . $extension;
+            $filePath  = self::UPLOADS_DIRECTORY . date('Y-m') . '/' . $fileName;
+            
+            Storage::disk('public')->put($filePath, $decodedFile);
+    
+            $fileUrl = Storage::url($filePath);
+    
+            return [
+                'full_url' => $fileUrl,
+                'filename' => $fileName,
+                'image_extension' => $extension,
+            ];
         }
 
-        $decodedFile = base64_decode($fileData[1]);
-
-        if ($decodedFile === false) {
-            throw new Exception('Failed to decode file.');
-        }
-
-        $extension = explode('/', $fileType)[1];
-        $fileName  = uniqid('file_', true) . '.' . $extension;
-        $filePath  = self::UPLOADS_DIRECTORY . '/'. date('Y-m') . '/' . $fileName;
-        
-        Storage::disk('public')->put($filePath, $decodedFile);
-
-        $fileUrl = Storage::url($filePath);
-
-        return [
-            'full_url' => $fileUrl,
-            'filename' => $fileName,
-            'image_extension' => $extension,
-        ];
+        return null;
     }
 
     /**
      * Example return: image/png
      */
-    public function getFileType(string $base64File) : string
+    public function getFileType(string $base64File) : ?string
     {
         if(! $base64File ) throw new Exception('No file selected.');
 
         preg_match('/^data:(.+);base64,/', $base64File, $matches);
 
-        if( count($matches) < 2) {
-            throw new Exception('Something went wrong while extracting a file.');
+        if( count($matches) >= 2) {
+            return $matches[1];
         }
 
-        return $matches[1];
+        return null;
     }
 
     /**

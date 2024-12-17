@@ -17,7 +17,8 @@ class BaseModel extends Model {
         parent::boot();
 
         static::creating(function ($model) {
-            if (array_key_exists('uuid', $model->getAttributes()) && empty($model->uuid)) {
+
+            if (in_array('uuid', $model->getFillable())) {
                 $model->uuid = Str::uuid()->toString();
             }
             
