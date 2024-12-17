@@ -136,8 +136,6 @@ function onFileSelect(event) {
   
 function handleInput(event) {
   
-  console.log(event);
-  
   let value = '';
 
   if(event.value?.optionValue !== undefined) {

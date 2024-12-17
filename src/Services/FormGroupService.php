@@ -17,6 +17,7 @@ class FormGroupService {
     ];
 
     private $validations;
+    private $wrap = null;
 
     public function __construct($rules)
     {
@@ -49,11 +50,32 @@ class FormGroupService {
         if (empty($this->groups)) {
             $this->addGroup('primary', []);
         } else {
-
             $lastGroupKey = array_key_last($this->groups);
 
-            $this->groups[$lastGroupKey]['fields'][$name] = $attributes;
+            if ($this->wrap === null) {
+                $this->groups[$lastGroupKey]['fields'][$name] = $attributes;
+            } else {
+                if (!isset($this->groups[$lastGroupKey]['fields']['wrapperIndex'])) {
+                    $this->groups[$lastGroupKey]['fields']['wrapperIndex']['vBind'] = $this->wrap;
+                }
+
+                $this->groups[$lastGroupKey]['fields']['wrapperIndex']['wrappedItems'][$name] = $attributes;
+            }
         }
+    }
+
+
+    /**
+     * Wrap fields
+     */
+    public function beginWrap(array $bindProps)
+    {
+        $this->wrap = $bindProps;
+    }
+
+    public function endWrap()
+    {
+        $this->wrap = null;
     }
 
     /**
@@ -119,6 +141,7 @@ class FormGroupService {
             return $item;
         });
 
+        // dd($mapGroup->toArray());
         return $mapGroup->toArray();
     }
 }

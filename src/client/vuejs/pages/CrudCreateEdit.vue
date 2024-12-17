@@ -33,7 +33,11 @@
           >
             <div class="flex min-h-80 space-x-10 justify-between">
               <div class="w-8/12">
-                <FormFields 
+                <!-- <FormFields 
+                  :fields="group.fields" 
+                  @updateFieldValue="updateFormData"
+                /> -->
+                <FieldWrapper
                   :fields="group.fields" 
                   @updateFieldValue="updateFormData"
                 />
@@ -53,10 +57,14 @@
       <div v-else>
         <div class="bg-white p-4 rounded-lg" v-for="(group, index) in groupedForm" :key="index">
           <h3 class="text-lg font-bold">{{ group.details.label }}</h3>
-          <FormFields 
+          <!-- <FormFields 
             :fields="group.fields" 
             @updateFieldValue="updateFormData"
-          />
+          /> -->
+          <FieldWrapper
+              :fields="group.fields" 
+              @updateFieldValue="updateFormData"
+            />
         </div>
       </div>
 
@@ -82,6 +90,7 @@ import { Form } from '@primevue/forms';
 import axios from 'axios';
 import BreadCrumbsLocal from '../components/BreadCrumbsLocal.vue';
 import { router } from '@inertiajs/vue3';
+import FieldWrapper from "../components/FieldWrapper.vue";
 
 
 const toast = useToast();
@@ -110,6 +119,8 @@ const groupedForm = computed(() => {
 });
 
 const updateFormData = (name, value) => {
+  console.log(name, value);
+  
   formData.value[name] = value;
 };
  
