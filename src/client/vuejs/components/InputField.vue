@@ -7,7 +7,7 @@
         @change="handleInput"
         :class="`border-gray-300 shadow-sm focus:ring-primary-default focus:border-primary-default p-2 w-full ${attributes.class}`"
         :rows="attributes?.rows"
-      >{{ attributes.value}}</textarea>
+      >{{ attributes?.defaultValue}}</textarea>
     </template>
 
     <template v-else-if="attributes.type === 'radio'">
@@ -16,6 +16,7 @@
           :value="option.value"
           v-model="selectedValue"
           v-bind="attributes?.others?.inputProps"
+          :defaultValue="attributes?.defaultValue"
           @change="handleInput"
         />
         <label>{{ option.label }}</label>
@@ -70,7 +71,8 @@
     <template v-else-if="attributes.type === 'calendar'">
         <DatePicker 
           v-bind="attributes?.others?.inputProps"
-          v-model="calendarDate" 
+          v-model="calendarDate"
+          :defaultValue="attributes?.defaultValue"
           @dateSelect="handleInput" 
         />
     </template>
@@ -83,7 +85,7 @@
             <InputText 
               :name="fieldName" 
               :placeholder="attributes.placeholder" 
-              :value="attributes.value || ''"  
+              :defaultValue="attributes?.defaultValue"
               v-bind="attributes?.others?.inputProps" 
             />
         </InputGroup>
@@ -95,7 +97,7 @@
         :type="attributes.type || 'text'"
         :id="fieldName"
         :name="fieldName"
-        :value="attributes.value || ''"
+        :defaultValue="attributes?.defaultValue"
         :class="`border-gray-300 shadow-sm focus:ring-primary-default focus:border-primary-default p-2 w-full ${attributes.class}`"
         @input="handleInput"
       />

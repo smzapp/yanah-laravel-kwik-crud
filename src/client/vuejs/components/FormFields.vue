@@ -13,7 +13,7 @@
       <Checkbox 
         :inputId="`${fieldName}`" 
         :name="fieldName"
-        :value="field.value"
+        :defaultValue="attributes?.defaultValue"
         v-bind="field?.others?.inputProps"
         @change="updateCheckBox"
       />
@@ -29,6 +29,7 @@
       </label>
       <ToggleSwitch
         v-bind="field?.others?.inputProps"
+        :defaultValue="field?.defaultValue"
         @valueChange="updateSwitch(fieldName, $event)"
       />
     </div>
@@ -38,6 +39,7 @@
     <CustomAutocomplete
       :field="field"
       :name="fieldName"
+      :defaultValue="field?.defaultValue"
       @updateFieldValue="updateFormValue"
     />
   </template>
@@ -51,7 +53,7 @@
       <InputField
         :attributes="field"
         :fieldName="fieldName"
-          v-bind="field?.others?.inputProps"
+        v-bind="field?.others?.inputProps"
         @updateFieldValue="updateFormValue"
       />
     </div>

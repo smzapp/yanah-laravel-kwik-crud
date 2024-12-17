@@ -14,6 +14,7 @@
         :emptyMessage="dropdownMessage"
         @complete="search"
         @valueChange="changeAutoComplete"
+        :defaultValue="field?.defaultValue"
       />
     </div>
   </div>

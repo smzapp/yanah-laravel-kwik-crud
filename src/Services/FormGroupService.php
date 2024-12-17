@@ -52,11 +52,11 @@ class FormGroupService {
         } else {
             $lastGroupKey = array_key_last($this->groups);
 
-            if ($this->wrap === null) {
+            if ($this->isWrap() === false) {
                 $this->groups[$lastGroupKey]['fields'][$name] = $attributes;
             } else {
                 if (!isset($this->groups[$lastGroupKey]['fields']['wrapperIndex'])) {
-                    $this->groups[$lastGroupKey]['fields']['wrapperIndex']['vBind'] = $this->wrap;
+                    $this->groups[$lastGroupKey]['fields']['wrapperIndex']['vBind'] = $this->getWrap();
                 }
 
                 $this->groups[$lastGroupKey]['fields']['wrapperIndex']['wrappedItems'][$name] = $attributes;
@@ -76,6 +76,16 @@ class FormGroupService {
     public function endWrap()
     {
         $this->wrap = null;
+    }
+
+    public function getWrap()
+    {
+        return $this->wrap;
+    }
+
+    public function isWrap()
+    {
+        return (is_array($this->wrap) && count($this->wrap)) ? true : false;
     }
 
     /**
@@ -107,17 +117,34 @@ class FormGroupService {
     {
         foreach ($this->groups as &$group) {
             if ($group['group_name'] === $groupName) {
-                if (! isset($group['fields'][$name])) {
-                    throw new InvalidArgumentException("Field '{$name}' does not exist in group '{$groupName}'.");
+                if (isset($group['fields'][$name])) {
+                    $group['fields'][$name] = array_merge($group['fields'][$name], $attributes);
+                    return;
                 }
-                
-                $group['fields'][$name] = array_merge($group['fields'][$name], $attributes);
-                return;
+
+                $wrappedItems = &$group['fields']['wrapperIndex']['wrappedItems'] ?? null;
+
+                $wrappedBind = &$group['fields']['wrapperIndex']['vBind'] ?? null;
+
+                if ($wrappedItems) {
+
+                    $wrappedBind = $this->getWrap();
+
+                    foreach ($wrappedItems as $fieldName => $props) {
+                        if ($fieldName === $name) {
+                            $wrappedItems[$name] = array_merge($props, $attributes);
+                            return;
+                        }
+                    }
+                }
+
+                throw new InvalidArgumentException("Field '{$name}' does not exist in group '{$groupName}'.");
             }
         }
 
         throw new InvalidArgumentException("Group '{$groupName}' does not exist.");
     }
+
 
     /**
      * Get the final structured data

@@ -170,7 +170,7 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 
 <b>Note:</b> The `type` attribute serves as the key to determine what input type we'll implement.
 
-## API $attributes
+## $attributes (Properties)
  
 <h2> Types: </h2>
 
@@ -218,7 +218,7 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 **Checkbox**  $attributes example:
 [
     'type' => 'checkbox',
-    'value' => true,
+    'defaultValue' => true,
     'label' => 'Your label',
     'class_item' => 'mb-5'
 ]
@@ -340,7 +340,9 @@ function updateInput(event) {
 [
     'helper_text' => 'Sample text',
     
-    // Other APIs/props may be applied using this notation
+    'defaultValue' => '', // we attached this for every field for edit page purposes.
+
+    // Other props may be applied using this notation
     'others' => [
         'wrapper' => [
             // We may customize the wrapper of label & input
@@ -471,16 +473,31 @@ public function search(Builder $query, string $q) : Builder
 
 ## III. CRUD (EDIT/UPDATE)
 
-
-We may update `$attributes` in `prepareCreateForm()`
+We'll reuse the fields we defined in `prepareCreateForm()`.
 <br/>
-example:
+
+We update those in `prepareEditForm()`.
 
 ```php
-$this->formgroup->editField('details', 'business_name', [
-    'label' => 'Edited Business name',
-    'value' => old('business_name', $post->body)
+$this->formgroup->editField('GROUP_NAME', 'FIELD_NAME', $attributes); // pattern
+```
+
+For `$attributes`, refer to  <b>$attributes (Properties)</b> above.
+
+<br/>
+Example:
+
+```php
+$this->formgroup->editField('details', 'post_title', [
+    'label' => 'Post Title (Edited)',
+    'defaultValue' => old('post_title', $post->title)
 ]);
+```
+
+Or the details:
+
+```php
+$this->formgroup->editDetails(string $groupName, array $details);
 ```
 
 <small>(To customize fields proceed to the bottom.)</small>
