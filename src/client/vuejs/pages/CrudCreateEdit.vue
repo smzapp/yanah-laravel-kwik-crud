@@ -98,8 +98,8 @@ const hasTabs = computed(() =>
 const createAsyncComponent = (path) => 
   path ? computed(() => defineAsyncComponent({ loader: () => import(`${path}`) })) : null;
 
-const prependPageLocal = createAsyncComponent(pageProps.pageWrapper.prepend);
-const appendPageLocal = createAsyncComponent(pageProps.pageWrapper.append);
+const prependPageLocal = createAsyncComponent(pageProps?.pageWrapper?.prepend);
+const appendPageLocal = createAsyncComponent(pageProps?.pageWrapper?.append);
 
 const groupedForm = computed(() => {
   return pageProps.formgroup.map((group) => ({

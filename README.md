@@ -282,14 +282,14 @@ Example:
         ['label' => 'test', 'value' => 'this'],
         ['label' => 'test2', 'value' => 'this2'],
     ],
-    'api_endpoint' => '/settings/business-categories/autocomplete'
+    'api_endpoint' => '/post/search'
 ]
 ```
 
 | Property              | Type             | Description                                                                                   |
 |-----------------------|------------------|-----------------------------------------------------------------------------------------------|
 | `default_query_results` | `array`          | Automatically populates values to be searched if an API fetch is not required.               |
-| `api_endpoint`         | `string \| null` | Defines the API endpoint. The response must match the data structure of `default_query_results`. |
+| `api_endpoint`         | `string \| null` | Defines the API endpoint. You should have a `/post/search` route to handle the request and then the response must match the data structure of `default_query_results`. |
 
 ## Creating custom vue file
 
