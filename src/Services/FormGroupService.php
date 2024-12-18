@@ -17,7 +17,9 @@ class FormGroupService {
     ];
 
     private $validations;
-    private $wrap = null;
+
+    private $wrap    = null;
+    private $wrapKey = '';
 
     public function __construct($rules)
     {
@@ -55,11 +57,13 @@ class FormGroupService {
             if ($this->isWrap() === false) {
                 $this->groups[$lastGroupKey]['fields'][$name] = $attributes;
             } else {
-                if (!isset($this->groups[$lastGroupKey]['fields']['wrapperIndex'])) {
-                    $this->groups[$lastGroupKey]['fields']['wrapperIndex']['vBind'] = $this->getWrap();
+                if (!isset($this->groups[$lastGroupKey]['fields']['wrapperIndex'][$this->getWrapKey()])) {
+                    $this->groups[$lastGroupKey]['fields']['wrapperIndex'][$this->getWrapKey()] = [
+                        'vBind' => $this->getWrap()
+                    ];
                 }
 
-                $this->groups[$lastGroupKey]['fields']['wrapperIndex']['wrappedItems'][$name] = $attributes;
+                $this->groups[$lastGroupKey]['fields']['wrapperIndex'][$this->getWrapKey()]['wrappedItems'][$name] = $attributes;
             }
         }
     }
@@ -68,14 +72,23 @@ class FormGroupService {
     /**
      * Wrap fields
      */
-    public function beginWrap(array $bindProps)
+    public function beginWrap(string $inputIndex, array $bindProps)
     {
+        $this->wrapKey = $inputIndex;
+
         $this->wrap = $bindProps;
     }
 
     public function endWrap()
     {
         $this->wrap = null;
+        
+        $this->wrapKey = null;
+    }
+
+    public function getWrapKey()
+    {
+        return $this->wrapKey;
     }
 
     public function getWrap()
@@ -122,14 +135,12 @@ class FormGroupService {
                     return;
                 }
 
-                $wrappedItems = &$group['fields']['wrapperIndex']['wrappedItems'] ?? null;
-
-                $wrappedBind = &$group['fields']['wrapperIndex']['vBind'] ?? null;
+                // If field is wrapped.
+                $wrappedItems = &$group['fields']['wrapperIndex'][$this->getWrapKey()]['wrappedItems'] ?? null;
+                $wrappedBind = &$group['fields']['wrapperIndex'][$this->getWrapKey()]['vBind'] ?? null;
 
                 if ($wrappedItems) {
-
                     $wrappedBind = $this->getWrap();
-
                     foreach ($wrappedItems as $fieldName => $props) {
                         if ($fieldName === $name) {
                             $wrappedItems[$name] = array_merge($props, $attributes);

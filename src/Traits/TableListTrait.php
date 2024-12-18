@@ -35,8 +35,14 @@ trait TableListTrait
             $query = $crudList->search($query, $inputQuery);
         }
 
-        if($crudList instanceof BodyCollectionInterface && $this->isListItemView())
+        if($crudList instanceof BodyCollectionInterface)
         {
+            if(!$this->isListItemView()) {
+                throw new InvalidArgumentException('
+                    method getListView() should return ListTemplateViewEnum::LISTITEM.
+                ');
+            }
+
             return $crudList->responseBodyCollection($query);
         }
 

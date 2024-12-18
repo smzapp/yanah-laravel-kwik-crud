@@ -33,10 +33,6 @@
           >
             <div class="flex min-h-80 space-x-10 justify-between">
               <div class="w-8/12">
-                <!-- <FormFields 
-                  :fields="group.fields" 
-                  @updateFieldValue="updateFormData"
-                /> -->
                 <FieldWrapper
                   :fields="group.fields" 
                   @updateFieldValue="updateFormData"
@@ -57,10 +53,6 @@
       <div v-else>
         <div class="bg-white p-4 rounded-lg" v-for="(group, index) in groupedForm" :key="index">
           <h3 class="text-lg font-bold">{{ group.details.label }}</h3>
-          <!-- <FormFields 
-            :fields="group.fields" 
-            @updateFieldValue="updateFormData"
-          /> -->
           <FieldWrapper
               :fields="group.fields" 
               @updateFieldValue="updateFormData"
@@ -129,13 +121,17 @@ const initializeFormData = () => {
   formData.value = {}; 
   pageProps.formgroup.forEach(group => {
     Object.entries(group.fields).forEach(([key, field]) => {
-      if(typeof field.wrappedItems == 'object') {
-        Object.entries(field.wrappedItems).forEach(([wrapKey, wrapField]) => {
-          if(field.is_boolean) {
-            formData.value[wrapKey] = wrapField.value ?? false;
-          } else {
-            formData.value[wrapKey] = wrapField.value || '';
-          }
+      
+      if(key === 'wrapperIndex') {
+        Object.entries(field).forEach(([index, wrapField]) => {
+          
+          Object.entries(wrapField.wrappedItems).forEach(([wrapKey, props]) => {
+            if(props.is_boolean) {
+              formData.value[wrapKey] = props.value ?? false;
+            } else {
+              formData.value[wrapKey] = props.value || '';
+            }
+          });
         })
       } else {
         if(field.is_boolean) {

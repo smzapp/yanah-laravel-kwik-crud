@@ -27,7 +27,7 @@ class {{className}} extends KwikController  implements PageControlInterface
     /**
      * CRUD Configurations start here
      */
-    public function configurations()
+    public function configurations(): void
     {
         $this->configureRoute(config('kwik.main.base_url') . '/{{modelSlug}}');
 

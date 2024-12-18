@@ -241,7 +241,7 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
     'label' => 'Business category',
     'type' => 'select',
     'options' => [
-        ['label' => 'Option 1', 'optionValue' => 'option1'],
+        ['label' => 'Option 1', 'optionValue' => 'option1'], // note: optionValue should be string
         ['label' => 'Option 2', 'optionValue' => 'option2'],
         ['label' => 'Option 3', 'optionValue' => 'option3'],
     ]
@@ -257,7 +257,7 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
         [
             'label' => 'First group',
             'items' => [
-                [ 'label' => 'First1', 'optionValue' => 'first1'],
+                [ 'label' => 'First1', 'optionValue' => 'first1'],  // note: optionValue should be string
                 [ 'label' => 'First2', 'optionValue' => 'first2'],
                 [ 'label' => 'First3', 'optionValue' => 'first3'],
             ],
@@ -554,7 +554,7 @@ You may want to wrap fields.
 Example:
 
 ```php
-$this->formgroup->beginWrap(['class' => 'flex flex-row']);
+$this->formgroup->beginWrap('INDEX_KEY', ['class' => 'flex flex-row']);
 
 // Add Fields here
 

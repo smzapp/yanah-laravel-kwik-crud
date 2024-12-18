@@ -31,7 +31,6 @@
       :class="`w-full ${attributes.class}`"
       optionLabel="label"
       optionValue="optionValue"
-      :value="attributes?.value"
       v-model="selectedOption"
       v-bind="attributes?.others?.inputProps"
     />
@@ -122,8 +121,7 @@ fieldName: {
 },
 });
 const inputGroupText = ref(props.attributes.value);
-const selectedValue = ref(null);
-const selectedOption = ref(null);
+const selectedOption = ref(props.attributes.value);
 
 const emit = defineEmits(['updateFieldValue']);
 

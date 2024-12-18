@@ -4,14 +4,14 @@ namespace App\CrudKwik\{{modelPlural}};
 use Illuminate\Database\Eloquent\Builder; 
 use Yanah\LaravelKwik\App\Contracts\ControlCrudInterface;
 use Yanah\LaravelKwik\App\Contracts\BodyPaginatorInterface;
-use Yanah\LaravelKwik\App\Contracts\BodyCollectionInterface;
+// use Yanah\LaravelKwik\App\Contracts\BodyCollectionInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Yanah\LaravelKwik\Crud\CrudListControl;
 use Yanah\LaravelKwik\Enums\ListTemplateViewEnum;
 
 
-class {{modelName}}List implements ControlCrudInterface, BodyPaginatorInterface, BodyCollectionInterface
+class {{modelName}}List implements ControlCrudInterface, BodyPaginatorInterface
 {
     private $perPage  = 15;
 
@@ -78,14 +78,14 @@ class {{modelName}}List implements ControlCrudInterface, BodyPaginatorInterface,
      * 
      * Customize the body without a pagination. 
      */
-    public function responseBodyCollection(Builder $query) : Collection
+    /* public function responseBodyCollection(Builder $query) : Collection
     {
         return $query->get()->map(function($item) {
             $item->primary   = $item->title ?? 'N/A';
             $item->secondary = $item->body ?? 'N/A';
             return $item;
         });
-    }   
+    } */
 
     /**
      * Configure this result query
