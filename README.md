@@ -520,9 +520,14 @@ Second, using custom vuejs file. You have to implement `PageShowRenderInterface`
 /**
  * Custom vue for /{model}/{id} route
  */
-public function renderShowVue(Builder $query, $id)
+use Yanah\LaravelKwik\App\Contracts\PageShowRenderInterface;
+
+class YourController extends KwikController  implements PageControlInterface, PageShowRenderInterface
 {
-    // return Inertia
+    public function renderShowVue(): string
+    {
+        return 'resources/js/Components/CustomFile.vue'; // relative to /resources/js/Components
+    }
 }
 ```
 <br/>

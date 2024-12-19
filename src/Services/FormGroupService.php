@@ -146,8 +146,10 @@ class FormGroupService {
                     foreach($wrapper as $wrapName => &$wrapGroup) {
 
                         if(isset($wrapGroup['wrappedItems'][$name])) {
+                            $mergedAttributes = array_merge($wrapGroup['wrappedItems'][$name], $attributes); // restore the old and replace by new $attributes
+
                             $updatedWrap = &$group['fields']['wrapperIndex'][$wrapName]['wrappedItems'][$name];
-                            $updatedWrap = $attributes;  // update the wrappedItems
+                            $updatedWrap = $mergedAttributes;  // update the wrappedItems
                             return;
                         }
                     }
