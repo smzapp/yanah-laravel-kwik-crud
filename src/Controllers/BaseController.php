@@ -141,7 +141,7 @@ abstract class BaseController extends Controller implements BaseInterface
                 return $this->renderShowVue($model::query(), $id);
             }
 
-            $response = $this->getShowItem($model::query(), ['*'], $id); 
+            $response = $this->getShowItem($model::query(), $model->getFillable(), $id); 
             
             return Inertia::render(static::MAIN_PAGE, array_merge($this->commonProps(), [
                 'responseData' => $response,

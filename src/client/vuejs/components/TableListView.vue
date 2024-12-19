@@ -43,7 +43,7 @@ const props = defineProps({
   localControls: Object,
   isLoading: Boolean,
   rowsPerPage: Number,
-  headers: Array,
+  headers: Object,
   activeRoute: String,
 });
 

@@ -304,6 +304,7 @@ Add custom vue file into the field.
     'source' => '@/Components/CustomVueFile.vue' // This is relative to resources/js/Components directory
 ]
 ```
+- `source` - All fileds should be saved inside `Components` folder. 
 
 Props:
 
