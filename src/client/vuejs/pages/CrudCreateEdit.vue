@@ -75,7 +75,7 @@
 
 <script setup>
 import { Head, useForm, usePage } from "@inertiajs/vue3";
-import { computed,  defineAsyncComponent, markRaw, ref, watch } from "vue";
+import { computed,  defineAsyncComponent, markRaw, onMounted, ref, watch } from "vue";
 import { Tab, TabList, TabPanel, TabPanels, Tabs, useToast, Button } from "primevue";
 import { Form } from '@primevue/forms';
 import axios from 'axios';
@@ -93,14 +93,6 @@ const loading = ref(false);
 const hasTabs = computed(() =>
   pageProps.formgroup.some((group) => group.details.tab)
 );
-
-// Append or prepend file
-/* const createAsyncComponent = (path) => 
-  path ? computed(() => defineAsyncComponent({ loader: () => import(`${path}`) })) : null;
-
-  
-const prependPageLocal = createAsyncComponent(pageProps?.pageWrapper?.prepend ?? null);
-const appendPageLocal = createAsyncComponent(pageProps?.pageWrapper?.append ?? null); */
 
 const components = import.meta.glob('@/Components/**/*.vue');
 const prependPageLocal  = ref(null);
@@ -128,8 +120,6 @@ const groupedForm = computed(() => {
 });
 
 const updateFormData = (name, value) => {
-  console.log(name, value);
-  
   formData.value[name] = value;
 };
  

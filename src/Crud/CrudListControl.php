@@ -43,6 +43,9 @@ class CrudListControl {
 
     public function updateAction(string $action, bool $value): void
     {
-        $this->config->get('actions')->put($action, $value);
+        $actions = $this->config->get('actions');
+        $actions[$action] = $value;
+        
+        $this->config->put('actions', $actions);
     }
 }

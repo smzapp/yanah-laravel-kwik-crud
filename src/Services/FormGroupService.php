@@ -135,15 +135,19 @@ class FormGroupService {
                     return;
                 }
 
-                // If field is wrapped.
-                $wrappedItems = &$group['fields']['wrapperIndex'][$this->getWrapKey()]['wrappedItems'] ?? null;
-                $wrappedBind = &$group['fields']['wrapperIndex'][$this->getWrapKey()]['vBind'] ?? null;
+                if (isset($group['fields']['wrapperIndex'])) {
 
-                if ($wrappedItems) {
-                    $wrappedBind = $this->getWrap();
-                    foreach ($wrappedItems as $fieldName => $props) {
-                        if ($fieldName === $name) {
-                            $wrappedItems[$name] = array_merge($props, $attributes);
+                    if($this->getWrap()) {
+                        $wrappedBind = &$group['fields']['wrapperIndex'][$this->getWrapKey()]['vBind'] ?? null;
+                        $wrappedBind = $this->getWrap(); // update the vBind
+                    }
+
+                    $wrapper = $group['fields']['wrapperIndex'];
+                    foreach($wrapper as $wrapName => &$wrapGroup) {
+
+                        if(isset($wrapGroup['wrappedItems'][$name])) {
+                            $updatedWrap = &$group['fields']['wrapperIndex'][$wrapName]['wrappedItems'][$name];
+                            $updatedWrap = $attributes;  // update the wrappedItems
                             return;
                         }
                     }
