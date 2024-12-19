@@ -40,11 +40,18 @@ class {{className}} extends KwikController  implements PageControlInterface
     }
 
     /**
-     * Customize the result of route: /{{modelSlug}}/{id} 
+     * Customize the result of route: /{modelSlug}/{id} 
      */
     public function getShowItem(Builder $query, $fields = ['*'], $id)
     {
-        return $query->select($fields)->findOrFail($id);
+        $data = $query->select($fields)->findOrFail($id);
+
+        // customize the $data here.
+
+        return [
+            'data' => $data,
+            'except' => [] // list down the fields you don't want to display.
+        ];
     }
 
       /**
