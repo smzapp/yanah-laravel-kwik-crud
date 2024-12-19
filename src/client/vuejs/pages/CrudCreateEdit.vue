@@ -75,7 +75,7 @@
 
 <script setup>
 import { Head, useForm, usePage } from "@inertiajs/vue3";
-import { computed,  defineAsyncComponent, ref, watch } from "vue";
+import { computed,  defineAsyncComponent, markRaw, ref, watch } from "vue";
 import { Tab, TabList, TabPanel, TabPanels, Tabs, useToast, Button } from "primevue";
 import { Form } from '@primevue/forms';
 import axios from 'axios';
@@ -95,12 +95,29 @@ const hasTabs = computed(() =>
 );
 
 // Append or prepend file
-const createAsyncComponent = (path) => 
+/* const createAsyncComponent = (path) => 
   path ? computed(() => defineAsyncComponent({ loader: () => import(`${path}`) })) : null;
 
   
 const prependPageLocal = createAsyncComponent(pageProps?.pageWrapper?.prepend ?? null);
-const appendPageLocal = createAsyncComponent(pageProps?.pageWrapper?.append ?? null);
+const appendPageLocal = createAsyncComponent(pageProps?.pageWrapper?.append ?? null); */
+
+const components = import.meta.glob('@/Components/**/*.vue');
+const prependPageLocal  = ref(null);
+const appendPageLocal  = ref(null);
+
+onMounted(() => {
+  const prependSource = pageProps?.pageWrapper?.prepend?.replace(/^@/, '/resources/js');
+  const appendSource  = pageProps?.pageWrapper?.append?.replace(/^@/, '/resources/js');
+
+  const componentPath = components[prependSource, appendSource];
+
+  if (componentPath) {
+    componentPath().then((mod) => {
+      currentComponent.value = markRaw(mod.default); 
+    });
+  }
+});
 
 const groupedForm = computed(() => {
   return pageProps.formgroup.map((group) => ({
