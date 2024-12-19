@@ -510,24 +510,29 @@ Customize fields in `getValidationRules()` those you may want to be updated into
 
 ## IV. CRUD (SHOW)
 
-In your controller, you have two options how you may display the `show` method:
+From your controller, customize the display based on the data.
 
-First, using `getShowItem()` which will return Model record.
-
-Second, using custom vuejs file. You have to implement `PageShowRenderInterface`
+Expected return: 
 
 ```php
-/**
- * Custom vue for /{model}/{id} route
- */
-use Yanah\LaravelKwik\App\Contracts\PageShowRenderInterface;
+[
+    'data' => $data, // This will be shown on the table
+    'except' => [] // list down the fields you don't want to display.
+];
+```    
 
-class YourController extends KwikController  implements PageControlInterface, PageShowRenderInterface
+Customization:
+
+You may add vue files before or after the table:
+
+```php
+public function getShowItem(Builder $query, $fields = ['*'], $id)
 {
-    public function renderShowVue(): string
-    {
-        return 'resources/js/Components/CustomFile.vue'; // relative to /resources/js/Components
-    }
+    $this->setPageWrapperItems([
+        'prepend' => '@/Components/SampleLorem.vue', // Before the table
+        'append'  => '@/Components/SampleLorem.vue', // This will be shown after the table
+    ]);
+    // More codes below
 }
 ```
 <br/>
@@ -542,13 +547,13 @@ and define the components to be inserted (prepend / append).
 ```php
 use Yanah\LaravelKwik\App\Contracts\PageAffixInterface;
 
-class {Model}Create extends KwikForm implements PageAffixInterface
+class {CrudClass} extends KwikForm implements PageAffixInterface
 {
     public function definePages(): array
     {
         return [
-            'prepend' => '/resources/js/Components/YOUR_FILE_HERE.vue',
-            'append'  => '/resources/js/Components/YOUR_FILE_HERE.vue'
+            'prepend' => '@/Components/YOUR_FILE_HERE.vue',
+            'append'  => '@/Components/YOUR_FILE_HERE.vue'
         ];
     }
 }

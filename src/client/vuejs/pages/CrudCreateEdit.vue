@@ -95,18 +95,22 @@ const hasTabs = computed(() =>
 );
 
 const components = import.meta.glob('@/Components/**/*.vue');
-const prependPageLocal  = ref(null);
-const appendPageLocal  = ref(null);
+const prependPageLocal = ref(null);
+const appendPageLocal = ref(null);
 
 onMounted(() => {
   const prependSource = pageProps?.pageWrapper?.prepend?.replace(/^@/, '/resources/js');
-  const appendSource  = pageProps?.pageWrapper?.append?.replace(/^@/, '/resources/js');
+  const appendSource = pageProps?.pageWrapper?.append?.replace(/^@/, '/resources/js');
 
-  const componentPath = components[prependSource, appendSource];
+  if (prependSource && components[prependSource]) {
+    components[prependSource]().then((mod) => {
+      prependPageLocal.value = markRaw(mod.default);
+    });
+  }
 
-  if (componentPath) {
-    componentPath().then((mod) => {
-      currentComponent.value = markRaw(mod.default); 
+  if (appendSource && components[appendSource]) {
+    components[appendSource]().then((mod) => {
+      appendPageLocal.value = markRaw(mod.default);
     });
   }
 });

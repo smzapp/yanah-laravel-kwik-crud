@@ -13,6 +13,10 @@
       />
     </div>
 
+    <!-- prepend -->
+    <component :is="prependPageLocal" />
+
+
     <div v-if="pageProps.responseData.data" >
       <div 
         v-for="(item, index) in pageProps.responseData.data" 
@@ -37,6 +41,10 @@
     >
       No Record Found
     </p>
+
+
+    <!-- append -->
+    <component :is="appendPageLocal" />
   </div>
 </template>
     
@@ -44,9 +52,31 @@
 import { Head, usePage } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
 import BreadCrumbsLocal from '../components/BreadCrumbsLocal.vue';
+import { markRaw, onMounted, ref } from 'vue';
   
 const { props: pageProps } = usePage();
-
+ 
 const uuidParams = pageProps.uuid ? `&uuid=${pageProps.uuid}` : '';
+
+const components = import.meta.glob('@/Components/**/*.vue');
+const prependPageLocal = ref(null);
+const appendPageLocal = ref(null);
+
+onMounted(() => {
+  const prependSource = pageProps?.pageWrapper?.prepend?.replace(/^@/, '/resources/js');
+  const appendSource = pageProps?.pageWrapper?.append?.replace(/^@/, '/resources/js');
+
+  if (prependSource && components[prependSource]) {
+    components[prependSource]().then((mod) => {
+      prependPageLocal.value = markRaw(mod.default);
+    });
+  }
+
+  if (appendSource && components[appendSource]) {
+    components[appendSource]().then((mod) => {
+      appendPageLocal.value = markRaw(mod.default);
+    });
+  }
+});
 </script>
     

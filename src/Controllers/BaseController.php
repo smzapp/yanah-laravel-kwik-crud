@@ -10,7 +10,6 @@ use Yanah\LaravelKwik\Services\CrudService;
 use InvalidArgumentException;
 use Illuminate\Support\Facades\DB;
 use Yanah\LaravelKwik\Traits\ConfigurationsTrait;
-use Yanah\LaravelKwik\App\Contracts\PageShowRenderInterface;
 use Yanah\LaravelKwik\Crud\CrudListControl;
 use Yanah\LaravelKwik\Traits\PageAccessTrait;
 use Yanah\LaravelKwik\Traits\PageWrapperTrait;
@@ -141,11 +140,8 @@ abstract class BaseController extends Controller implements BaseInterface
         }
 
         try {
-            if ($this instanceof PageShowRenderInterface) {
-                return $this->renderShowVue($model::query(), $id);
-            }
-
-            $response = $this->getShowItem($model::query(), $model->getFillable(), $id); 
+            $selectables = array_merge(['id'], $model->getFillable());
+            $response = $this->getShowItem($model::query(), $selectables, $id); 
             
             return Inertia::render(static::MAIN_PAGE, array_merge($this->commonProps(), [
                 'responseData' => $response,
@@ -154,7 +150,7 @@ abstract class BaseController extends Controller implements BaseInterface
                 'pageFile'  => 'CrudShowPage'
             ]));
         } catch(InvalidArgumentException $e) {
-            abort(400, 'Unable to retrieve the appropriate record.');
+            abort(404, 'Unable to retrieve the appropriate record.');
         }
     }
 

@@ -50,6 +50,9 @@
         </div>
       </div>
     </div>
+    
+    <!-- prepend -->
+    <component :is="prependPageLocal" />
 
     <template v-if="pageProps.listview == 'TableListView'">
       <TableListView 
@@ -76,13 +79,16 @@
         @onPageChange="onPageChange"
       />
     </template>
+    
+    <!-- append -->
+    <component :is="appendPageLocal" />
   </div>
 </template>
 
 
 <script setup>
 import { usePage } from '@inertiajs/vue3';
-import { computed, defineAsyncComponent, reactive, ref } from 'vue';
+import { computed, defineAsyncComponent, markRaw, onMounted, reactive, ref } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import axios from 'axios';
 import Toast from 'primevue/toast';
@@ -108,6 +114,29 @@ const isLoading = ref(false);
 const localCrud = reactive({ ...pageProps.crud });
 const localControls = reactive({...pageProps.controls});
 const rowsPerPage = ref(10);
+
+// Prepend and Append begin
+const components = import.meta.glob('@/Components/**/*.vue');
+const prependPageLocal = ref(null);
+const appendPageLocal = ref(null);
+
+onMounted(() => {
+  const prependSource = pageProps?.pageWrapper?.prepend?.replace(/^@/, '/resources/js');
+  const appendSource = pageProps?.pageWrapper?.append?.replace(/^@/, '/resources/js');
+
+  if (prependSource && components[prependSource]) {
+    components[prependSource]().then((mod) => {
+      prependPageLocal.value = markRaw(mod.default);
+    });
+  }
+
+  if (appendSource && components[appendSource]) {
+    components[appendSource]().then((mod) => {
+      appendPageLocal.value = markRaw(mod.default);
+    });
+  }
+});
+
 
 const fetchPage = async (page = 1, q = '') => {
   const url = `${pageProps.activeRoute}?page=${page}&q=${q}`;

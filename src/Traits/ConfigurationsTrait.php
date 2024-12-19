@@ -7,6 +7,7 @@ trait ConfigurationsTrait
 {
     private $activeRoute;
     private $breadCrumb;
+    private $pageWrapperItems;
 
     public function commonProps()
     {
@@ -16,8 +17,22 @@ trait ConfigurationsTrait
             'activeRoute' => $this->getActiveRoute(),
             'pageText'    => $this->getPageText(),
             'controls'    => $this->crudService->getControls(),
-            'pageWrapper' => $this->wrapperControl() // assigned in PageWrapperTrait
+            'pageWrapper' => $this->getPageWrapperItems()
         ];
+    }
+
+    public function setPageWrapperItems(array $items): void
+    {
+        $this->pageWrapperItems = $items;
+    }
+
+    public function getPageWrapperItems(): ?array
+    {
+        if($this->wrapperControl()) {
+            return $this->wrapperControl();  // assigned in PageWrapperTrait
+        }
+
+        return $this->pageWrapperItems;
     }
 
     public function configureRoute($route)
