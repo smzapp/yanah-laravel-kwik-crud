@@ -136,6 +136,10 @@ abstract class BaseController extends Controller implements BaseInterface
 
         $model = $this->getModelInstance();
 
+        if(method_exists($this, 'restrictAccessByUuid')) {
+            $this->restrictAccessByUuid($model, $id);
+        }
+
         try {
             if ($this instanceof PageShowRenderInterface) {
                 return $this->renderShowVue($model::query(), $id);
@@ -146,6 +150,7 @@ abstract class BaseController extends Controller implements BaseInterface
             return Inertia::render(static::MAIN_PAGE, array_merge($this->commonProps(), [
                 'responseData' => $response,
                 'activeId' => $id,
+                'uuid'     => $model::find($id)->uuid,
                 'pageFile'  => 'CrudShowPage'
             ]));
         } catch(InvalidArgumentException $e) {
@@ -200,6 +205,10 @@ abstract class BaseController extends Controller implements BaseInterface
         $this->assignPageSetup($childEditForm);
 
         $model = $this->getModelInstance();
+
+        if(method_exists($this, 'restrictAccessByUuid')) {
+            $this->restrictAccessByUuid($model, $id);
+        }
 
         $childEditForm->prepareEditForm($model::findOrFail($id));
 

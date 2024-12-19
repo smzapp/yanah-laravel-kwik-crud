@@ -17,6 +17,7 @@ This package is built to ease the work developers do by streamlining the process
 - Customize Pages (CRUD)
 > Insert Components before / after CRUD Pages (List, Edit, Create) <br/>
 > Customize Form fields (Create/Edit)
+- Additional Security
 
 ## Stack Used
 
@@ -548,7 +549,7 @@ class {Model}Create extends KwikForm implements PageAffixInterface
 }
 ```
 
-### Customize Form fields (Create/Edit)
+## Customize Form fields (Create/Edit)
 
 You may want to wrap fields.
 
@@ -560,6 +561,27 @@ $this->formgroup->beginWrap('INDEX_KEY', ['class' => 'flex flex-row']);
 // Add Fields here
 
 $this->formgroup->endWrap();
+```
+
+## Additional Security
+
+Notice that in `show` & `edit` pages, routes are accessible via id.
+
+You may want to append `uuid` instead.
+
+First, make sure the add `uuid` field in your model and migration.
+<br/>
+Next, use the `UuidRestrictionTrait` trait in your controller.
+<br/>
+Example:
+
+```php
+use Yanah\LaravelKwik\Traits\UuidRestrictionTrait;
+
+class {Your}Controller extends KwikController implements PageControlInterface
+{
+    use UuidRestrictionTrait; // Attach this
+}
 ```
 
 <hr />

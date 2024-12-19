@@ -35,6 +35,11 @@ trait ConfigurationsTrait
         return $this->activeRoute;
     }
 
+    public function setActiveRoute(string $route)
+    {
+        $this->activeRoute = $route;
+    }
+
     public function getBreadCrumb()
     {
         return $this->breadCrumb;

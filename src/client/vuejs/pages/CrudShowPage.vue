@@ -26,7 +26,7 @@
       </div>
       
       <div v-if="pageProps.controls.actions.edit" class="mt-4 capitalize text-sm text-primary-default">
-          <Link :href="pageProps.activeRoute + `/${pageProps.activeId}/edit`">
+          <Link :href="pageProps.activeRoute + `/${pageProps.activeId}/edit?${uuidParams}`">
             Edit 
           </Link>
         </div>
@@ -42,11 +42,11 @@
     
 <script setup>
 import { Head, usePage } from '@inertiajs/vue3';
-import { Button } from 'primevue';
 import { Link } from '@inertiajs/vue3';
 import BreadCrumbsLocal from '../components/BreadCrumbsLocal.vue';
   
 const { props: pageProps } = usePage();
-  
+
+const uuidParams = pageProps.uuid ? `&uuid=${pageProps.uuid}` : '';
 </script>
     

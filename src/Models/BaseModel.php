@@ -29,4 +29,6 @@ class BaseModel extends Model {
             static::uploadFile($model); //upload first then set the url
         });
     }
+
+    
 }
