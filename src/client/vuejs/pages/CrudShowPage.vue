@@ -28,7 +28,10 @@
           <div class="w-3/4 px-4 py-3 text-gray-800">{{ item }}</div>
         </template>
       </div>
-      
+
+      <!-- append -->
+      <component :is="appendPageLocal" />
+
       <div v-if="pageProps.controls.actions.edit" class="mt-4 capitalize text-sm text-primary-default">
           <Link :href="pageProps.activeRoute + `/${pageProps.activeId}/edit?${uuidParams}`">
             Edit 
@@ -42,9 +45,6 @@
       No Record Found
     </p>
 
-
-    <!-- append -->
-    <component :is="appendPageLocal" />
   </div>
 </template>
     
