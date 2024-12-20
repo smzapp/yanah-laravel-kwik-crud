@@ -237,7 +237,7 @@ abstract class BaseController extends Controller implements BaseInterface
             $response = $model::findOrFail($id)->update($payload);
 
             DB::commit();
-            return $childEditForm->afterUpdate($response);
+            return $childEditForm->afterUpdate($id);
         } catch (Exception $exception){
             DB::rollBack();
             return response()->json(['message' => $exception->getMessage()], 500);

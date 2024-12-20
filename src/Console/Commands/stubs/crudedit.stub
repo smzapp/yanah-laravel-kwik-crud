@@ -37,7 +37,7 @@ class {{modelName}}Edit extends {{modelName}}Create
     }
 
 
-    public function afterUpdate($result)
+    public function afterUpdate($id)
     {
         // trigger event after update
 
