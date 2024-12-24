@@ -11,13 +11,21 @@
   <template v-else>
     <template v-if="field.type === 'checkbox'">
       <div :class="`flex items-center gap-2`" v-bind="field?.wrapperProps">
-        <Checkbox 
+       <!--  <Checkbox 
           :inputId="`${fieldName}`" 
           :name="fieldName"
           v-bind="field?.inputProps"
           :value="field?.value"
           @change="updateCheckBox"
-        />
+        /> -->
+        <input 
+          type="checkbox"
+          :name="fieldName"
+          v-bind="field?.inputProps"
+          :value="field?.value"
+          :checked="field?.is_boolean ? field?.value : false"
+          @change="updateCheckBox"
+        > 
         <label :for="fieldName"  v-bind="field?.labelProps"> {{  field.label }} </label>
       </div>
     </template>

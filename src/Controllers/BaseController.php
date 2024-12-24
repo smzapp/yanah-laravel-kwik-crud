@@ -227,12 +227,14 @@ abstract class BaseController extends Controller implements BaseInterface
     {
         $this->pageControl->validateOperation('update');
 
-        $childEditForm = $this->crudService->setupEdit(); 
+        $childEditForm = $this->crudService->setupEdit($id); 
 
-        $childEditForm->beforeStore($this->crudService);
+        if(method_exists($childEditForm, 'beforeUpdate')) {
+            $childEditForm->beforeUpdate($this->crudService);
+        }
 
         $model   = $this->getModelInstance();
-        $payload = $this->getStorePayload($request, $childEditForm);
+        $payload = $this->getFilteredPayload($request, $childEditForm);
 
         try {
             DB::beginTransaction();
