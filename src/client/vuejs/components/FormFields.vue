@@ -10,26 +10,26 @@
 
   <template v-else>
     <template v-if="field.type === 'checkbox'">
-      <div :class="`flex items-center gap-2`" v-bind="field?.others?.wrapper">
+      <div :class="`flex items-center gap-2`" v-bind="field?.wrapperProps">
         <Checkbox 
           :inputId="`${fieldName}`" 
           :name="fieldName"
-          v-bind="field?.others?.inputProps"
+          v-bind="field?.inputProps"
           :value="field?.value"
           @change="updateCheckBox"
         />
-        <label :for="fieldName"  v-bind="field?.others?.labelProps"> {{  field.label }} </label>
+        <label :for="fieldName"  v-bind="field?.labelProps"> {{  field.label }} </label>
       </div>
     </template>
     
     <template v-else-if="field.type === 'switch'">
-      <div :class="`flex items-center gap-2`" v-bind="field?.others?.wrapper">
-        <label v-bind="field?.others?.labelProps" class="text-lg font-medium text-gray-700" >
+      <div :class="`flex items-center gap-2`" v-bind="field?.wrapperProps">
+        <label v-bind="field?.labelProps" class="text-lg font-medium text-gray-700" >
           {{ field.label }}
           <span class="text-danger" v-if="field.required">*</span>
         </label>
         <ToggleSwitch
-          v-bind="field?.others?.inputProps"
+          v-bind="field?.inputProps"
           :value="field?.value"
           @valueChange="updateSwitch(fieldName, $event)"
         />
@@ -46,15 +46,15 @@
     </template>
     
     <template v-else>
-      <div class="flex flex-col" v-bind="field?.others?.wrapper">
-        <label  v-bind="field?.others?.labelProps" class="text-lg font-medium text-gray-700 mb-1">
+      <div class="flex flex-col" v-bind="field?.wrapperProps">
+        <label  v-bind="field?.labelProps" class="text-lg font-medium text-gray-700 mb-1">
           {{ field.label }}
           <span class="text-danger" v-if="field.required">*</span>
         </label>
         <InputField
           :attributes="field"
           :fieldName="fieldName"
-          v-bind="field?.others?.inputProps"
+          v-bind="field?.inputProps"
           @updateFieldValue="updateFormValue"
         />
       </div>

@@ -40,13 +40,14 @@ trait PageWrapperTrait
         if(is_array($validations) && empty($validations)) {
             $payload = $request->all();
         } else {
-            $validatedData = $request->validate($validations);
+            $payload = $request->validate($validations);
             
-            if ($this->shouldIncludeFillable)
-            $payload = array_merge(
-                $validatedData, 
-                array_intersect_key($request->only($model->getFillable()), array_flip($model->getFillable())) 
-            );
+            if ($this->crudService->getShouldIncludeFillable()) {
+                $payload = array_merge(
+                    $payload, 
+                    array_intersect_key($request->only($model->getFillable()), array_flip($model->getFillable())) 
+                );
+            }
         } 
 
         return $payload;

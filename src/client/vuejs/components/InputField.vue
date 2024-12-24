@@ -1,7 +1,7 @@
 <template>
   <template v-if="attributes.type === 'textarea'">
     <textarea
-      v-bind="attributes?.others?.inputProps"
+      v-bind="attributes?.inputProps"
       :id="fieldName"
       :name="fieldName"
       @change="handleInput"
@@ -14,7 +14,7 @@
     <div v-for="(option, index) in attributes.options" :key="index" class="flex gap-3 mt-1">
       <RadioButton 
         :value="option.value"
-        v-bind="attributes?.others?.inputProps"
+        v-bind="attributes?.inputProps"
         @change="handleInput"
       />
       <label>{{ option.label }}</label>
@@ -32,7 +32,7 @@
       optionLabel="label"
       optionValue="optionValue"
       v-model="selectedOption"
-      v-bind="attributes?.others?.inputProps"
+      v-bind="attributes?.inputProps"
     />
   </template>
 
@@ -44,7 +44,7 @@
       optionGroupLabel="label" 
       optionGroupChildren="items" 
       :placeholder="attributes.placeholder" 
-      v-bind="attributes?.others?.inputProps"
+      v-bind="attributes?.inputProps"
       optionValue="optionValue"
       :value="attributes?.value"
     >
@@ -58,7 +58,7 @@
 
   <template v-else-if="attributes.type === 'upload'">
     <FileUpload 
-      v-bind="attributes?.others?.inputProps"
+      v-bind="attributes?.inputProps"
       mode="basic" 
       @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined" 
     />
@@ -67,7 +67,7 @@
 
   <template v-else-if="attributes.type === 'calendar'">
       <DatePicker 
-        v-bind="attributes?.others?.inputProps"
+        v-bind="attributes?.inputProps"
         v-model="calendarDate"
         :value="attributes?.value"
         @dateSelect="handleInput" 
@@ -82,7 +82,7 @@
           <InputText 
             :name="fieldName" 
             :placeholder="attributes.placeholder" 
-            v-bind="attributes?.others?.inputProps" 
+            v-bind="attributes?.inputProps" 
             v-model="inputGroupText"
             @valueChange="handleInput"
           />
@@ -91,7 +91,7 @@
 
   <template v-else>
     <input
-      v-bind="attributes?.others?.inputProps"
+      v-bind="attributes?.inputProps"
       :type="attributes.type || 'text'"
       :id="fieldName"
       :name="fieldName"

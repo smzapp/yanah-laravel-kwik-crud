@@ -344,22 +344,21 @@ function updateInput(event) {
 [
     'helper_text' => 'Sample text',
     
-    'value' => '', // we attached this for every field for edit page purposes.
+    'value' => 'ANY', // we attached this for every field for edit page purposes.
 
-    // Other props may be applied using this notation
-    'others' => [
-        'wrapper' => [
-            // We may customize the wrapper of label & input
-            // example: 'class' => 'bg-danger flex-row'
-        ],
-        'labelProps' => [
-            // Cutomize or add styles on label
-            // example: 'class' => 'text-sm'
-        ],
-        'inputProps' => [
-            // Cutomize or add styles on Input
-            // example: 'class' => 'bg-danger w-full'
-        ]
+    'wrapperProps' => [
+        // We may add bind to the wrapper of label & input
+        // example: 'class' => 'bg-danger flex-row'
+    ],
+
+    'labelProps' => [
+        // Cutomize or add styles on label
+        // example: 'class' => 'text-sm'
+    ],
+
+    'inputProps' => [
+        // Cutomize or add styles on Input Fields
+        // example: 'class' => 'bg-danger w-full'
     ]
 ]
 ```
