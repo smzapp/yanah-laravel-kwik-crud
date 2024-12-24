@@ -39,6 +39,9 @@ class {{modelName}}Create extends KwikForm
 
     public function beforeStore(CrudService $crudService) : void
     {
+        // Change to false if you want to insert validated payloads only.
+        $crudService->setShouldIncludeFillable(true);
+
         $crudService->setIndexOfUpdateCreate([
             // You may want to use updateCreate.
             // Add here the index

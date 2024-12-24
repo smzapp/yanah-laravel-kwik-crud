@@ -53,4 +53,16 @@ trait BaseCrudTrait
     {
         return array_diff($this->getModelAllFields(), $this->exceptFields);   
     }
+
+    
+    
+    public function setShouldIncludeFillable(bool $tubag)
+    {
+        $this->shouldIncludeFillable = $tubag;
+    }
+
+    public function getShouldIncludeFillable()
+    {
+        return $this->shouldIncludeFillable;
+    }
 }

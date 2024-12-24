@@ -163,10 +163,10 @@ abstract class BaseController extends Controller implements BaseInterface
 
         $childCreateForm = $this->crudService->setupCreate(); 
 
-        $model   = $this->getModelInstance();
-        $payload = $this->getStorePayload($request, $childCreateForm);
-
         $childCreateForm->beforeStore($this->crudService);
+
+        $model   = $this->getModelInstance();
+        $payload = $this->getFilteredPayload($request, $childCreateForm);
 
         try {
             DB::beginTransaction();
@@ -227,20 +227,12 @@ abstract class BaseController extends Controller implements BaseInterface
     {
         $this->pageControl->validateOperation('update');
 
-        $model   = $this->getModelInstance();
-        $childEditForm = $this->crudService->setupEdit($id); 
-        $validations   = $childEditForm->getValidationRules();
+        $childEditForm = $this->crudService->setupEdit(); 
 
-        if(empty($childEditForm->getValidationRules())) {
-            $payload = $request->all();
-        } else {
-            $validatedData = $request->validate($validations);
-            
-            $payload = array_merge(
-                $validatedData, 
-                array_intersect_key($request->only($model->getFillable()), array_flip($model->getFillable())) 
-            );
-        }
+        $childEditForm->beforeStore($this->crudService);
+
+        $model   = $this->getModelInstance();
+        $payload = $this->getStorePayload($request, $childEditForm);
 
         try {
             DB::beginTransaction();

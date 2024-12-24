@@ -595,14 +595,21 @@ class {Your}Controller extends KwikController implements PageControlInterface
 }
 ```
 
-# CRUD Lifecycle
+# CRUD Persist Lifecycle
 
 `Store`
 1. PageControl - Serves as middleware.
-2. Validations - handle validations.
-3. `beforeStore` - prepare method before storing.
+2. `beforeStore` - prepare method before storing.
+3. Validations - handle validations.
 4. Insert Model - updateOrCreate or create
 5. `afterStore` - Handle . We may trigger an event after store.
+
+`Update`
+1. PageControl - Serves as middleware.
+2. `beforeUpdate` - prepare method before storing.
+3. Validations - handle validations.
+4. Update model
+5. `afterUpdate` - Handle . We may trigger an event after store.
 
 <hr />
 <br/>

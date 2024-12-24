@@ -20,6 +20,13 @@ class CrudService {
     private $modelInstance;
 
     private $activeId;
+    
+    /**
+     * In inserting record, we have two options: to include the 
+     * fillable fields or not.
+     */
+    private $shouldIncludeFillable = true;
+    
 
     public function initialize(array $config)
     {

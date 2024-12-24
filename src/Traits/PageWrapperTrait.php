@@ -32,16 +32,17 @@ trait PageWrapperTrait
         return null;
     }
 
-    public function getStorePayload(Request $request, $childCreateForm)
+    public function getFilteredPayload(Request $request, $childForm)
     {
         $model = $this->getModelInstance();
-        $validations = $childCreateForm->getValidationRules();
+        $validations = $childForm->getValidationRules();
         
         if(is_array($validations) && empty($validations)) {
             $payload = $request->all();
         } else {
             $validatedData = $request->validate($validations);
             
+            if ($this->shouldIncludeFillable)
             $payload = array_merge(
                 $validatedData, 
                 array_intersect_key($request->only($model->getFillable()), array_flip($model->getFillable())) 
@@ -50,5 +51,4 @@ trait PageWrapperTrait
 
         return $payload;
     }
-
 }

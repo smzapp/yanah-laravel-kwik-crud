@@ -36,6 +36,16 @@ class {{modelName}}Edit extends {{modelName}}Create
         // you may modify fields here
     }
 
+    public function beforeUpdate(CrudService $crudService) : void
+    {
+        // Change to false if you want to insert validated payloads only.
+        $crudService->setShouldIncludeFillable(true);
+
+        $crudService->setIndexOfUpdateCreate([
+            // You may want to use updateCreate.
+            // Add here the index
+        ]); 
+    }
 
     public function afterUpdate($id)
     {
