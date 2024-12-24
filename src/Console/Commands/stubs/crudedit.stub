@@ -16,7 +16,7 @@ class {{modelName}}Edit extends {{modelName}}Create
     }
 
     /**
-     * IMPORTANT!!! Add the fields you may want to be persisted. Add nullable for not required.
+     * Add the fields you may want to be persisted. Add nullable for not required.
      */
     public function getValidationRules() : array
     {

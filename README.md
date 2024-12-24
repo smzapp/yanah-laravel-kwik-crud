@@ -18,6 +18,7 @@ This package is built to ease the work developers do by streamlining the process
 > Insert Components before / after CRUD Pages (List, Edit, Create) <br/>
 > Customize Form fields (Create/Edit)
 - Additional Security
+- CRUD Lifecycle
 
 ## Stack Used
 
@@ -593,6 +594,15 @@ class {Your}Controller extends KwikController implements PageControlInterface
     use UuidRestrictionTrait; // Attach this
 }
 ```
+
+# CRUD Lifecycle
+
+`Store`
+1. PageControl - Serves as middleware.
+2. Validations - handle validations.
+3. `beforeStore` - prepare method before storing.
+4. Insert Model - updateOrCreate or create
+5. `afterStore` - Handle . We may trigger an event after store.
 
 <hr />
 <br/>

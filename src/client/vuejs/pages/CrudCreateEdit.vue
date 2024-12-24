@@ -60,13 +60,21 @@
         </div>
       </div>
 
-      <Button 
-        type="submit" 
-        :label="pageProps.button?.text ?? 'Submit'" 
-        icon="pi pi-send"
-        class="mt-5"
-        :loading="loading"
-      />
+      <div class="flex justify-end gap-3 items-center mt-8 w-80">
+        <div class="w-72">
+          <Link :href="pageProps.activeRoute">
+            <Button :label="'Cancel'" class="bg-secondary" variant="outlined" fluid />
+          </Link>
+        </div>
+        <Button 
+          type="submit" 
+          :label="pageProps.button?.text ?? 'Submit'" 
+          icon="pi pi-send"
+          :class="'px-10'"
+          :loading="loading"
+          fluid
+        />
+      </div>
     </Form>
 
     <component :is="appendPageLocal" />
@@ -74,8 +82,8 @@
 </template>
 
 <script setup>
-import { Head, useForm, usePage } from "@inertiajs/vue3";
-import { computed,  defineAsyncComponent, markRaw, onMounted, ref, watch } from "vue";
+import { Head, useForm, usePage, Link } from "@inertiajs/vue3";
+import { computed, markRaw, onMounted, ref, watch } from "vue";
 import { Tab, TabList, TabPanel, TabPanels, Tabs, useToast, Button } from "primevue";
 import { Form } from '@primevue/forms';
 import axios from 'axios';

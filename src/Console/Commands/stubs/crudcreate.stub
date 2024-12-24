@@ -14,10 +14,6 @@ class {{modelName}}Create extends KwikForm
      */
     protected $redirectTo = '';
 
-    /**
-     * IMPORTANT: Add the fields you may want to be persisted. Add nullable for not required.
-     * This serves as payload to be accepted in store()
-     */
     protected $validationRules = [
         // Add validations here.
     ];
