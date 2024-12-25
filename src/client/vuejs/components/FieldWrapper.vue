@@ -4,21 +4,19 @@
     :key="fieldName"
     class="flex flex-col mb-4"
   >
-    <template v-if="fieldName == 'wrapperIndex'">
-      <template v-for="(wrapHolder, key) in field" :key="key">
-        <div v-bind="wrapHolder.vBind">
+    <template v-if="field.wrappedItems">
+        <div v-bind="field.vBind">
           <template 
-            v-for="(fieldSub, fieldWrapName) in wrapHolder.wrappedItems" 
+            v-for="(fieldSub, fieldWrapName) in field.wrappedItems" 
             :key="fieldWrapName"
             >
-            <FormFields
-              :field="fieldSub"
-              :fieldName="fieldWrapName"
-              @updateFieldValue="(name, value) => $emit('updateFieldValue', name, value)"
-            />
+              <FormFields
+                :field="fieldSub"
+                :fieldName="fieldWrapName"
+                @updateFieldValue="(name, value) => $emit('updateFieldValue', name, value)"
+              />
           </template>
         </div>
-      </template> 
     </template>
 
     <template v-else>

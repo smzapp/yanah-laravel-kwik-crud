@@ -139,19 +139,20 @@ const updateFormData = (name, value) => {
 const initializeFormData = () => {
   formData.value = {}; 
   pageProps.formgroup.forEach(group => {
-    Object.entries(group.fields).forEach(([key, field]) => {
-      
-      if(key === 'wrapperIndex') {
-        Object.entries(field).forEach(([index, wrapField]) => {
-          
-          Object.entries(wrapField.wrappedItems).forEach(([wrapKey, props]) => {
-            if(props.is_boolean) {
-              formData.value[wrapKey] = props.value ?? false;
-            } else {
-              formData.value[wrapKey] = props.value || '';
-            }
-          });
-        })
+    const sortedFields = Object.entries(group.fields)
+      .sort(([keyA, fieldA], [keyB, fieldB]) => fieldA.tabIndex - fieldB.tabIndex);
+
+    Object.entries(sortedFields).forEach(([key, field]) => {
+      const wrapped = typeof field[1] !== undefined ? field[1] : null;
+
+      if(wrapped.wrappedItems) {
+        Object.entries(wrapped.wrappedItems).forEach(([wrapKey, props]) => {
+          if(props.is_boolean) {
+            formData.value[wrapKey] = props.value ?? false;
+          } else {
+            formData.value[wrapKey] = props.value || '';
+          }
+        });
       } else {
         if(field.is_boolean) {
           formData.value[key] = field.value ?? false;
