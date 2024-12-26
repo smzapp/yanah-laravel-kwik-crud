@@ -6,11 +6,14 @@
       class="flex justify-content-between border-b py-3 even:bg-[#f8fafc] odd:border-[#e2e8f0]"
       >
       <div class="pl-4 w-full">
-        <div class="font-bold text-lg capitalize text-[#333]">
-          {{ item.primary ?? 'N/A'}}
-        </div>
-        <div class="text-slate-500">
-          {{ item.secondary ?? 'N/A'}}
+        <div v-if="item.rowHtml" v-html="item.rowHtml" />
+        <div v-else>
+          <div class="font-bold text-lg capitalize text-[#333]">
+            {{ item.primary ?? 'N/A'}}
+          </div>
+          <div class="text-slate-500">
+            {{ item.secondary ?? 'N/A'}}
+          </div>
         </div>
       </div>
       <div class="w-[160px] flex justify-content-between">
