@@ -6,7 +6,7 @@
       class="flex justify-content-between border-b py-3 even:bg-[#f8fafc] odd:border-[#e2e8f0]"
       >
       <div class="pl-4 w-full">
-        <div v-if="item.rowHtml" v-html="item.rowHtml" />
+        <div v-if="item.rawHtml" v-html="item.rawHtml" />
         <div v-else>
           <div class="font-bold text-lg capitalize text-[#333]">
             {{ item.primary ?? 'N/A'}}
@@ -30,6 +30,7 @@
 
 <script setup>
 import ActionButtions from '@kwik/components/ActionButtons.vue';
+import { onMounted, ref } from 'vue';
 
 const props = defineProps({
   localCrud: Object,

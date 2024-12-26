@@ -410,6 +410,18 @@ class {Model}List implements ControlCrudInterface, BodyCollectionInterface
 }
 ```
 
+or, you may customize the row using html codes by adding `rawHtml`.
+
+```php
+public function responseBodyCollection(Builder $query) : Collection
+{
+    return $query->get()->map(function($item) {
+        $item->rawHtml = '<div class="text-xl">Custom html here</div>'; // Add this property
+        return $item;
+    });
+}
+```
+
 ### B. Define View
 
 We have two options of how our list should look like:
