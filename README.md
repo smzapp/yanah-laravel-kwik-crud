@@ -364,8 +364,15 @@ function updateInput(event) {
 ```
 <small>(To customize fields proceed to the bottom.)</small>
 
-**IMPORTANT:**
-Make sure to add the fields in `$this->validationRules` those you may want to be persisted into the database. 
+*** Validations ***
+
+Validations are defined in `$validationRules`.
+
+```php
+protected $validationRules = [
+    // Add validations here.
+];
+```
 
 ## II. CRUD (LIST)
 
@@ -517,8 +524,13 @@ $this->formgroup->editDetails(string $groupName, array $details);
 
 <small>(To customize fields proceed to the bottom.)</small>
 
-**IMPORTANT:**
-Customize fields in `getValidationRules()` those you may want to be updated into the database. 
+*** Validations ***
+
+Check method `getValidationRules` to modify validations added in `{Model}Create.php`
+
+```php 
+public function getValidationRules() {}
+```
 
 ## IV. CRUD (SHOW)
 
@@ -591,8 +603,8 @@ Notice that in `show` & `edit` pages, routes are accessible via id.
 
 You may want to append `uuid` instead.
 
-First, make sure the add `uuid` field in your model and migration.
-<br/>
+First, make sure to add `uuid` field in your model and migration.
+
 Next, use the `UuidRestrictionTrait` trait in your controller.
 <br/>
 Example:
