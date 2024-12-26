@@ -144,20 +144,20 @@ class FormGroupService {
                     return;
                 }
 
-                if (isset($group['fields'][$this->getWrapKey()])) {
+                $fields = isset($group['fields']) ? $group['fields'] : null;
 
-                    if($this->getWrap()) {
-                        $wrappedBind = &$group['fields'][$this->getWrapKey()]['vBind'] ?? null;
-                        $wrappedBind = $this->getWrap(); // update the vBind
-                    }
+                if ($fields) {
+                    foreach ($group['fields'] as $wrapName => $wrapArray) {
+                        
+                        if($this->getWrap()) {
+                            $wrappedBind = &$group['fields'][$this->getWrapKey()]['vBind'] ?? null;
+                            $wrappedBind = $this->getWrap(); // update the vBind
+                        }
 
-                    $wrapper = $group['fields'][$this->getWrapKey()];
-                    foreach($wrapper as $wrapName => &$wrapGroup) {
+                        if(isset($wrapArray['wrappedItems'][$name])) {
+                            $mergedAttributes = array_merge($wrapArray['wrappedItems'][$name], $attributes); // restore the old and replace by new $attributes
 
-                        if(isset($wrapGroup['wrappedItems'][$name])) {
-                            $mergedAttributes = array_merge($wrapGroup['wrappedItems'][$name], $attributes); // restore the old and replace by new $attributes
-
-                            $updatedWrap = &$group['fields'][$this->getWrapKey()][$wrapName]['wrappedItems'][$name];
+                            $updatedWrap = &$group['fields'][$wrapName]['wrappedItems'][$name];
                             $updatedWrap = $mergedAttributes;  // update the wrappedItems
                             return;
                         }

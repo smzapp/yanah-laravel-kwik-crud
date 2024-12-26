@@ -2,6 +2,7 @@
 namespace App\CrudKwik\{{modelPlural}};
 
 use App\Models\{{modelName}};
+use Yanah\LaravelKwik\Services\CrudService;
 
 class {{modelName}}Edit extends {{modelName}}Create 
 { 
