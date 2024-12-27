@@ -12,7 +12,7 @@
     </div>
     
     <!-- Search Toolbar -->
-    <div class="mb-3">
+    <div class="mb-3" v-if="localControls.showSearchBar">
       <div class="bg-white  mb-4 border rounded-lg py-3 px-3 flex justify-between align-items-center items-center">
         <div v-if="localControls.showSearch && pageProps.listview == 'TableListView'">
           <IconField>
@@ -53,33 +53,42 @@
     
     <!-- prepend -->
     <component :is="prependPageLocal" />
-
-    <template v-if="pageProps.listview == 'TableListView'">
-      <TableListView 
-        :localCrud="localCrud ?? null"
-        :localControls="localControls"
-        :isLoading="isLoading"
-        :rowsPerPage="rowsPerPage"
-        :headers="pageProps.headers"
-        :activeRoute="pageProps.activeRoute"
-        @deleteRecord="deleteRecord"
-        @onPageChange="onPageChange"
-      />
-    </template>
+    
+    <div 
+      v-if="Object.entries(localCrud).length == 0" 
+      class="bg-white py-5 flex flex-col items-center gap-3"
+    >
+      <span class="pi pi-file" style="font-size: 2.0rem;"></span>
+      <span>No records found.</span>
+    </div>
 
     <template v-else>
-      <ListItemView
-        :localCrud="localCrud"
-        :localControls="localControls"
-        :isLoading="isLoading"
-        :rowsPerPage="rowsPerPage"
-        :fields="pageProps.fields"
-        :activeRoute="pageProps.activeRoute"
-        @deleteRecord="deleteRecord"
-        @onPageChange="onPageChange"
-      />
-    </template>
-    
+      <template v-if="pageProps.listview == 'TableListView'">
+        <TableListView 
+          :localCrud="localCrud ?? null"
+          :localControls="localControls"
+          :isLoading="isLoading"
+          :rowsPerPage="rowsPerPage"
+          :headers="pageProps.headers"
+          :activeRoute="pageProps.activeRoute"
+          @deleteRecord="deleteRecord"
+          @onPageChange="onPageChange"
+        />
+      </template>
+      <template v-else>
+        <ListItemView
+          :localCrud="localCrud"
+          :localControls="localControls"
+          :isLoading="isLoading"
+          :rowsPerPage="rowsPerPage"
+          :fields="pageProps.fields"
+          :activeRoute="pageProps.activeRoute"
+          @deleteRecord="deleteRecord"
+          @onPageChange="onPageChange"
+        />
+      </template>
+    </template><!-- else of records -->
+
     <!-- append -->
     <component :is="appendPageLocal" />
   </div>

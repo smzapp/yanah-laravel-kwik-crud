@@ -19,6 +19,7 @@ class CrudListControl {
     private function items(): Collection
     {
         return collect([
+            'showSearchBar' => true,
             'showSearch'    => false, // Search is available only on Paginated or TableListView
             'showPrintPdf'  => false,
             'showAddButton' => true,
