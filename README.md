@@ -591,7 +591,7 @@ Example:
 
 ```javascript
 //@/Components/YOUR_FILE_HERE.vue
-const emit = defineEmits(['updateCrudList']);
+const emit = defineEmits(['updateCrudList']); // Make sure to define updateCrudList.
 
 const ChangeListItems = () => {
   router.visit(`URL`, {

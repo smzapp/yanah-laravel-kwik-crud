@@ -104,7 +104,7 @@
 <script setup>
 import { usePage } from '@inertiajs/vue3';
 import { computed, defineAsyncComponent, markRaw, onMounted, reactive, ref } from 'vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import axios from 'axios';
 import Toast from 'primevue/toast';
 import Button from 'primevue/button';
@@ -120,10 +120,6 @@ import BreadCrumbsLocal from '../components/BreadCrumbsLocal.vue';
 const toast = useToast();
 const confirm = useConfirm();
 const { props: pageProps } = usePage();
-
-const currentLayout = computed(() =>
-  defineAsyncComponent(() => import(`@/Layouts/${pageProps.layout}.vue`))
-);
 
 const isLoading = ref(false);
 const localControls = reactive({...pageProps.controls});
@@ -199,7 +195,15 @@ const deleteRecord = async (id) => {
           detail: "Record deleted successfully!",
           life: 3000,
         });
-        fetchPage(localCrud.current_page);
+        
+        router.visit(`${pageProps.activeRoute}?page=${localCrud.current_page}`, {
+          method: 'get',
+          preserveState: true, 
+          replace: true, 
+          onSuccess: (response) => {
+            localCrud.value = response.props.crud
+          },
+        });
       } catch (error) {
         toast.add({
           severity: "error",
