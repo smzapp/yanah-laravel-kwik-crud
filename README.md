@@ -583,6 +583,28 @@ class {CrudClass} extends KwikForm implements PageAffixInterface
 }
 ```
 
+`prepend` & `append` have available api:
+
+- `updateCrudList` -  Update list.
+
+Example:
+
+```javascript
+//@/Components/YOUR_FILE_HERE.vue
+const emit = defineEmits(['updateCrudList']);
+
+const ChangeListItems = () => {
+  router.visit(`URL`, {
+    method: 'get',
+    preserveState: true, 
+    replace: true, 
+    onSuccess: (response) => {
+      emit('updateCrudList', response.props.crud)
+    },
+  });
+}
+```
+
 ## Customize Form fields (Create/Edit)
 
 You may want to wrap fields.

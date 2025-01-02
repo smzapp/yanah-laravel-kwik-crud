@@ -52,7 +52,10 @@
     </div>
     
     <!-- prepend -->
-    <component :is="prependPageLocal" />
+    <component 
+      :is="prependPageLocal" 
+      @updateCrudList="updateCrudList" 
+    />
     
     <div 
       v-if="Object.entries(localCrud).length == 0" 
@@ -90,7 +93,10 @@
     </template><!-- else of records -->
 
     <!-- append -->
-    <component :is="appendPageLocal" />
+    <component 
+      :is="appendPageLocal" 
+      @updateCrudList="updateCrudList" 
+    />
   </div>
 </template>
 
@@ -120,9 +126,13 @@ const currentLayout = computed(() =>
 );
 
 const isLoading = ref(false);
-const localCrud = reactive({ ...pageProps.crud });
 const localControls = reactive({...pageProps.controls});
 const rowsPerPage = ref(10);
+const localCrud = ref(pageProps.crud);
+
+const updateCrudList = (crud) => {
+  localCrud.value = crud;
+}
 
 // Prepend and Append begin
 const components = import.meta.glob('@/Components/**/*.vue');
