@@ -612,11 +612,35 @@ You may want to wrap fields.
 Example:
 
 ```php
-$this->formgroup->beginWrap('INDEX_KEY', ['class' => 'flex flex-row']);
+$this->formgroup->beginWrap('INDEX_KEY', $atributes, $headings);
 
 // Add Fields here
 
 $this->formgroup->endWrap();
+```
+
+See `$attributes` below: 
+
+```php 
+[
+    'class' => 'gap-4',
+    'columns' => [
+        'xs' => int,
+        'sm' => int
+        'md' => int,
+        'lg' => int,
+    ],
+    'style' => 'background:red;'
+]
+```
+
+See `$headings` below:
+
+```php
+[
+    'heading' => string,
+    'paragraph' => string,
+]
 ```
 
 ## Additional Security

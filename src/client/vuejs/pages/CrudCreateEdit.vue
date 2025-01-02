@@ -31,20 +31,10 @@
             :header="group.details.label"
             :value="index"
           >
-            <div class="flex min-h-80 space-x-10 justify-between">
-              <div class="w-8/12">
-                <FieldWrapper
-                  :fields="group.fields" 
-                  @updateFieldValue="updateFormData"
-                />
-              </div>
-              <div class="w-4/12">
-                <div class="flex items-start flex-col mt-5 h-full">
-                  <h2 class="text-2xl mb-5">{{ group.details.title }}</h2>
-                  <p>{{ group.details.description }}</p>
-                </div>
-              </div>
-            </div>
+            <FieldWrapper
+              :fields="group.fields" 
+              @updateFieldValue="updateFormData"
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -141,6 +131,9 @@ const initializeFormData = () => {
   pageProps.formgroup.forEach(group => {
     const sortedFields = Object.entries(group.fields)
       .sort(([keyA, fieldA], [keyB, fieldB]) => fieldA.tabIndex - fieldB.tabIndex);
+
+      console.log(sortedFields);
+      
 
     Object.entries(sortedFields).forEach(([key, field]) => {
       const wrapped = typeof field[1] !== undefined ? field[1] : null;

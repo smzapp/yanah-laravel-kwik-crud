@@ -2,7 +2,7 @@
   <template v-if="attributes.type === 'textarea'">
     <textarea
       v-bind="attributes?.inputProps"
-      :id="fieldName"
+      :id="`${fieldName}_${new Date()}`"
       :name="fieldName"
       @change="handleInput"
       :class="`border-gray-300 shadow-sm focus:ring-primary-default focus:border-primary-default p-2 w-full ${attributes.class}`"
@@ -93,7 +93,6 @@
     <input
       v-bind="attributes?.inputProps"
       :type="attributes.type || 'text'"
-      :id="fieldName"
       :name="fieldName"
       :value="attributes?.value"
       :class="`border-gray-300 shadow-sm focus:ring-primary-default focus:border-primary-default p-2 w-full ${attributes.class}`"

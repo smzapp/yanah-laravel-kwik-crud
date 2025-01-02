@@ -11,9 +11,6 @@ class FormGroupService {
     private $defaultDetails = [
         'tab' => false,
         'label' => '',
-        'title' => '',
-        'description' => '',
-        'align' => 'left',
     ];
 
     private $validations;
@@ -21,6 +18,8 @@ class FormGroupService {
     private $wrap    = null;
     private $wrapKey = '';
     private $tabIndex = 0;
+
+    private $textHeadings = [];
 
     public function __construct($rules)
     {
@@ -64,7 +63,8 @@ class FormGroupService {
             } else {
                 if (!isset($this->groups[$lastGroupKey]['fields'][$this->getWrapKey()])) {
                     $this->groups[$lastGroupKey]['fields'][$this->getWrapKey()] = [
-                        'vBind' => $this->getWrap()
+                        'vBind' => $this->getWrap(),
+                        'headings' => $this->getTextHeadings()
                     ];
                 }
 
@@ -81,11 +81,13 @@ class FormGroupService {
     /**
      * Wrap fields
      */
-    public function beginWrap(string $inputIndex, array $bindProps)
+    public function beginWrap(string $inputIndex, array $bindProps, array $options = [])
     {
         $this->wrapKey = $inputIndex;
 
         $this->wrap = $bindProps;
+
+        $this->textHeadings = $options;
     }
 
     public function endWrap()
@@ -93,11 +95,18 @@ class FormGroupService {
         $this->wrap = null;
         
         $this->wrapKey = null;
+
+        $this->textHeadings = [];
     }
 
     public function getWrapKey()
     {
         return $this->wrapKey;
+    }
+
+    public function getTextHeadings()
+    {
+        return (object) $this->textHeadings;
     }
 
     public function getWrap()
@@ -152,6 +161,9 @@ class FormGroupService {
                         if($this->getWrap()) {
                             $wrappedBind = &$group['fields'][$this->getWrapKey()]['vBind'] ?? null;
                             $wrappedBind = $this->getWrap(); // update the vBind
+
+                            $headings = &$group['fields'][$this->getWrapKey()]['headings'] ?? null;
+                            $headings = $this->getTextHeadings(); // update the headings
                         }
 
                         if(isset($wrapArray['wrappedItems'][$name])) {
@@ -194,7 +206,6 @@ class FormGroupService {
             return $item;
         });
 
-        // dd($mapGroup->toArray());
         return $mapGroup->toArray();
     }
 }
