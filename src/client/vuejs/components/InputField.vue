@@ -28,7 +28,7 @@
       :id="fieldName"
       :name="fieldName"
       :placeholder="`- Select -`" 
-      :class="`w-full ${attributes.class}`"
+      :class="`${attributes.class}`"
       optionLabel="label"
       optionValue="optionValue"
       v-model="selectedOption"

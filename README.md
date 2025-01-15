@@ -180,7 +180,8 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 - select_group
 - calendar: date & time
 - autocomplete
-- vue_file 
+- custom_file
+- custom_html 
 
 ```php
 **Text** $attributes example:
@@ -278,6 +279,15 @@ To set time only, configure inputProps:
 ]
 
 See more attributes here: https://primevue.org/datepicker/#time
+
+**Custom html**
+- If you wan to add a custom html:
+[
+    'type' => 'custom_html',
+    'value' => function() {
+        return '<div class="text-3xl border-t pt-4 mb-5">Read here.</div>';
+    }
+]
 ```
 
 ## Autocomplete input
@@ -365,7 +375,9 @@ function updateInput(event) {
     'inputProps' => [
         // Cutomize or add styles on Input Fields
         // example: 'class' => 'bg-danger w-full'
-    ]
+    ],
+
+    'tooltip_label' => 'You may want to add tooltip for label. Icon is question mark.'
 ]
 ```
 <small>(To customize fields proceed to the bottom.)</small>

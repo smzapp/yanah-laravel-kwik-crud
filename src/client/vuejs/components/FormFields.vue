@@ -9,6 +9,10 @@
       />
     </template>
     
+    <template v-else-if="field.type === 'custom_html'">
+      <div v-html="field?.value" />
+    </template>
+
     <template v-else>
       <template v-if="field.type === 'checkbox'">
         <div :class="`flex items-center gap-2`">
@@ -20,7 +24,14 @@
             :checked="field?.is_boolean ? field?.value : false"
             @change="updateCheckBox"
           > 
-          <label :for="fieldName"  v-bind="field?.labelProps"> {{  field.label }} </label>
+          <label :for="fieldName"  v-bind="field?.labelProps"> 
+            <span>{{  field.label }} </span>
+            <span 
+              v-if="field?.tooltip_label"
+              v-tooltip.top="field?.tooltip_label"
+              class="pi-question-circle pi ml-2" 
+            ></span>
+          </label>
         </div>
       </template>
       
@@ -29,6 +40,11 @@
           <label v-bind="field?.labelProps" class="text-lg font-medium text-gray-700" >
             {{ field.label }}
             <span class="text-danger" v-if="field.required">*</span>
+            <span 
+              v-if="field?.tooltip_label"
+              v-tooltip.top="field?.tooltip_label"
+              class="pi-question-circle pi ml-2" 
+            ></span>
           </label>
           <ToggleSwitch
             v-bind="field?.inputProps"
@@ -52,6 +68,11 @@
           <label  v-bind="field?.labelProps" class="text-lg font-medium text-gray-700 mb-1">
             {{ field.label }}
             <span class="text-danger" v-if="field.required">*</span>
+            <span 
+              v-if="field?.tooltip_label"
+              v-tooltip.top="field?.tooltip_label"
+              class="pi-question-circle pi ml-2" 
+            ></span>
           </label>
           <InputField
             :attributes="field"
