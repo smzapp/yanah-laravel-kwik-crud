@@ -5,7 +5,7 @@
     class="flex flex-col mb-4"
   >
     <template v-if="field.wrappedItems">
-      <div :class="field?.headings ? 'flex space-x-10' : ''">
+      <div v-if="field?.headings" :class="field?.headings?.length ? 'flex gap-10' : ''">
         <div 
           :style="field.vBind?.style ? field.vBind.style: ''"
           :class="responsiveGridClasses(field.vBind.columns) + ` ${field.vBind.class}`"
@@ -22,7 +22,7 @@
           </template>
         </div>
 
-        <div v-if="field?.headings" :style="field.headings?.style">
+        <div v-if="field?.headings?.length" :style="field.headings?.style">
           <div class="flex items-start flex-col mt-5 h-full">
             <h2 class="text-2xl mb-5">{{ field.headings?.heading }}</h2>
             <p>{{ field.headings?.paragraph }}</p>

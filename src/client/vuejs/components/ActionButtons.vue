@@ -14,7 +14,7 @@
         size="large"
         icon="pi pi-pencil"
         class="p-button-rounded p-button-warning p-button-text"
-        title="Edit Record"
+        title="Edit"
       />
     </Link>
     <Button
@@ -22,7 +22,7 @@
       size="large"
       icon="pi pi-trash"
       class="p-button-rounded p-button-danger p-button-text"
-      title="Delete Record"
+      title="Delete"
       @click="$emit('deleteRecord', props.record.id)"
     />
   </template>

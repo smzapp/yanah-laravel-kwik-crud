@@ -208,4 +208,38 @@ class FormGroupService {
 
         return $mapGroup->toArray();
     }
+
+    
+   /**
+     * Autoload edit data
+     */
+    public function initializeEdit($record)
+    {
+        if (!$record) {
+            return;
+        }
+
+        $fillables = $record->getFillable();
+
+        foreach ($this->groups as &$group) {
+            if (!isset($group['fields']) || !is_array($group['fields'])) {
+                continue;
+            }
+
+            $group['fields'] = $this->updateFields($group['fields'], $fillables, $record);
+        }
+    }
+
+    private function updateFields(array $fields, array $fillables, $record): array
+    {
+        foreach ($fields as $field => &$groupField) {
+            if (in_array($field, $fillables)) {
+                $groupField['value'] = $record->$field ?? null;
+            } elseif (isset($groupField['wrappedItems']) && is_array($groupField['wrappedItems'])) {
+                $groupField['wrappedItems'] = $this->updateFields($groupField['wrappedItems'], $fillables, $record);
+            }
+        }
+
+        return $fields;
+    }
 }

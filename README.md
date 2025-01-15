@@ -471,7 +471,7 @@ public function toggleVisibility(CrudListControl $control) : array
 }
 ```
 
-To toggle button actions:
+To toggle action buttons:
 
 ```php
 $control->updateAction('edit', true);
@@ -480,6 +480,7 @@ $control->updateAction('delete', true);
 
 APIs:
 
+- `showSearchBar`: boolean - wrapper of add button, search and summary
 - `showSearch`: boolean - toggle display search input
 - `showPrintPdf`: boolean - toggle pdf print button
 - `showAddButton`: boolean - toggle Add button
@@ -489,7 +490,8 @@ APIs:
 Available toggle controls:
 
 ```php
-'showSearch'    => false,
+'showSearchBar' => true,
+'showSearch'    => true,
 'showPrintPdf'  => false,
 'showAddButton' => true,
 'showListSummary' => true,

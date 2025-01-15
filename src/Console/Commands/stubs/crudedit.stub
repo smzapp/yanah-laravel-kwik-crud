@@ -34,7 +34,10 @@ class {{modelName}}Edit extends {{modelName}}Create
     {
         $this->prepareCreateForm();
 
-        // you may modify fields here
+        // populate with {{modelName}} record
+        $this->formgroup->initializeEdit($record);
+
+        // you may modify fields here. Check documentation.
     }
 
     public function beforeUpdate(CrudService $crudService) : void

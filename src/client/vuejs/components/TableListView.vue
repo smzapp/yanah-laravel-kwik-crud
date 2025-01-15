@@ -3,7 +3,8 @@
         <DataTable
           :value="localCrud.data ? localCrud.data : localCrud"
           :loading="isLoading"
-          :paginator="true"
+          v-bind="bindDataTable"
+          :paginator="bindDataTable ?? true"
           :rows="rowsPerPage"
           :total-records="localCrud.total"
           :lazy="true"
@@ -12,6 +13,11 @@
           @page="$emit('onPageChange', $event)"
           stripedRows 
         >
+          <template #empty>
+            <div class="p-4 text-center">
+              <p class="text-gray-500">No record found</p>
+            </div>
+          </template>
           <Column
             v-for="(header, field) in headers"
             :key="field"
@@ -45,6 +51,7 @@ const props = defineProps({
   rowsPerPage: Number,
   headers: Object,
   activeRoute: String,
+  bindDataTable: Object
 });
 
 defineEmits(['deleteRecord', 'onPageChange']);
