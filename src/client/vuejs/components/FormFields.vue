@@ -8,7 +8,7 @@
         v-bind="{attributes: field, fieldName: fieldName}"
       />
     </template>
-
+    
     <template v-else>
       <template v-if="field.type === 'checkbox'">
         <div :class="`flex items-center gap-2`">

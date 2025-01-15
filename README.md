@@ -136,9 +136,6 @@ Example:
 $this->formgroup->addGroup('users', [
     'tab' => true,
     'label' => 'Users',
-    'title' => 'List of users',
-    'description' => 'Display users',
-    'align' => 'left',
 ]);
 
 $this->formgroup->addField('first_name', [
@@ -158,9 +155,6 @@ Use the following syntax to add a group:
 $this->formgroup->addGroup('GROUP_NAME_UNIQUE', [
     'tab' => boolean,
     'label' => string,
-    'title' => string,
-    'description' => string,
-    'align' => string,
 ]);
 ```
 
@@ -184,7 +178,7 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
 - radio
 - select
 - select_group
-- calendar
+- calendar: date & time
 - autocomplete
 - vue_file 
 
@@ -272,6 +266,18 @@ $this->formgroup->addField('FIELD_NAME', $attributes);
     'label' => 'business Calendar',
     'type' => 'calendar'
 ]
+
+To set time only, configure inputProps:
+[
+    'type' => 'calendar',
+    'label' => 'Time only',
+    'inputProps' => [
+        'timeOnly' => true,
+        'hourFormat' => '12'
+    ]
+]
+
+See more attributes here: https://primevue.org/datepicker/#time
 ```
 
 ## Autocomplete input
@@ -623,18 +629,12 @@ See `$attributes` below:
 
 ```php 
 [
-    'class' => 'gap-4',
-    'columns' => [
-        'xs' => int,
-        'sm' => int
-        'md' => int,
-        'lg' => int,
-    ],
+    'class' => 'gap-4 xs:grid-cols-1 sm:grid-cols-1', // cuztomize the cols number as desired
     'style' => 'background:red;'
 ]
 ```
 
-See `$headings` below:
+See `$headings` (optional) below:
 
 ```php
 [

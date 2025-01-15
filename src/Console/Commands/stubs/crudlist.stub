@@ -4,7 +4,6 @@ namespace App\CrudKwik\{{modelPlural}};
 use Illuminate\Database\Eloquent\Builder; 
 use Yanah\LaravelKwik\App\Contracts\ControlCrudInterface;
 use Yanah\LaravelKwik\App\Contracts\BodyPaginatorInterface;
-// use Yanah\LaravelKwik\App\Contracts\BodyCollectionInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Yanah\LaravelKwik\Crud\CrudListControl;
@@ -26,7 +25,7 @@ class {{modelName}}List implements ControlCrudInterface, BodyPaginatorInterface
 
     
     /**
-     * This is the label of table list. Match this with responseBodyPaginator() or responseBodyCollection()
+     * This is the label of table list. 
      */
     public function assignTableHeaders(): array
     {
@@ -57,35 +56,16 @@ class {{modelName}}List implements ControlCrudInterface, BodyPaginatorInterface
     {
         $paginator = $query->paginate($this->perPage);
 
-        /**
-         * Uncomment below to customize.
-         * 
-         * $paginator->getCollection()->transform(function ($item) {
-         *   return [
-         *       'id' => $item->id,
-         *       'created_at' => $item->created_at->format('Y-m-d'),
-         *   ];
-         * });
-         */
-       
+        // customize if necessary
+        $paginator->getCollection()->transform(function ($item) {
+           return array_merge($item->toArray(), [
+               // 'full_name' => $item->full_name,
+           ]);
+        });
     
         return $paginator;
 
     }   
-
-    /**
-     * Interface: BodyCollectionInterface
-     * 
-     * Customize the body without a pagination. 
-     */
-    /* public function responseBodyCollection(Builder $query) : Collection
-    {
-        return $query->get()->map(function($item) {
-            $item->primary   = $item->title ?? 'N/A';
-            $item->secondary = $item->body ?? 'N/A';
-            return $item;
-        });
-    } */
 
     /**
      * Configure this result query
