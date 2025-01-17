@@ -132,9 +132,6 @@ const initializeFormData = () => {
     const sortedFields = Object.entries(group.fields)
       .sort(([keyA, fieldA], [keyB, fieldB]) => fieldA.tabIndex - fieldB.tabIndex);
 
-      console.log(sortedFields);
-      
-
     Object.entries(sortedFields).forEach(([key, field]) => {
       const wrapped = typeof field[1] !== undefined ? field[1] : null;
 

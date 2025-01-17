@@ -2,9 +2,8 @@
   <template v-if="attributes.type === 'textarea'">
     <textarea
       v-bind="attributes?.inputProps"
-      :id="`${fieldName}_${new Date()}`"
       :name="fieldName"
-      @change="handleInput"
+      v-model="inputField"
       :class="`border-gray-300 shadow-sm focus:ring-primary-default focus:border-primary-default p-2 w-full ${attributes.class}`"
       :rows="attributes?.rows"
     >{{ attributes?.value}}</textarea>
@@ -15,7 +14,7 @@
       <RadioButton 
         :value="option.value"
         v-bind="attributes?.inputProps"
-        @change="handleInput"
+        v-model="inputField"
       />
       <label>{{ option.label }}</label>
     </div>
@@ -23,7 +22,6 @@
 
   <template v-else-if="attributes.type === 'select'">
     <Select 
-      @change="handleInput"
       :options="attributes.options" 
       :id="fieldName"
       :name="fieldName"
@@ -31,14 +29,14 @@
       :class="`${attributes.class}`"
       optionLabel="label"
       optionValue="optionValue"
-      v-model="selectedOption"
+      v-model="inputField"
       v-bind="attributes?.inputProps"
     />
   </template>
 
   <template v-else-if="attributes.type === 'select_group'">
     <Select 
-      @change="handleInput"
+      v-model="inputField"
       :options="attributes.options" 
       optionLabel="label" 
       optionGroupLabel="label" 
@@ -46,7 +44,6 @@
       :placeholder="attributes.placeholder" 
       v-bind="attributes?.inputProps"
       optionValue="optionValue"
-      :value="attributes?.value"
     >
         <template #optiongroup="slotProps">
             <div>
@@ -68,9 +65,8 @@
   <template v-else-if="attributes.type === 'calendar'">
       <DatePicker 
         v-bind="attributes?.inputProps"
-        v-model="calendarDate"
+        v-model="inputField"
         :showIcon="attributes?.showIcon ?? true"
-        @dateSelect="handleInput" 
       />
   </template>
   
@@ -83,20 +79,18 @@
             :name="fieldName" 
             :placeholder="attributes.placeholder" 
             v-bind="attributes?.inputProps" 
-            v-model="inputGroupText"
-            @valueChange="handleInput"
+            v-model="inputField"
+            :invalid="true"
           />
       </InputGroup>
     </template>
 
   <template v-else>
-    <input
+    <InputText 
       v-bind="attributes?.inputProps"
-      :type="attributes.type || 'text'"
       :name="fieldName"
-      :value="attributes?.value"
       :class="`border-gray-300 shadow-sm focus:ring-primary-default focus:border-primary-default p-2 w-full ${attributes.class}`"
-      @input="handleInput"
+      v-model="inputField"
     />
   </template>
 </template>
@@ -110,22 +104,21 @@ import { ref, watch } from 'vue';
 import { InputGroup, InputGroupAddon, InputText } from 'primevue';
 
 const props = defineProps({
-attributes: {
-  type: Object,
-  required: true,
-},
-fieldName: {
-  type: String,
-  required: true,
-},
+  attributes: {
+    type: Object,
+    required: true,
+  },
+  fieldName: {
+    type: String,
+    required: true,
+  },
 });
-const inputGroupText = ref(props.attributes.value);
-const selectedOption = ref(props.attributes.value);
+
+const inputField = ref(props.attributes.value || '');
 
 const emit = defineEmits(['updateFieldValue']);
 
 const src = ref(null);
-const calendarDate = ref(props.attributes?.value || '');
 
 function onFileSelect(event) {
   const file = event.files[0];
@@ -138,27 +131,7 @@ function onFileSelect(event) {
   reader.readAsDataURL(file);
 }
 
-function handleInput(event) {
-
-  let value = '';
-
-  if(event.value?.optionValue !== undefined) {
-    value = event.value?.optionValue;
-  }
-  else if (event?.value !== undefined) {
-    value = event.value;
-  } 
-  else if (event?.target?.value !== undefined) {
-    value = event.target.value;
-  } else {
-    value = event ?? '';
-  }
-
-  emit('updateFieldValue', props.fieldName, value);
-}
-
-watch(selectedOption, (newValue) => {
+watch(inputField, (newValue) => {
   emit('updateFieldValue', props.fieldName, newValue);
 }, {immediate: true});
-
 </script>
