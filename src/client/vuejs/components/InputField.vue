@@ -69,7 +69,7 @@
       <DatePicker 
         v-bind="attributes?.inputProps"
         v-model="calendarDate"
-        :value="attributes?.value"
+        :showIcon="attributes?.showIcon ?? true"
         @dateSelect="handleInput" 
       />
   </template>
@@ -106,7 +106,7 @@ import Select from 'primevue/select';
 import RadioButton from 'primevue/radiobutton';
 import FileUpload from 'primevue/fileupload';
 import DatePicker from 'primevue/datepicker';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { InputGroup, InputGroupAddon, InputText } from 'primevue';
 
 const props = defineProps({
@@ -125,36 +125,40 @@ const selectedOption = ref(props.attributes.value);
 const emit = defineEmits(['updateFieldValue']);
 
 const src = ref(null);
-const calendarDate = ref();
+const calendarDate = ref(props.attributes?.value || '');
 
 function onFileSelect(event) {
-const file = event.files[0];
-const reader = new FileReader();
-reader.onload = async (e) => {
-  const sourceValue = e.target.result;
-  emit('updateFieldValue', props.fieldName, sourceValue);
-  src.value = sourceValue;
-};
-reader.readAsDataURL(file);
+  const file = event.files[0];
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const sourceValue = e.target.result;
+    emit('updateFieldValue', props.fieldName, sourceValue);
+    src.value = sourceValue;
+  };
+  reader.readAsDataURL(file);
 }
 
 function handleInput(event) {
 
-let value = '';
+  let value = '';
 
-if(event.value?.optionValue !== undefined) {
-  value = event.value?.optionValue;
-}
-else if (event?.value !== undefined) {
-  value = event.value;
-} 
-else if (event?.target?.value !== undefined) {
-  value = event.target.value;
-} else {
-  value = event ?? '';
+  if(event.value?.optionValue !== undefined) {
+    value = event.value?.optionValue;
+  }
+  else if (event?.value !== undefined) {
+    value = event.value;
+  } 
+  else if (event?.target?.value !== undefined) {
+    value = event.target.value;
+  } else {
+    value = event ?? '';
+  }
+
+  emit('updateFieldValue', props.fieldName, value);
 }
 
-emit('updateFieldValue', props.fieldName, value);
-}
+watch(selectedOption, (newValue) => {
+  emit('updateFieldValue', props.fieldName, newValue);
+}, {immediate: true});
 
 </script>

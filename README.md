@@ -19,6 +19,7 @@ This package is built to ease the work developers do by streamlining the process
 > Customize Form fields (Create/Edit)
 - Additional Security
 - CRUD Lifecycle
+- Overriding CRUD controller method
 
 ## Stack Used
 
@@ -693,6 +694,24 @@ class {Your}Controller extends KwikController implements PageControlInterface
 3. Validations - handle validations.
 4. Update model
 5. `afterUpdate` - Handle . We may trigger an event after store.
+
+
+# Overriding CRUD controller method
+
+You may want to override Crud Controller methods
+and use Laravel CRUD methods:
+
+```php
+class YourController extends KwikController  implements PageControlInterface
+{
+    public function create()
+    {
+        // do something here.
+
+        return parent::create();
+    }
+}
+```
 
 <hr />
 <br/>
