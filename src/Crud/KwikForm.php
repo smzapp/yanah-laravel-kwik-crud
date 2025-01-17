@@ -23,7 +23,18 @@ abstract class KwikForm implements KwikFormInterface
 
     public function __construct()
     {
-        $this->formgroup = new FormGroupService($this->getValidationRules());
+        $this->formgroup = $this->initialize();
+    }
+
+    private function initialize()
+    {
+        $form = new FormGroupService();
+
+        $form->setValidationRules($this->getValidationRules());
+
+        $form->setActiveModel($this->getModelInstance());
+
+        return $form;
     }
  
     public function getModelInstance()

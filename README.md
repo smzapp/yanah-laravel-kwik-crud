@@ -98,7 +98,7 @@ content: [
 Check `tailwind.config.js` configuration
 
 > Make sure to implement or use `primevue` in `app.ts`
-![Frontend Configurations](https://i.imgur.com/Y3togIO.png)
+![Frontend Configurations](https://i.imgur.com/qKjalXk.png)
 
 `$ npm run dev`
 

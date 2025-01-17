@@ -4,6 +4,7 @@ namespace Yanah\LaravelKwik\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Yanah\LaravelKwik\Traits\BaseModelUploadTrait;
+use Illuminate\Support\Facades\Schema;
 
 class BaseModel extends Model {
 
@@ -30,5 +31,10 @@ class BaseModel extends Model {
         });
     }
 
-    
+    public function getColumnDetails()
+    {
+        $table = $this->getTable();
+
+        return Schema::getColumns($table);
+    }
 }

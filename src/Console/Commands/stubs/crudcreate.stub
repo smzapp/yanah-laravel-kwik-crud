@@ -34,7 +34,9 @@ class {{modelName}}Create extends KwikForm
      */
     public function prepareCreateForm() : void
     {
-        // Add form here
+        $this->formgroup->autogenerateForm();
+
+        // Add or customize fields below
     }
 
     public function beforeStore(CrudService $crudService) : void

@@ -3,28 +3,22 @@ namespace Yanah\LaravelKwik\Services;
 
 use InvalidArgumentException;
 use Illuminate\Support\Str;
+use Yanah\LaravelKwik\Traits\FormGroupTrait;
+use Illuminate\Database\Eloquent\Model;
 
 class FormGroupService {
-
-    protected $groups = [];
+    use FormGroupTrait;
 
     private $defaultDetails = [
         'tab' => false,
         'label' => '',
     ];
-
     private $validations;
-
-    private $wrap    = null;
-    private $wrapKey = '';
+    protected $groups = [];
+    private $wrap     = null;
+    private $wrapKey  = '';
     private $tabIndex = 0;
-
     private $textHeadings = [];
-
-    public function __construct($rules)
-    {
-        $this->validations = $rules;
-    }
 
     /**
      * Add a new group
@@ -84,34 +78,15 @@ class FormGroupService {
     public function beginWrap(string $inputIndex, array $bindProps, array $options = [])
     {
         $this->wrapKey = $inputIndex;
-
         $this->wrap = $bindProps;
-
         $this->textHeadings = $options;
     }
 
     public function endWrap()
     {
         $this->wrap = null;
-        
         $this->wrapKey = null;
-
         $this->textHeadings = [];
-    }
-
-    public function getWrapKey()
-    {
-        return $this->wrapKey;
-    }
-
-    public function getTextHeadings()
-    {
-        return (object) $this->textHeadings;
-    }
-
-    public function getWrap()
-    {
-        return $this->wrap;
     }
 
     public function isWrap()
@@ -241,5 +216,28 @@ class FormGroupService {
         }
 
         return $fields;
+    }
+
+
+    /**
+     * Create Form
+     */
+    public function autogenerateForm()
+    {
+        $fieldTypes = $this->activeModel->getColumnDetails();
+
+        $this->addGroup('_primary', []);
+
+        foreach($fieldTypes as $field) {
+            $name = $field['name'] ?? '';
+            $type = $field['type_name'] ?? '';
+
+            if($this->isFieldDisplay($name)) {
+                $this->addField($name, [
+                    'type' => $this->chooseType($type),
+                    'label' => str_replace('_', ' ', ucwords($name))
+                ]);
+            }
+        }
     }
 }
