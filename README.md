@@ -4,6 +4,10 @@
 
 This package is built to ease the work developers do by streamlining the process of scaffolding CRUD operations. It integrates seamlessly with Laravel, Inertia, and Vue.js 3, reducing boilerplate and simplifying the creation of CRUD functionality.
 
+# Discord
+
+To collaborate, please join here: https://discord.gg/UksAt4HqF9
+
 ## Overview
 - Stack Used
 - Installation & Configurations
