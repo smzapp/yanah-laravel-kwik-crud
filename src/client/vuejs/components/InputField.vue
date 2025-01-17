@@ -62,6 +62,14 @@
     <img v-if="src" :src="src" alt="Image" class="shadow-md w-full sm:w-64" style="filter: grayscale(100%)" />
   </template>
 
+  <template v-else-if="attributes.type === 'switch'">
+    <ToggleSwitch
+      v-bind="attributes?.inputProps"
+      :modelValue="inputField ? true : false"
+      v-model="inputField"
+    />
+  </template>
+
   <template v-else-if="attributes.type === 'calendar'">
       <DatePicker 
         v-bind="attributes?.inputProps"
@@ -100,7 +108,7 @@ import RadioButton from 'primevue/radiobutton';
 import FileUpload from 'primevue/fileupload';
 import DatePicker from 'primevue/datepicker';
 import { ref, watch } from 'vue';
-import { InputGroup, InputGroupAddon, InputText } from 'primevue';
+import { InputGroup, InputGroupAddon, InputText, ToggleSwitch } from 'primevue';
 
 const props = defineProps({
   attributes: {

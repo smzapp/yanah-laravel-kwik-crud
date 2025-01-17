@@ -11,6 +11,10 @@
       />
     </div>
     
+    <h3 class="text-2xl mb-2 text-slate-800 capitalize">
+      {{ pageProps.pageText.plural }}
+    </h3>
+    
     <!-- Search Toolbar -->
     <div class="mb-3" v-if="localControls.showSearchBar">
       <div class="bg-white  mb-4 border rounded-lg py-3 px-3 flex justify-between align-items-center items-center">

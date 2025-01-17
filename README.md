@@ -714,6 +714,13 @@ class YourController extends KwikController  implements PageControlInterface
 ```
 
 <hr />
+
+**Todo list:**
+
+- Add Test
+- Responsiveness
+- Validate frontend
+
 <br/>
 That's all. Please feel free to send PR when you found a bug. 
 
