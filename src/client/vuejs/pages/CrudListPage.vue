@@ -11,7 +11,7 @@
       />
     </div>
     
-    <h3 class="text-2xl mb-2 text-slate-800 capitalize">
+    <h3 class="text-2xl mb-2 text-slate-700 capitalize">
       {{ pageProps.pageText.plural }}
     </h3>
     
