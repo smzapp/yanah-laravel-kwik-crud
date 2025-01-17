@@ -34,6 +34,8 @@ class {{modelName}}Create extends KwikForm
      */
     public function prepareCreateForm() : void
     {
+        // You may add fields here.
+
         $this->formgroup->autogenerateForm();
 
         // Add or customize fields below

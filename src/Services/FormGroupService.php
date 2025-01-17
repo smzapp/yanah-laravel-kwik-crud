@@ -6,6 +6,10 @@ use Illuminate\Support\Str;
 use Yanah\LaravelKwik\Traits\FormGroupTrait;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * This manages the inputs of form whether to group 
+ * it in tab or not. Feel free to customize your own fields
+ */
 class FormGroupService {
     use FormGroupTrait;
 
@@ -44,31 +48,31 @@ class FormGroupService {
     public function addField(string $name, array $attributes): void
     {
         if (empty($this->groups)) {
-            $this->addGroup('primary', []);
+            $this->addGroup('main_group', []);
+        } 
+        
+        $lastGroupKey = array_key_last($this->groups);
+
+        if ($this->isWrap() === false) {
+            $attributes = array_merge([
+                'tabIndex' => $this->tabIndex
+            ], $attributes);
+
+            $this->groups[$lastGroupKey]['fields'][$name] = $attributes;
         } else {
-            $lastGroupKey = array_key_last($this->groups);
-
-            if ($this->isWrap() === false) {
-                $attributes = array_merge([
-                    'tabIndex' => $this->tabIndex
-                ], $attributes);
-
-                $this->groups[$lastGroupKey]['fields'][$name] = $attributes;
-            } else {
-                if (!isset($this->groups[$lastGroupKey]['fields'][$this->getWrapKey()])) {
-                    $this->groups[$lastGroupKey]['fields'][$this->getWrapKey()] = [
-                        'vBind' => $this->getWrap(),
-                        'headings' => $this->getTextHeadings()
-                    ];
-                }
-
-                $this->groups[$lastGroupKey]['fields'][$this->getWrapKey()]['tabIndex'] = $this->tabIndex;
-                $this->groups[$lastGroupKey]['fields'][$this->getWrapKey()]['wrappedItems'][$name] = $attributes;
-
+            if (!isset($this->groups[$lastGroupKey]['fields'][$this->getWrapKey()])) {
+                $this->groups[$lastGroupKey]['fields'][$this->getWrapKey()] = [
+                    'vBind' => $this->getWrap(),
+                    'headings' => $this->getTextHeadings()
+                ];
             }
 
-            $this->tabIndex++;
+            $this->groups[$lastGroupKey]['fields'][$this->getWrapKey()]['tabIndex'] = $this->tabIndex;
+            $this->groups[$lastGroupKey]['fields'][$this->getWrapKey()]['wrappedItems'][$name] = $attributes;
+
         }
+
+        $this->tabIndex++;
     }
 
 
@@ -225,8 +229,6 @@ class FormGroupService {
     public function autogenerateForm()
     {
         $fieldTypes = $this->activeModel->getColumnDetails();
-
-        $this->addGroup('_primary', []);
 
         foreach($fieldTypes as $field) {
             $name = $field['name'] ?? '';

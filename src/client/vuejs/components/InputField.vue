@@ -80,7 +80,6 @@
             :placeholder="attributes.placeholder" 
             v-bind="attributes?.inputProps" 
             v-model="inputField"
-            :invalid="true"
           />
       </InputGroup>
     </template>
