@@ -35,25 +35,6 @@
         </div>
       </template>
       
-      <template v-else-if="field.type === 'switch'">
-        <div :class="`flex items-center gap-2`">
-          <label v-bind="field?.labelProps" class="text-lg font-medium text-gray-700" >
-            {{ field.label }}
-            <span class="text-danger" v-if="field.required">*</span>
-            <span 
-              v-if="field?.tooltip_label"
-              v-tooltip.top="field?.tooltip_label"
-              class="pi-question-circle pi ml-2" 
-            ></span>
-          </label>
-          <ToggleSwitch
-            v-bind="field?.inputProps"
-            :value="field?.value"
-            @valueChange="updateSwitch(fieldName, $event)"
-          />
-        </div>
-      </template>
-      
       <template v-else-if="field.type === 'autocomplete'">
         <CustomAutocomplete
           :field="field"
