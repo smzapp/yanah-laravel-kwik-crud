@@ -7,5 +7,5 @@ namespace Yanah\LaravelKwik\App\Contracts;
  */
 interface PageAffixInterface
 {
-    public function definePages(): array;
+    public function defineAttributes(): array;
 }

@@ -23,7 +23,7 @@ trait PageWrapperTrait
     {
         try {
             if($this->crudPage instanceof PageAffixInterface) {
-                return $this->crudPage->definePages();
+                return $this->crudPage->defineAttributes();
             }
         } catch(\Exception $e) {
             throw new \Exception($e->getMessage());

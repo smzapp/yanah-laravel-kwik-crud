@@ -604,7 +604,7 @@ use Yanah\LaravelKwik\App\Contracts\PageAffixInterface;
 
 class {CrudClass} extends KwikForm implements PageAffixInterface
 {
-    public function definePages(): array
+    public function defineAttributes(): array
     {
         return [
             'prepend' => '@/Components/YOUR_FILE_HERE.vue',
@@ -616,7 +616,11 @@ class {CrudClass} extends KwikForm implements PageAffixInterface
 
 `prepend` & `append` have available api:
 
-- `updateCrudList` -  Update list.
+```javascript
+import { usePage } from '@inertiajs/vue3';
+const { props: pageProps } = usePage();
+console.log(pageProps.pageWrapper);
+```
 
 Example:
 

@@ -56,12 +56,7 @@
         </div>
       </div>
 
-      <div class="flex justify-end gap-3 items-center mt-8 w-80">
-        <div class="w-72">
-          <Link :href="pageProps.activeRoute">
-            <Button :label="'Cancel'" class="bg-secondary" variant="outlined" fluid />
-          </Link>
-        </div>
+      <div class="flex justify-end gap-3 items-center mt-8 w-48">
         <Button 
           type="submit" 
           :label="pageProps.button?.text ?? 'Submit'" 
