@@ -13,40 +13,46 @@
       />
     </div>
  
-    <component :is="prependPageLocal" />
-
     <Form v-slot="$form" @submit="submitForm" enctype="multipart/form-data">
-      <Tabs :value="0" v-if="hasTabs" :class="'bg-primary-default'">
-        <TabList>
-          <template v-for="(group, index) in groupedForm" :key="index">
-            <Tab v-if="group.details.tab" :value="index">
-              {{ group.details.label }}
-            </Tab>
-          </template>
-        </TabList>
-        <TabPanels>
-          <TabPanel
-            v-for="(group, index) in groupedForm"
-            :key="index"
-            :header="group.details.label"
-            :value="index"
-          >
-            <FieldWrapper
-              :fields="group.fields" 
-              @updateFieldValue="updateFormData"
-            />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
 
-      <!-- Non-tab Groups -->
-      <div v-else>
-        <div class="bg-white p-4 rounded-lg" v-for="(group, index) in groupedForm" :key="index">
-          <h3 class="text-lg font-bold">{{ group.details.label }}</h3>
-          <FieldWrapper
-              :fields="group.fields" 
-              @updateFieldValue="updateFormData"
-            />
+      <component 
+        :is="prependPageLocal" 
+        @toggleShowTable="(newValue) => showTable = newValue"
+      />
+
+      <div v-if="showTable">
+        <Tabs :value="0" v-if="hasTabs" :class="'bg-primary-default'">
+          <TabList>
+            <template v-for="(group, index) in groupedForm" :key="index">
+              <Tab v-if="group.details.tab" :value="index">
+                {{ group.details.label }}
+              </Tab>
+            </template>
+          </TabList>
+          <TabPanels>
+            <TabPanel
+              v-for="(group, index) in groupedForm"
+              :key="index"
+              :header="group.details.label"
+              :value="index"
+            >
+              <FieldWrapper
+                :fields="group.fields" 
+                @updateFieldValue="updateFormData"
+              />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+
+        <!-- Non-tab Groups -->
+        <div v-else>
+          <div class="bg-white p-4 rounded-lg" v-for="(group, index) in groupedForm" :key="index">
+            <h3 class="text-lg font-bold">{{ group.details.label }}</h3>
+            <FieldWrapper
+                :fields="group.fields" 
+                @updateFieldValue="updateFormData"
+              />
+          </div>
         </div>
       </div>
 
@@ -92,6 +98,7 @@ const hasTabs = computed(() =>
   pageProps.formgroup.some((group) => group.details.tab)
 );
 
+const showTable = ref(true);
 const components = import.meta.glob('@/Components/**/*.vue');
 const prependPageLocal = ref(null);
 const appendPageLocal = ref(null);

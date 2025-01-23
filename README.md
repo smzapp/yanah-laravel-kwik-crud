@@ -584,6 +584,12 @@ public function getShowItem(Builder $query, $fields = ['*'], $id)
     // More codes below
 }
 ```
+
+```javascript
+<script setup>
+const emit = defineEmits(['toggleShowTable']); // add this
+</script>
+```
 <br/>
 
 ## Customize Pages (CRUD)

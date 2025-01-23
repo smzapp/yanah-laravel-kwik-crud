@@ -1,12 +1,12 @@
 <template>
   <template v-if="attributes.type === 'textarea'">
-    <textarea
+    <Textarea
       v-bind="attributes?.inputProps"
       :name="fieldName"
       v-model="inputField"
       :class="`border-gray-300 shadow-sm focus:ring-primary-default focus:border-primary-default p-2 w-full ${attributes.class}`"
       :rows="attributes?.rows"
-    >{{ attributes?.value}}</textarea>
+    >{{ attributes?.value}}</Textarea>
   </template>
 
   <template v-else-if="attributes.type === 'radio'">
@@ -107,6 +107,7 @@ import Select from 'primevue/select';
 import RadioButton from 'primevue/radiobutton';
 import FileUpload from 'primevue/fileupload';
 import DatePicker from 'primevue/datepicker';
+import Textarea from 'primevue/textarea';
 import { ref, watch } from 'vue';
 import { InputGroup, InputGroupAddon, InputText, ToggleSwitch } from 'primevue';
 
