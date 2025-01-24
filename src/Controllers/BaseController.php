@@ -39,9 +39,9 @@ abstract class BaseController extends Controller implements BaseInterface
 
     private $pageControl;
 
-    public function __construct(CrudService $service)
+    public function __construct()
     {
-        $this->crudService = $service;
+        $this->crudService = app(CrudService::class);
 
         $this->pageControl = $this->getPageControl();
 
