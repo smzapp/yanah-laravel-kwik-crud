@@ -17,6 +17,7 @@
 
       <component 
         :is="prependPageLocal" 
+        @updateFieldValue="updateFormData"
         @toggleShowTable="(newValue) => showTable = newValue"
       />
 

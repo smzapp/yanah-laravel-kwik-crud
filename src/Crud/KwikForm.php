@@ -10,6 +10,7 @@ use Yanah\LaravelKwik\Traits\BaseCrudTrait;
 use Yanah\LaravelKwik\Traits\TableCreateTrait;
 use Yanah\LaravelKwik\App\Contracts\KwikFormInterface;
 use RuntimeException;
+use Yanah\LaravelKwik\Services\CrudService;
 
 
 /**
@@ -67,5 +68,36 @@ abstract class KwikForm implements KwikFormInterface
                 'label' => Str::headline($column) 
             ]);
         }
+    }
+
+    /**
+     * We can override these in Child class
+     */
+    public function beforeStore(CrudService $crudService) : void
+    {
+        $crudService->setShouldIncludeFillable(true);
+
+        $crudService->setIndexOfUpdateCreate([
+            // 
+        ]); 
+    }
+
+    public function afterStore($response)
+    {
+        return response()->json(['success' => true], 201);
+    }
+
+
+    public function beforeUpdate(CrudService $crudService) : void
+    {
+        $crudService->setShouldIncludeFillable(true);
+
+        $crudService->setIndexOfUpdateCreate([
+        ]); 
+    }
+
+    public function afterUpdate($id)
+    {
+        return response()->json(['success' => true], 201);
     }
 }

@@ -2,7 +2,6 @@
 namespace App\CrudKwik\{{modelPlural}};
 
 use Yanah\LaravelKwik\Crud\KwikForm;
-use Yanah\LaravelKwik\Services\CrudService;
 use App\Models\{{modelName}};
 
 class {{modelName}}Create extends KwikForm
@@ -40,26 +39,4 @@ class {{modelName}}Create extends KwikForm
 
         // Add or customize fields below
     }
-
-    public function beforeStore(CrudService $crudService) : void
-    {
-        // Change to false if you want to insert validated payloads only.
-        $crudService->setShouldIncludeFillable(true);
-
-        $crudService->setIndexOfUpdateCreate([
-            // You may want to use updateCreate.
-            // Add here the index
-        ]); 
-    }
-
-    public function afterStore($response)
-    {
-        // Add stuffs
-
-        // response
-        return response()->json(['success' => true], 201);
-    }
-
-    
-
 }

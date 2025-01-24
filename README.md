@@ -24,6 +24,8 @@ To collaborate, please join here: https://discord.gg/UksAt4HqF9
 - Additional Security
 - CRUD Lifecycle
 - Overriding CRUD controller method
+- Before & After Create (CRUD)
+- Before & After Update (CRUD)
 
 ## Stack Used
 
@@ -693,7 +695,7 @@ class {Your}Controller extends KwikController implements PageControlInterface
 }
 ```
 
-# CRUD Persist Lifecycle
+## CRUD Persist Lifecycle
 
 `Store`
 1. PageControl - Serves as middleware.
@@ -710,7 +712,7 @@ class {Your}Controller extends KwikController implements PageControlInterface
 5. `afterUpdate` - Handle . We may trigger an event after store.
 
 
-# Overriding CRUD controller method
+## Overriding CRUD controller method
 
 You may want to override Crud Controller methods
 and use Laravel CRUD methods:
@@ -724,6 +726,61 @@ class YourController extends KwikController  implements PageControlInterface
 
         return parent::create();
     }
+}
+```
+
+## Before & After Create (CRUD)
+
+In some cases, you may want to execute something or trigger an event before and after creating
+of new record. To do this, you have to override `beforeStore()` and `afterStore()` methods.
+
+In your `\App\CrudKwik\DIR\{Model}Create.php` file, insert these lines:
+
+```php
+use Yanah\LaravelKwik\Services\CrudService;
+
+public function beforeStore(CrudService $crudService) : void
+{
+    // Change to false if you want to insert validated payloads only.
+    $crudService->setShouldIncludeFillable(true);
+
+    $crudService->setIndexOfUpdateCreate([
+        // You may want to use updateCreate.
+        // Add here the index, example:
+        'user_id' => 1 // this will updateCreate based on user_id
+    ]); 
+}
+
+public function afterStore($response)
+{
+    // Add stuffs
+
+    // response
+    return response()->json(['success' => true], 201);
+}
+```
+
+## Before & After Update (CRUD)
+
+In your `\App\CrudKwik\DIR\{Model}Edit.php` file, insert these lines:
+
+```php
+use Yanah\LaravelKwik\Services\CrudService;
+
+public function beforeUpdate(CrudService $crudService) : void
+{
+    $crudService->setShouldIncludeFillable(true);
+    $crudService->setIndexOfUpdateCreate([
+        // You may want to use updateCreate.
+        // Add here the index
+    ]); 
+}
+
+public function afterUpdate($id)
+{
+    // trigger event after update
+
+    return response()->json(['success' => true], 201);
 }
 ```
 
