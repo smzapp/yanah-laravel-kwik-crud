@@ -16,14 +16,11 @@
     <template v-else>
       <template v-if="field.type === 'checkbox'">
         <div :class="`flex items-center gap-2`">
-          <input 
-            type="checkbox"
-            :name="fieldName"
-            v-bind="field?.inputProps"
-            :value="field?.value"
-            :checked="field?.is_boolean ? field?.value : false"
-            @change="updateCheckBox"
-          > 
+          <Checkbox
+            v-model="inputCheckbox"
+            :binary="field?.is_boolean"
+            @valueChange="(newValue) => $emit('updateFieldValue', fieldName, newValue)"
+          />
           <label :for="fieldName"  v-bind="field?.labelProps"> 
             <span>{{  field.label }} </span>
             <span 
@@ -73,28 +70,15 @@
 import Checkbox from 'primevue/checkbox';
 import { markRaw, onMounted, ref } from "vue";
 import InputField from "./InputField.vue";
-import { ToggleSwitch } from 'primevue';
 import CustomAutocomplete from './inputs/CustomAutocomplete.vue';
 
 const props = defineProps({
   fieldName: String,
   field: Object,
 });
-
 const emit = defineEmits(["updateFieldValue"]);
 
-const updateFormValue = (name, value) => {
-  emit('updateFieldValue', name, value);
-}
-
-const updateCheckBox = (event) => { 
-  emit('updateFieldValue', props.fieldName, event.target.checked);
-}
-
-const updateSwitch = (name, value) => {
-  emit('updateFieldValue', name, value);
-}
-
+const inputCheckbox = ref(props.field?.is_boolean ? !!props.field?.value : props.field?.value);
 const components = import.meta.glob('@/Components/**/*.vue');
 const currentComponent = ref(null);
 
@@ -108,5 +92,13 @@ onMounted(() => {
     });
   }
 });
+
+/**
+ * Methods
+ */
+const updateFormValue = (name, value) => {
+  emit('updateFieldValue', name, value);
+}
+
 </script>
   

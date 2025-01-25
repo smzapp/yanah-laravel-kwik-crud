@@ -10,19 +10,24 @@
           :style="field.vBind?.style ? field.vBind.style: ''"
           :class="field.vBind?.class"
         >
-          <template 
+          <div 
             v-for="(fieldSub, fieldWrapName) in field.wrappedItems" 
             :key="fieldWrapName"
+            class="mb-4"
             >
               <FormFields
                 :field="fieldSub"
                 :fieldName="fieldWrapName"
                 @updateFieldValue="(name, value) => $emit('updateFieldValue', name, value)"
               />
-          </template>
+          </div>
         </div>
 
-        <div v-if="Object.entries(field.headings).length > 0" :style="field.headings?.style">
+        <div 
+          v-if="Object.entries(field.headings).length > 0" 
+          :class="field.headings?.headingClass"
+          :style="field.headings?.style"
+          >
           <div class="flex items-start flex-col mt-5 h-full">
             <h2 class="text-2xl mb-5">{{ field.headings?.heading }}</h2>
             <p>{{ field.headings?.paragraph }}</p>
