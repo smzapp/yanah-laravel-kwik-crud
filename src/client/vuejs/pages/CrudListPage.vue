@@ -162,7 +162,7 @@ const fetchPage = async (page = 1, q = '') => {
   try {
     isLoading.value = true;
     const response = await axios.get(url);
-    Object.assign(localCrud, response.data);
+    localCrud.value = response.data;
   } catch (error) {
     toast.add({
       severity: "warn",
