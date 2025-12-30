@@ -1,5 +1,5 @@
 <template>
-  <div v-bind="field?.wrapperProps">
+  <div v-bind="field?.wrapperProps" class="mb-4">
     <template v-if="field.type === 'custom_file'">
       <component 
         :is="currentComponent"
