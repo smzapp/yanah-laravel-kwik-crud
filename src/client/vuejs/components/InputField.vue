@@ -59,6 +59,7 @@
       mode="basic" 
       @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined" 
     />
+    <img v-if="!src && attributes?.value" :src="attributes.value" class="max-w-xl mt-4">
     <img v-if="src" :src="src" alt="Image" class="shadow-md w-full sm:w-64" style="filter: grayscale(100%)" />
   </template>
 
