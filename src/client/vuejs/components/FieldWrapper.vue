@@ -2,7 +2,7 @@
   <div
     v-for="(field, fieldName) in fields"
     :key="fieldName"
-    class="flex flex-col mb-4"
+    class="flex flex-col"
   >
     <template v-if="field.wrappedItems">
       <div v-if="field?.headings" :class="Object.entries(field.headings).length > 0 ? 'flex gap-7' : ''">
