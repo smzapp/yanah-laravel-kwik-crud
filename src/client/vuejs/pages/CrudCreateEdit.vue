@@ -64,6 +64,7 @@
           icon="pi pi-send"
           :class="'px-10'"
           :loading="loading"
+          :disabled="btnDisabled"
           fluid
         />
       </div>
@@ -89,6 +90,7 @@ const { props: pageProps } = usePage();
 
 const formData = ref({}); 
 const loading = ref(false);
+const btnDisabled = ref(false);
 
 const hasTabs = computed(() =>
   pageProps.formgroup.some((group) => group.details.tab)
@@ -174,6 +176,7 @@ const submitForm = async () => {
       await axios.post(pageProps.activeRoute, plainFormData);
     }
 
+    btnDisabled.value = true;
     toast.add({
       severity: "success",
       summary: "Success",
