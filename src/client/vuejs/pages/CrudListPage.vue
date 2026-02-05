@@ -1,6 +1,6 @@
 <template>
   <Toast />
-  <ConfirmDialog />
+  <!-- <ConfirmDialog /> -->
   <Head :title="pageProps.pageTitle" />
 
   <div class="container mx-auto mt-3 pb-5">

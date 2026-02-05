@@ -26,26 +26,41 @@ trait BaseModelUploadTrait
     {
         $fields = static::getUploadedFields();
 
-        foreach($fields as $field)
-        {
-            $imagePayload = request($field);
+        foreach ($fields as $field) {
 
-            if($imagePayload != null) {
+            $payload = request($field);
 
-                $response = app(UploadService::class)->uploadOnly($imagePayload);
+            if (empty($payload)) {
+                continue;
+            }
 
-                if ($response !== null) {
-                    $model->$field = $response['full_url'];
+            // Normalize into array
+            $files = is_array($payload) ? $payload : [$payload];
+
+            $uploadedUrls = [];
+
+            foreach ($files as $file) {
+
+                if (!$file) {
+                    continue;
                 }
 
-                // For updated(), We don't save again to avoid infinite updated() triggered.
-                // $model->withoutEvents(function () use ($model, $field, $response) {
-                //     $model->$field = $response['full_url'];
-                //     $model->save();
-                // });
+                $response = app(UploadService::class)->uploadOnly($file);
+
+                if (!empty($response['full_url'])) {
+                    $uploadedUrls[] = $response['full_url'];
+                }
+            }
+
+            // Save back to model
+            if (count($uploadedUrls) === 1) {
+                $model->$field = $uploadedUrls[0];
+            } elseif (count($uploadedUrls) > 1) {
+                $model->$field = $uploadedUrls;
             }
         }
     }
+
 
     /**
      * Remove $payload fields which are included in $uploadedFields.

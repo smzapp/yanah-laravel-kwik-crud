@@ -52,16 +52,31 @@
         </template>
       </Select>
   </template>
-
+  
   <template v-else-if="attributes.type === 'upload'">
     <FileUpload 
       v-bind="attributes?.inputProps"
+      :multiple="true"
       mode="basic" 
-      @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined" 
+      @select="onFileSelect"
+      customUpload
+      auto
+      severity="secondary"
+      class="p-button-outlined"
     />
-    <img v-if="!src && attributes?.value" :src="attributes.value" class="max-w-xl mt-4">
-    <img v-if="src" :src="src" alt="Image" class="shadow-md w-full sm:w-64" style="filter: grayscale(100%)" />
+    <div
+      v-if="normalizedImages.length"
+      class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-4"
+    >
+      <img
+        v-for="(image, index) in normalizedImages"
+        :key="index"
+        :src="image"
+        class="w-full h-28 object-cover rounded-lg border border-gray-200"
+      />
+    </div>
   </template>
+
 
   <template v-else-if="attributes.type === 'switch'">
     <ToggleSwitch
@@ -109,7 +124,7 @@ import RadioButton from 'primevue/radiobutton';
 import FileUpload from 'primevue/fileupload';
 import DatePicker from 'primevue/datepicker';
 import Textarea from 'primevue/textarea';
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { InputGroup, InputGroupAddon, InputText, ToggleSwitch } from 'primevue';
 
 const props = defineProps({
@@ -124,23 +139,62 @@ const props = defineProps({
 });
 
 const inputField = ref(props.attributes.value || '');
-
 const emit = defineEmits(['updateFieldValue']);
 
-const src = ref(null);
+const src = ref([]); // uploaded previews
+
+// ✅ Normalize existing + uploaded images
+const normalizedImages = computed(() => {
+
+  // prioritize uploaded previews
+  if (src.value?.length) {
+    return src.value;
+  }
+
+  let value = props.attributes?.value;
+
+  if (!value) return [];
+
+  if (Array.isArray(value)) {
+    return value;
+  }
+
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+      return [value];
+    } catch (e) {
+      return [value];
+    }
+  }
+
+  return [];
+});
 
 function onFileSelect(event) {
-  const file = event.files[0];
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    const sourceValue = e.target.result;
-    emit('updateFieldValue', props.fieldName, sourceValue);
-    src.value = sourceValue;
-  };
-  reader.readAsDataURL(file);
+  src.value = [];
+
+  const files = event.files;
+
+  files.forEach((file) => {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const base64 = e.target.result;
+
+      src.value.push(base64);
+
+      emit('updateFieldValue', props.fieldName, src.value);
+    };
+
+    reader.readAsDataURL(file);
+  });
 }
 
 watch(inputField, (newValue) => {
   emit('updateFieldValue', props.fieldName, newValue);
-}, {immediate: true});
+}, { immediate: true });
 </script>
