@@ -75,6 +75,29 @@ class FormGroupService {
         $this->tabIndex++;
     }
 
+    public function removeField(string $name): void
+    {
+        foreach ($this->groups as $groupKey => &$group) {
+            // Case 1: Field exists directly in the group
+            if (isset($group['fields'][$name])) {
+                unset($group['fields'][$name]);
+                return;
+            }
+
+            // Case 2: Field exists inside wrapped items
+            if (isset($group['fields'][$this->getWrapKey()]['wrappedItems'][$name])) {
+                unset($group['fields'][$this->getWrapKey()]['wrappedItems'][$name]);
+                return;
+            }
+        }
+    }
+
+    public function removeFields(array $names): void
+    {
+        foreach ($names as $name) {
+            $this->removeField($name);
+        }
+    }
 
     /**
      * Wrap fields

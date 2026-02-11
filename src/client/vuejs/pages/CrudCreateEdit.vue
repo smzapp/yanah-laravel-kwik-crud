@@ -167,6 +167,8 @@ const submitForm = async () => {
   
   try {
     loading.value = true;
+    btnDisabled.value = true;
+
     let message = "New record added successfully!";
 
     if(pageProps.activeId !== undefined) {
@@ -176,7 +178,6 @@ const submitForm = async () => {
       await axios.post(pageProps.activeRoute, plainFormData);
     }
 
-    btnDisabled.value = true;
     toast.add({
       severity: "success",
       summary: "Success",
@@ -190,7 +191,7 @@ const submitForm = async () => {
       }, 1500);
     }
   } catch(e) {
-    console.log(e);
+    btnDisabled.value = false;
     
     toast.add({
       severity: "error",
