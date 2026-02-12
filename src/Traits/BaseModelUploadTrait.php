@@ -52,12 +52,7 @@ trait BaseModelUploadTrait
                 }
             }
 
-            // Save back to model
-            if (count($uploadedUrls) === 1) {
-                $model->$field = $uploadedUrls[0];
-            } elseif (count($uploadedUrls) > 1) {
-                $model->$field = $uploadedUrls;
-            }
+            $model->$field = json_encode($uploadedUrls);
         }
     }
 
