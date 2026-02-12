@@ -3,7 +3,7 @@
   <ConfirmDialog />
   <Head :title="pageProps.pageTitle" />
 
-  <div class="container mx-auto mt-3 pb-5">
+  <div class="container mx-auto mt-3 px-2 md:px-0 pb-5">
     <div class="flex justify-end">
       <BreadCrumbsLocal 
         :breadCrumbs="pageProps.breadCrumbs"
@@ -17,13 +17,13 @@
     
     <!-- Search Toolbar -->
     <div class="mb-3" v-if="localControls.showSearchBar">
-      <div class="bg-white  mb-4 border rounded-lg py-3 px-3 flex justify-between align-items-center items-center">
-        <div v-if="localControls.showSearch && pageProps.listview == 'TableListView'">
+      <div class="bg-white  mb-4 border rounded-lg py-3 px-3 flex flex-col md:flex-row justify-between align-items-center items-center">
+        <div class="w-full max-w-sm" v-if="localControls.showSearch && pageProps.listview == 'TableListView'">
           <IconField>
             <InputIcon>
               <i class="pi pi-search" />
             </InputIcon>
-            <InputText placeholder="Search" size="small" @change="handleSearch"/>
+            <InputText placeholder="Search" class="w-full"  size="small" @change="handleSearch"/>
           </IconField>
         </div>
         <div v-if="pageProps.controls.showListSummary">
