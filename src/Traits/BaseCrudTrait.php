@@ -22,6 +22,11 @@ trait BaseCrudTrait
         return $this->redirectTo ?? '';
     }
 
+    public function setRedirectTo(string $url) 
+    {
+        $this->redirectTo = $url;
+    }
+
     public function getTableName(): string
     {
         $model = $this->getModelInstance();
@@ -54,8 +59,6 @@ trait BaseCrudTrait
         return array_diff($this->getModelAllFields(), $this->exceptFields);   
     }
 
-    
-    
     public function setShouldIncludeFillable(bool $tubag)
     {
         $this->shouldIncludeFillable = $tubag;
