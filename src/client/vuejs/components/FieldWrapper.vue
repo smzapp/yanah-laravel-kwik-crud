@@ -5,7 +5,7 @@
     class="flex flex-col"
   >
     <template v-if="field.wrappedItems">
-      <div v-if="field?.headings" :class="Object.entries(field.headings).length > 0 ? 'flex gap-7' : ''">
+      <div v-if="field?.headings" :class="Object.entries(field.headings).length > 0 ? 'flex gap-7 flex-col md:flex-row' : ''">
         <div 
           :style="field.vBind?.style ? field.vBind.style: ''"
           :class="field.vBind?.class"
